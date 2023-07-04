@@ -84,16 +84,6 @@ class BaseElement {
         logger.log(this.getElement().should('be.enabled') ? `[info]   ${this.elementName} is enable` : `[info]   ${this.elementName} is not enable`);
         return this.getElement().should('be.enabled');
     }
-    
-    // waitIsEnabled() {
-    //     logger.log(`[info] ▶ wait ${this.elementName} is enable`);
-    //     this.getElement().wait(configManager.getConfigData().waitTime).should('be.enabled');
-    // }
-
-    // waitIsExisting() {
-    //     logger.log(`[info] ▶ wait ${this.elementName} is exists`);
-    //     this.getElement().wait(configManager.getConfigData().waitTime).should('exist');
-    // }
 
     waitForText(text) {
         this.getElement().should('have.text', text);
@@ -102,9 +92,11 @@ class BaseElement {
     // if intervalObj not needed it's value must be false;
     // args contain required count of returning random elements and exceptions locators array:
     clickRandomElementsFromDropdown(dropdownElementLocator, intervalObj, ...args) {
-        const dropdownElement = cy.xpath(dropdownElementLocator).first();
-        // dropdownElement.waitForClickable({ timeout: configManager.getConfigData().waitTime });
-        dropdownElement.click();
+        const getTexts = ($el) => {
+            return Cypress._.map($el, 'innerText')
+        }
+
+        cy.xpath(dropdownElementLocator).first().as('dropdownElement');
 
         let interval = intervalObj;
         if (!intervalObj) {
@@ -123,24 +115,19 @@ class BaseElement {
         const randomElementsList = [];
         let exceptionsList =[];
         if (exceptionsLocators.length !== 0) {
-            exceptionsList = exceptionsLocators.map((locator) => cy.xpath(locator).first());
+            exceptionsList = exceptionsLocators.map((locator) => cy.xpath(locator).first().text());
         }
 
-        const elementsList = this.getElements();
         for (let counter = 0; counter < count; counter++) {
+            cy.get('@dropdownElement').click()
             logger.log(`[info] ▶ get random element from ${this.elementName}`);
-            const randomElement = randomizer.getRandomElement(elementsList.slice(interval.start, interval.end), exceptionsList);
-            exceptionsList.push(randomElement);
-            randomElementsList.push(randomElement);
-        }
-
-        dropdownElement.click();
-        for (let elem of randomElementsList) {
-            // dropdownElement.waitForClickable({ timeout: configManager.getConfigData().waitTime });
-            dropdownElement.click();
-            // elem.waitForClickable({ timeout: configManager.getConfigData().waitTime });
-            logger.log(`[info] ▶ click ${elem.text()}`);
-            elem.click();
+            this.getElements().then((value) => {
+                const randomElement = randomizer.getRandomElementByText(getTexts(value).slice(interval.start, interval.end), exceptionsList);
+                exceptionsList.push(randomElement);
+                randomElementsList.push(randomElement);
+                logger.log(`[info] ▶ click ${randomElement}`);
+                cy.findByText(randomElement).click({ force: true });
+            });
         }
     }
 
@@ -181,11 +168,6 @@ class BaseElement {
             elem.click();
         }
     }
-
-    // async scrollElementIntoView() {
-    //     logger.log(`[info] ▶ scroll ${this.elementName} into view`);
-    //     await (await this.getElement()).scrollIntoView({ block: 'end', inline: 'end' });
-    // }
 }
     
 module.exports = BaseElement;

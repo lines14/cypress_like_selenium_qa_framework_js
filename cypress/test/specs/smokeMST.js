@@ -1,4 +1,4 @@
-const { assert } = require("chai");
+// const { assert } = require("chai");
 const logger = require('../../main/utils/log/logger.js');
 const configManager = require('../../main/utils/data/configManager.js');
 const mainPageMST = require('../pageObjects/mainPageMST.js');
@@ -22,8 +22,8 @@ describe('MST smoke test', () => {
         policyRequestFormMST.pageIsDisplayed();
 
         policyRequestFormMST.selectThreeRandomCountries();
-        // policyRequestFormMST.inputRandomDates();
-        // policyRequestFormMST.inputIIN();
+        policyRequestFormMST.inputRandomDates();
+        policyRequestFormMST.inputIIN();
         // policyRequestFormMST.selectRandomInsuranceLimit();
 
         // policyRequestFormMST.selectRandomPurposeOfTheTrip();

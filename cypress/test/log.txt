@@ -1,7 +1,0 @@
-2023-07-04 16:24:52 [info] ▶ main page is open
-2023-07-04 16:24:52 [info] ▶ click get insured button
-2023-07-04 16:24:52 [info] ▶ click tourism link
-2023-07-04 16:24:52 [info] ▶ tourism page is open
-2023-07-04 16:24:52 [info] ▶ click purchase button
-2023-07-04 16:24:52 [info] ▶ policy request page is open
-2023-07-04 16:24:52 [info] ▶ click countries dropdown

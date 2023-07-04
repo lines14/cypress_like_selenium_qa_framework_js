@@ -1,15 +1,15 @@
 class Randomizer {
-    getRandomElement(baseElements, exceptionsList) {
+    getRandomElementByText(baseElements, exceptionsList) {
         const baseElementsList = baseElements.slice(0, baseElements.length);
         let element;
         if (exceptionsList.length > 0) {
             do {
                 element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
-            } while ((exceptionsList.map((elem) => elem.elementId)).includes(element.elementId) && (element.getText() === ''));
+            } while ((exceptionsList.map((elem) => elem)).includes(element) && (element === ''));
         } else {
             do {
                 element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
-            } while ((element.getText() === ''));
+            } while ((element === ''));
         }
         
         return element;

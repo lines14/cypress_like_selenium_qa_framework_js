@@ -5,11 +5,13 @@ const { defineConfig } = require('cypress');
 // dotenv.config();
 
 module.exports = defineConfig({
+    screenshotOnRunFailure: false,
+    video: false,
     env: {
         // defaultPassword: process.env.SEED_DEFAULT_USER_PASSWORD,
     },
     e2e: {
-        baseUrl: "http://localhost:3001",
+        // baseUrl: "http://localhost:3001",
         specPattern: "./cypress/test/specs/*.js",
         supportFile: "./cypress/support/e2e.js",
         viewportHeight: 1080,

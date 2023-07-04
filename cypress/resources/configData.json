@@ -1,7 +1,7 @@
 {
-  "baseURL": "http://localhost:3001/",
+  "baseURLLL": "http://localhost:3001/",
   "baseURLL": "https://amanat24layout-dev.amanat.systems/",
-  "baseURLLL": "https://amanat24.kz/",
+  "baseURL": "https://amanat24.kz/",
   "waitTime": 20000,
   "isMaximize": true
 }

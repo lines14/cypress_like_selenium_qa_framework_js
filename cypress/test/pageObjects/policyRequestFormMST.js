@@ -12,7 +12,6 @@ class PolicyRequestFormMST extends BaseForm {
         super('//h3[contains(text(), "Оформление полиса")]', 'policy request page');
         this.dropdownElements = new Button('//span[contains(@class, "multiselect__option")]//span', 'dropdown elements');
         this.countriesDropdownButton = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]', 'countries dropdown');
-        // this.questionsLabel = new Label('//span[contains(text(), "Остались вопросы?")]', 'questions label');
         this.dateStartButton = new Button(`//td[@title="${startDate}"]`, 'start date');
         this.dateFinishButton = new Button(`//td[@title="${finishDate}"]`, 'finish date');
         this.calendarTowardsButton = new Button('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar towards button');
@@ -41,39 +40,32 @@ class PolicyRequestFormMST extends BaseForm {
 
     selectThreeRandomCountries() {
         this.countriesDropdownButton.clickElement();
-        console.log(this.dropdownElements.getElements());
-        // this.dropdownElements.clickRandomElementsFromDropdown(this.countriesDropdownButton.elementLocator, configManager.getTestData().intervalCountries, configManager.getTestData().countriesCount);
+        this.dropdownElements.clickRandomElementsFromDropdown(this.countriesDropdownButton.elementLocator, configManager.getTestData().intervalCountries, configManager.getTestData().countriesCount);
     }
-
-    // scrollToCenter() {
-    //     browser.scroll(0, 420);
-    //     // await this.questionsLabel.waitIsClickable();
-    //     // await this.questionsLabel.scrollElementIntoView();
-    // }
 
     inputRandomDates() {
         const datesInterval = randomizer.getRandomDatesInterval(moment().add(1, 'days').format().slice(0, 10));
         const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
-        // this.calendarTowardsButton.waitIsClickable();
         this.calendarTowardsButton.clickElement();
         newInstance.dateStartButton.clickElement();
-        // await this.calendarBackwardsButton.waitIsClickable();
+        this.calendarBackwardsButton.clickElement();
+        this.calendarBackwardsButton.clickElement();
         this.calendarBackwardsButton.clickElement();
         newInstance.dateFinishButton.clickElement();
     }
 
     inputIIN() {
+        this.IINBox.clickElement();
+        this.IINBox.clickElement();
         this.IINBox.inputData(configManager.getTestData().clientIIN);
         this.clientName.waitForText(configManager.getTestData().clientName);
     }
 
     selectRandomInsuranceLimit() {
-        // this.insuranceLimitsDropdownButton.waitIsClickable();
         this.dropdownElements.clickRandomElementsFromDropdown(this.insuranceLimitsDropdownButton.elementLocator, configManager.getTestData().intervalInsuranceLimits);
     }
 
     selectRandomPurposeOfTheTrip() {
-        // this.purposeOfTheTripDropdownButton.waitIsClickable();
         this.dropdownElements.clickRandomElementsFromDropdown(this.purposeOfTheTripDropdownButton.elementLocator, configManager.getTestData().intervalPurposesOfTheTrip);
     }
 
@@ -87,8 +79,6 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     clickNextButton() {
-        // await this.nextButton.waitIsEnabled();
-        // await this.nextButton.waitIsClickable();
         this.nextButton.clickElement();
     }
 
@@ -99,7 +89,6 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputPassportGivenDate() {
-        // await this.calendarPassportGivenButton.waitIsClickable();
         this.calendarPassportGivenButton.clickElement();
         this.passportGivenDateBox.inputData(configManager.getTestData().clientPassportGivenDate);
     }
@@ -114,22 +103,18 @@ class PolicyRequestFormMST extends BaseForm {
 
     inputSMSCode(code) {
         console.log(code);
-        // await this.SMSCodeBox.waitIsClickable();
         this.SMSCodeBox.inputData(code);
     }
 
     payWithKaspi() {
-        // await this.acceptanceCheckbox.waitIsClickable();
         this.acceptanceCheckbox.clickElement();
         this.paySum = this.sumToPay.getText();
         this.kaspiPayButton.clickElement();
     }
 
     getKaspiPaymentInfo() {
-        // await this.successTitle.waitIsClickable();
         return { account: this.paymentNumber.getText(), sum: this.paySum }
     }
 }
 
-// await browser.pause(10000);
 module.exports = new PolicyRequestFormMST();
