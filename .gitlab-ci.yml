@@ -1,0 +1,38 @@
+# cache:
+    # paths:
+        # - node_modules/
+
+# stages:
+  # - test
+
+# variables:
+  # MYSQL_DATABASE: "union_reporting"
+  # MYSQL_USER: "login"
+  # MYSQL_PASSWORD: "password"
+  # MYSQL_HOST: "2.tcp.eu.ngrok.io"
+  # MYSQL_PORT: 12416
+
+# e2e:chrome:
+  # image: atools/chrome-headless:java17-nodelts-latest
+  # stage: test
+  # services:
+    # - mysql:5.7
+  # script:
+    # - npm install
+    # - npm run wdio-chrome
+    # - allure generate -c ./allure-results -o ./allure-report
+  # artifacts:
+    # when: always
+    # paths:
+      # - allure-report
+      # - allure-results
+  # expire_in: 1 day
+
+# e2e:firefox:
+#   image: atools/firefox-headless:java17-nodelts-latest
+#   stage: test
+#   services:
+#     # - mysql:5.7
+#   script:
+#     - npm install
+#     - npm run wdio-firefox

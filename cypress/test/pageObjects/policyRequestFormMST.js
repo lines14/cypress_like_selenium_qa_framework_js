@@ -1,0 +1,135 @@
+const moment = require('moment');
+const BaseForm = require('../../main/baseForm.js');
+const Button = require('../../main/elements/baseElementChildren/button.js');
+const Label = require('../../main/elements/baseElementChildren/label.js');
+const Textbox = require('../../main/elements/baseElementChildren/textbox.js');
+const Checkbox = require('../../main/elements/baseElementChildren/checkbox.js');
+const randomizer = require('../../main/utils/random/randomizer.js');
+const configManager = require('../../main/utils/data/configManager.js');
+
+class PolicyRequestFormMST extends BaseForm {
+    constructor(startDate, finishDate) {
+        super('//h3[contains(text(), "Оформление полиса")]', 'policy request page');
+        this.dropdownElements = new Button('//span[contains(@class, "multiselect__option")]//span', 'dropdown elements');
+        this.countriesDropdownButton = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]', 'countries dropdown');
+        // this.questionsLabel = new Label('//span[contains(text(), "Остались вопросы?")]', 'questions label');
+        this.dateStartButton = new Button(`//td[@title="${startDate}"]`, 'start date');
+        this.dateFinishButton = new Button(`//td[@title="${finishDate}"]`, 'finish date');
+        this.calendarTowardsButton = new Button('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar towards button');
+        this.calendarBackwardsButton = new Button('//span[contains(text(), "Обратно")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar backwards button');
+        this.IINBox = new Textbox('//input[@id="iinInput"]', 'iin');
+        this.clientName = new Label('//span[@class="subtitle-16"]', 'client name');
+        this.insuranceLimitsDropdownButton = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'insurance limits dropdown');
+        this.purposeOfTheTripDropdownButton = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'purpose of the trip dropdown');
+        this.additionalCheckboxes = new Checkbox('//input[@type="checkbox"]', 'additional checkboxes');
+        this.calculateButton = new Button('//button[contains(text(), "Рассчитать")]', 'calculate button');
+        this.nextButton = new Button('//button[contains(text(), "Далее")]', 'next button');
+        this.secondNameBox = new Textbox('//label[contains(text(), "Фамилия на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'second name in latin');
+        this.firstNameBox = new Textbox('//label[contains(text(), "Имя на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'first name in latin');
+        this.calendarPassportGivenButton = new Button('//span[contains(text(), "Дата выдачи паспорта")]//parent::div[@class="form-item"]//following-sibling::div[@class="mx-datepicker"]', 'calendar passport given date button');
+        this.passportNumberBox = new Textbox('//label[contains(text(), "Номер паспорта")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'passport number');
+        this.passportGivenDateBox = new Textbox('//input[@placeholder="дд.мм.гггг"]', 'passport given date');
+        this.emailBox = new Textbox('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'email');
+        this.phoneBox = new Textbox('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]', 'phone');
+        this.SMSCodeBox = new Textbox('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'sms-code box');
+        this.acceptanceCheckbox = new Checkbox('//input[@type="checkbox" and @id="check1"]', 'acceptance checkbox');
+        this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sum to pay');
+        this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
+        this.successTitle = new Label('//h3[@class="success__title" and contains(text(), "Спасибо!")]', 'success title');
+        this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'payment number');
+    }
+
+    selectThreeRandomCountries() {
+        this.countriesDropdownButton.clickElement();
+        console.log(this.dropdownElements.getElements());
+        // this.dropdownElements.clickRandomElementsFromDropdown(this.countriesDropdownButton.elementLocator, configManager.getTestData().intervalCountries, configManager.getTestData().countriesCount);
+    }
+
+    // scrollToCenter() {
+    //     browser.scroll(0, 420);
+    //     // await this.questionsLabel.waitIsClickable();
+    //     // await this.questionsLabel.scrollElementIntoView();
+    // }
+
+    inputRandomDates() {
+        const datesInterval = randomizer.getRandomDatesInterval(moment().add(1, 'days').format().slice(0, 10));
+        const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
+        // this.calendarTowardsButton.waitIsClickable();
+        this.calendarTowardsButton.clickElement();
+        newInstance.dateStartButton.clickElement();
+        // await this.calendarBackwardsButton.waitIsClickable();
+        this.calendarBackwardsButton.clickElement();
+        newInstance.dateFinishButton.clickElement();
+    }
+
+    inputIIN() {
+        this.IINBox.inputData(configManager.getTestData().clientIIN);
+        this.clientName.waitForText(configManager.getTestData().clientName);
+    }
+
+    selectRandomInsuranceLimit() {
+        // this.insuranceLimitsDropdownButton.waitIsClickable();
+        this.dropdownElements.clickRandomElementsFromDropdown(this.insuranceLimitsDropdownButton.elementLocator, configManager.getTestData().intervalInsuranceLimits);
+    }
+
+    selectRandomPurposeOfTheTrip() {
+        // this.purposeOfTheTripDropdownButton.waitIsClickable();
+        this.dropdownElements.clickRandomElementsFromDropdown(this.purposeOfTheTripDropdownButton.elementLocator, configManager.getTestData().intervalPurposesOfTheTrip);
+    }
+
+    selectRandomAdditionalCheckboxesAndCalculate() {
+        const checkboxesToClickCount = randomizer.getRandomInteger(configManager.getTestData().checkboxesCount);
+        if (checkboxesToClickCount) {
+            this.additionalCheckboxes.clickRandomCheckboxes(false, checkboxesToClickCount);
+        } else {
+            this.calculateButton.clickElement();
+        }
+    }
+
+    clickNextButton() {
+        // await this.nextButton.waitIsEnabled();
+        // await this.nextButton.waitIsClickable();
+        this.nextButton.clickElement();
+    }
+
+    inputPassportData() {
+        this.secondNameBox.inputData(configManager.getTestData().clientSecondNameLatin);
+        this.firstNameBox.inputData(configManager.getTestData().clientFirstNameLatin);
+        this.passportNumberBox.inputData(configManager.getTestData().clientPassportNumber);
+    }
+
+    inputPassportGivenDate() {
+        // await this.calendarPassportGivenButton.waitIsClickable();
+        this.calendarPassportGivenButton.clickElement();
+        this.passportGivenDateBox.inputData(configManager.getTestData().clientPassportGivenDate);
+    }
+
+    inputEmail() {
+        this.emailBox.inputData(configManager.getTestData().clientEmail);
+    }
+
+    inputPhone() {
+        this.phoneBox.inputData(configManager.getTestData().clientPhone);
+    }
+
+    inputSMSCode(code) {
+        console.log(code);
+        // await this.SMSCodeBox.waitIsClickable();
+        this.SMSCodeBox.inputData(code);
+    }
+
+    payWithKaspi() {
+        // await this.acceptanceCheckbox.waitIsClickable();
+        this.acceptanceCheckbox.clickElement();
+        this.paySum = this.sumToPay.getText();
+        this.kaspiPayButton.clickElement();
+    }
+
+    getKaspiPaymentInfo() {
+        // await this.successTitle.waitIsClickable();
+        return { account: this.paymentNumber.getText(), sum: this.paySum }
+    }
+}
+
+// await browser.pause(10000);
+module.exports = new PolicyRequestFormMST();

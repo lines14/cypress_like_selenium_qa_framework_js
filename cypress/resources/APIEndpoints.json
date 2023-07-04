@@ -1,0 +1,4 @@
+{
+    "loginAPI": "api/login",
+    "kaspiPay": "api/kaspi/kaspi/pay"
+}
