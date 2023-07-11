@@ -10,34 +10,31 @@ const policyRequestFormMST = require('../pageObjects/policyRequestFormMST.js');
 describe('MST smoke test', () => {    
     it('Kaspi client path', { scrollBehavior: false }, () => {
         cy.visit(configManager.getConfigData().baseURL);
-
         mainPageMST.pageIsDisplayed();
         mainPageMST.clickGetInsuredButton();
         mainPageMST.clickTourismLink();
-
 
         tourismPageMST.pageIsDisplayed();
         tourismPageMST.clickPurchaseButton();
 
         policyRequestFormMST.pageIsDisplayed();
-
         policyRequestFormMST.selectThreeRandomCountries();
         policyRequestFormMST.inputRandomDates();
         policyRequestFormMST.inputIIN();
-        // policyRequestFormMST.selectRandomInsuranceLimit();
+        policyRequestFormMST.selectRandomInsuranceLimit();
+        policyRequestFormMST.selectRandomPurposeOfTheTrip();
+        policyRequestFormMST.selectRandomAdditionalCheckboxesAndCalculate();
+        policyRequestFormMST.clickNextButton();
 
-        // policyRequestFormMST.selectRandomPurposeOfTheTrip();
-        // policyRequestFormMST.selectRandomAdditionalCheckboxesAndCalculate();
-        // policyRequestFormMST.clickNextButton();
+        // policyRequestFormMST.inputPassportGivenDate();
+        // policyRequestFormMST.inputPassportData();
+        policyRequestFormMST.clickNextButton();
 
+        policyRequestFormMST.inputEmail();
+        policyRequestFormMST.clickNextButton();
 
-        // policyRequestFormMST.clickNextButton();
-
-        // policyRequestFormMST.inputEmail();
-        // policyRequestFormMST.clickNextButton();
-
-        // policyRequestFormMST.inputPhone();
-        // policyRequestFormMST.clickNextButton();
+        policyRequestFormMST.inputPhone();
+        policyRequestFormMST.clickNextButton();
 
         // policyRequestFormMST.inputSMSCode(notificationDB.getLastRecordCode());
         // policyRequestFormMST.clickNextButton();

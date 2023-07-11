@@ -1,21 +1,12 @@
 {
-  "countriesCount": 3,
+  "elementsCount": 3,
   "clientIIN": "880701351146",
-  "clientNam": "САБАХУДИН Х.",
-  "clientName": "КУАНЫШ Д.",
+  "clientName": "САБАХУДИН Х.",
+  "clientNam": "КУАНЫШ Д.",
   "clientFirstNameLatin": "SABAHUDIN",
   "clientSecondNameLatin": "KHANALIEV",
   "clientPassportNumber": "19800460",
   "clientPassportGivenDate": "20.06.2010",
   "clientEmail": "a.lipatov@a-i.kz",
-  "clientPhone": "777 777 77 77",
-  "intervalCountries": { "start": 0, "end": 250 },
-  "intervalInsuranceLimits": { "start": 252, "end": 255 },
-  "intervalPurposesOfTheTrip": { "start": 255, "end": 258 },
-  "checkboxesCount": 3,
-  "checkboxesValues": {
-    "check5": "Хочу покрытие COVID-19 (+50 %)",
-    "check6": "Активный отдых (+50 %)",
-    "check7": "С франшизой 50 €/$ (-25 %)"
-  }
+  "clientPhone": "777 777 77 76"
 }
