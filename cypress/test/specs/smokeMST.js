@@ -33,9 +33,9 @@ describe('MST smoke test', () => {
         policyRequestFormMST.clickNextButton();
 
         policyRequestFormMST.inputPhone();
-        policyRequestFormMST.clickNextButton();
+        const createTime = policyRequestFormMST.clickNextButton();
 
-        cy.task('getLastRecordCodeFromDB').then((resp) => policyRequestFormMST.inputSMSCode(resp));
+        cy.task('getLastRecordCodeFromDB', createTime).then((resp) => policyRequestFormMST.inputSMSCode(resp));
         // policyRequestFormMST.clickNextButton();
 
         // policyRequestFormMST.payWithKaspi();

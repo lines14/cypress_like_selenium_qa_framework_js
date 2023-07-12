@@ -25,8 +25,11 @@ module.exports = defineConfig({
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
             on('task', {
-                async getLastRecordCodeFromDB() {
-                    return await notificationDB.getLastRecordCode();
+                async getLastRecordCodeFromDB(createTime) {
+                    const response = await notificationDB.getLastRecordCode(createTime);
+                    console.log(createTime);
+                    return response;
+                    // return await notificationDB.getLastRecordCode(createTime);
                 },
                 log(message) {
                     console.log(message);

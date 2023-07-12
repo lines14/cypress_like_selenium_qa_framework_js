@@ -10,17 +10,21 @@ const configManager = require('../../main/utils/data/configManager.js');
 class PolicyRequestFormMST extends BaseForm {
     constructor(startDate, finishDate) {
         super('//h3[contains(text(), "Оформление полиса")]', 'policy request page');
-        this.dropdownElements = new Button('//span[contains(@class, "multiselect__option")]//span', 'dropdown elements');
-        this.countriesDropdownButton = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]', 'countries dropdown');
+        this.countriesDropdownButton = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]', 'countries dropdown button');
+        this.countriesDropdownElements = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'countries dropdown element');
         this.dateStartButton = new Button(`//td[@title="${startDate}"]`, 'start date');
         this.dateFinishButton = new Button(`//td[@title="${finishDate}"]`, 'finish date');
         this.calendarTowardsButton = new Button('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar towards button');
         this.calendarBackwardsButton = new Button('//span[contains(text(), "Обратно")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar backwards button');
+        this.calendarCells = new Label('//table[contains(@class, "mx-table-date")]//tbody//tr//td', 'calendar cells');
+        this.calendarRightArrowButton = new Button('//button[contains(@class, "mx-btn-icon-right")]//i', 'right calendar arrow button');
         this.IINBox = new Textbox('//input[@id="iinInput"]', 'iin');
         this.clientName = new Label('//span[@class="subtitle-16"]', 'client name');
-        this.insuranceLimitsDropdownButton = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'insurance limits dropdown');
+        this.insuranceLimitDropdownButton = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'insurance limit dropdown');
+        this.insuranceLimitDropdownElements = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'insurance limit dropdown elements');
         this.purposeOfTheTripDropdownButton = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'purpose of the trip dropdown');
-        this.additionalCheckboxes = new Checkbox('//input[@type="checkbox"]', 'additional checkboxes');
+        this.purposeOfTheTripDropdownElements = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'purpose of the trip dropdown elements');
+        this.additionalCheckboxes = new Checkbox('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label', 'additional checkboxes');
         this.calculateButton = new Button('//button[contains(text(), "Рассчитать")]', 'calculate button');
         this.nextButton = new Button('//button[contains(text(), "Далее")]', 'next button');
         this.secondNameBox = new Textbox('//label[contains(text(), "Фамилия на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'second name in latin');
@@ -39,40 +43,41 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     selectThreeRandomCountries() {
-        this.countriesDropdownButton.clickElement();
-        this.dropdownElements.clickRandomElementsFromDropdown(this.countriesDropdownButton.elementLocator, configManager.getTestData().intervalCountries, configManager.getTestData().countriesCount);
+        this.countriesDropdownElements.clickRandomElementsFromDropdownByText(this.countriesDropdownButton, configManager.getTestData().elementsCount);
     }
 
     inputRandomDates() {
         const datesInterval = randomizer.getRandomDatesInterval(moment().add(1, 'days').format().slice(0, 10));
         const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
-        this.calendarTowardsButton.clickElement();
+        let monthIncrement = moment(datesInterval.startDate).format("M") - moment().format("M");
+        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarTowardsButton, this.calendarRightArrowButton, monthIncrement);
         newInstance.dateStartButton.clickElement();
-        this.calendarBackwardsButton.clickElement();
-        this.calendarBackwardsButton.clickElement();
-        this.calendarBackwardsButton.clickElement();
+        monthIncrement = moment(datesInterval.finishDate).format("M") - moment().format("M");
+        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarBackwardsButton, this.calendarRightArrowButton, monthIncrement);
         newInstance.dateFinishButton.clickElement();
     }
 
     inputIIN() {
         this.IINBox.clickElement();
         this.IINBox.clickElement();
+        this.IINBox.clickElement();
         this.IINBox.inputData(configManager.getTestData().clientIIN);
         this.clientName.waitForText(configManager.getTestData().clientName);
+        cy.scrollTo('center');
     }
 
     selectRandomInsuranceLimit() {
-        this.dropdownElements.clickRandomElementsFromDropdown(this.insuranceLimitsDropdownButton.elementLocator, configManager.getTestData().intervalInsuranceLimits);
+        this.insuranceLimitDropdownElements.clickRandomElementsFromDropdownByText(this.insuranceLimitDropdownButton);
     }
 
     selectRandomPurposeOfTheTrip() {
-        this.dropdownElements.clickRandomElementsFromDropdown(this.purposeOfTheTripDropdownButton.elementLocator, configManager.getTestData().intervalPurposesOfTheTrip);
+        this.purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(this.purposeOfTheTripDropdownButton);
     }
 
     selectRandomAdditionalCheckboxesAndCalculate() {
-        const checkboxesToClickCount = randomizer.getRandomInteger(configManager.getTestData().checkboxesCount);
+        const checkboxesToClickCount = randomizer.getRandomInteger(configManager.getTestData().elementsCount);
         if (checkboxesToClickCount) {
-            this.additionalCheckboxes.clickRandomCheckboxes(false, checkboxesToClickCount);
+            this.additionalCheckboxes.clickRandomCheckboxesByText(checkboxesToClickCount);
         } else {
             this.calculateButton.clickElement();
         }
@@ -80,17 +85,18 @@ class PolicyRequestFormMST extends BaseForm {
 
     clickNextButton() {
         this.nextButton.clickElement();
+        return moment().format().slice(0, 19).replace('T', ' ');
+    }
+
+    inputPassportGivenDate() {
+        this.calendarPassportGivenButton.clickElement();
+        this.passportGivenDateBox.inputData(configManager.getTestData().clientPassportGivenDate);
     }
 
     inputPassportData() {
         this.secondNameBox.inputData(configManager.getTestData().clientSecondNameLatin);
         this.firstNameBox.inputData(configManager.getTestData().clientFirstNameLatin);
         this.passportNumberBox.inputData(configManager.getTestData().clientPassportNumber);
-    }
-
-    inputPassportGivenDate() {
-        this.calendarPassportGivenButton.clickElement();
-        this.passportGivenDateBox.inputData(configManager.getTestData().clientPassportGivenDate);
     }
 
     inputEmail() {
@@ -102,7 +108,6 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputSMSCode(code) {
-        console.log(code);
         this.SMSCodeBox.inputData(code);
     }
 
