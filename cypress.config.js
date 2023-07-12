@@ -1,10 +1,13 @@
-// const dotenv = require('dotenv');
 const fs = require('fs');
+const dotenv = require('dotenv');
 const { defineConfig } = require('cypress');
+const notificationDB = require('./cypress/test/DB/notificationDB.js');
+const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 
-// dotenv.config();
+dotenv.config();
 
 module.exports = defineConfig({
+    morgan: false, 
     screenshotOnRunFailure: false,
     video: false,
     env: {
@@ -16,12 +19,15 @@ module.exports = defineConfig({
         supportFile: "./cypress/support/e2e.js",
         viewportHeight: 1080,
         viewportWidth: 1920,
-        defaultCommandTimeout: 10000,
-        requestTimeout: 15000,
-        responseTimeout: 30000,
-        pageLoadTimeout: 60000,
+        defaultCommandTimeout: 45000,
+        requestTimeout: 30000,
+        responseTimeout: 50000,
+        pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
             on('task', {
+                async getLastRecordCodeFromDB() {
+                    return await notificationDB.getLastRecordCode();
+                },
                 log(message) {
                     console.log(message);
                     return null;
@@ -34,7 +40,9 @@ module.exports = defineConfig({
                     });
                     return null;
                 }
-            })
+            });
+            allureWriter(on, config);
+            return config;
         },
     },
 });

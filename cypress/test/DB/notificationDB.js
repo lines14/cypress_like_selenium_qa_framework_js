@@ -11,8 +11,8 @@ class NotificationDB extends DatabaseUtils {
             );
     }
 
-    getLastRecordCode() {
-        return (this.sqlSelect('phone_verification', 'code', 'ORDER BY `created_at` DESC LIMIT 1')).pop().code;
+    async getLastRecordCode() {
+        return (await this.sqlSelect('phone_verification', 'code', 'ORDER BY `created_at` DESC LIMIT 1')).pop().code;
     }
 }
 

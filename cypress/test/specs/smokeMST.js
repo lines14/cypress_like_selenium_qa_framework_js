@@ -4,7 +4,6 @@ const configManager = require('../../main/utils/data/configManager.js');
 const mainPageMST = require('../pageObjects/mainPageMST.js');
 const tourismPageMST = require('../pageObjects/tourismPageMST.js');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST.js');
-// const notificationDB = require('../DB/notificationDB.js');
 // const kaspiAPI = require('../API/kaspiAPI.js');
 
 describe('MST smoke test', () => {    
@@ -36,7 +35,7 @@ describe('MST smoke test', () => {
         policyRequestFormMST.inputPhone();
         policyRequestFormMST.clickNextButton();
 
-        // policyRequestFormMST.inputSMSCode(notificationDB.getLastRecordCode());
+        cy.task('getLastRecordCodeFromDB').then((resp) => policyRequestFormMST.inputSMSCode(resp));
         // policyRequestFormMST.clickNextButton();
 
         // policyRequestFormMST.payWithKaspi();
