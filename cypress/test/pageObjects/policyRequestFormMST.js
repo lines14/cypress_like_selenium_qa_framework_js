@@ -85,7 +85,6 @@ class PolicyRequestFormMST extends BaseForm {
 
     clickNextButton() {
         this.nextButton.clickElement();
-        return moment().format().slice(0, 19).replace('T', ' ');
     }
 
     inputPassportGivenDate() {
@@ -107,18 +106,16 @@ class PolicyRequestFormMST extends BaseForm {
         this.phoneBox.inputData(configManager.getTestData().clientPhone);
     }
 
-    inputSMSCode(code) {
-        this.SMSCodeBox.inputData(code);
+    enterSMSCode(code) {
+        this.SMSCodeBox.enterData(code);
     }
 
     payWithKaspi() {
         this.acceptanceCheckbox.clickElement();
-        this.paySum = this.sumToPay.getText();
+        const paySum = this.sumToPay.getText();
         this.kaspiPayButton.clickElement();
-    }
-
-    getKaspiPaymentInfo() {
-        return { account: this.paymentNumber.getText(), sum: this.paySum }
+        const payNumber = this.paymentNumber.getText();
+        return { account: payNumber, sum: paySum }
     }
 }
 

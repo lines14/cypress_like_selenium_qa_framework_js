@@ -1,6 +1,7 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const { defineConfig } = require('cypress');
+const kaspiAPI = require('./cypress/test/API/kaspiAPI.js');
 const notificationDB = require('./cypress/test/DB/notificationDB.js');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 
@@ -25,11 +26,14 @@ module.exports = defineConfig({
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
             on('task', {
-                async getLastRecordCodeFromDB(createTime) {
-                    const response = await notificationDB.getLastRecordCode(createTime);
-                    console.log(createTime);
-                    return response;
-                    // return await notificationDB.getLastRecordCode(createTime);
+                async getLastCodeFromDB() {
+                    return await notificationDB.getLastCode();
+                },
+                async payKaspi(paymentInfo) {
+                    await kaspiAPI.loginAPI();
+                    await kaspiAPI.payKaspi(paymentInfo);
+                    console.log(paymentInfo);
+                    return null;
                 },
                 log(message) {
                     console.log(message);

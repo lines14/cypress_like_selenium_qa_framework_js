@@ -1,3 +1,4 @@
+const moment = require('moment');
 const DatabaseUtils = require('../../main/utils/DB/databaseUtils.js');
 
 class NotificationDB extends DatabaseUtils {
@@ -11,11 +12,14 @@ class NotificationDB extends DatabaseUtils {
             );
     }
 
-    async getLastRecordCode(createdTime) {
-        return (await this.sqlSelect('phone_verification', 'created_at', 'ORDER BY `created_at` DESC LIMIT 1')).pop().created_at;
-        // do {
-        //     return (await this.sqlSelect('phone_verification', 'code', 'ORDER BY `created_at` DESC LIMIT 1')).pop().code;
-        // } while (((await this.sqlSelect('phone_verification', 'created_at', 'ORDER BY `created_at` DESC LIMIT 1')).pop().created_at) !== createdTime);
+    async getLastCode() {
+        let id = (await this.sqlSelect('phone_verification', 'id', 'ORDER BY `created_at` DESC LIMIT 1')).pop().id;
+        const idIncrement = id++;
+        do {
+            id = (await this.sqlSelect('phone_verification', 'id', 'ORDER BY `created_at` DESC LIMIT 1')).pop().id;
+        } while (id === idIncrement);
+
+        return (await this.sqlSelect('phone_verification', 'code', 'ORDER BY `created_at` DESC LIMIT 1')).pop().code;
     }
 }
 

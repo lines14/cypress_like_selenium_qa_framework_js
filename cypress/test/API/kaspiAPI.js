@@ -14,16 +14,16 @@ class KaspiAPI extends BaseAPI {
             });
     }
 
-    loginAPI() {
+    async loginAPI() {
         const params = { 
             login: 'online', 
             password: 'online21@CK!',
         }
         
-        this.accessToken = (this.post(configManager.getAPIEndpoint().loginAPI, params)).data.data.access_token;
+        this.accessToken = (await this.post(configManager.getAPIEndpoint().loginAPI, params)).data.data.access_token;
     }
 
-    payKaspi(paymentInfo) {
+    async payKaspi(paymentInfo) {
         new KaspiAPI({ headers: { Authorization: `Bearer ${this.accessToken}` } });
         const params = { 
             command: 'pay', 
@@ -33,7 +33,7 @@ class KaspiAPI extends BaseAPI {
             sum: paymentInfo.sum,
         }
 
-        return this.get(configManager.getAPIEndpoint().kaspiPay, params);
+        return await this.get(configManager.getAPIEndpoint().kaspiPay, params);
     }
 }
 

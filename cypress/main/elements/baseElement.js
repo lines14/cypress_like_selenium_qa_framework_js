@@ -1,6 +1,5 @@
 require('cypress-xpath');
 const randomizer = require('../utils/random/randomizer.js');
-const configManager = require('../utils/data/configManager.js');
 const logger = require('../utils/log/logger.js');
 
 class BaseElement {
@@ -18,9 +17,23 @@ class BaseElement {
     }
 
     getText() {
-        logger.log(`[info] ▶ get ${this.elementName} text:`);
-        logger.log(`[info]   text contains: "${this.getElement().text()}"`);
-        return this.getElement().text();
+        logger.log(`[info] ▶ get ${this.elementName} text`);
+        this.getElement().invoke('text').as('text');
+        return cy.get('@text');
+
+        // return cy.get('@text').then((text) => {
+        //     logger.log(`[info]   text contains: "${text}"`);
+        //     return text;
+        // });
+
+        // logger.log(`[info] ▶ get ${this.elementName} text:`);
+        // this.getElement().invoke('text').as('text');
+        // return cy.get('@text').then((res) => {
+        //     return res.then((text) => {
+        //         logger.log(`[info]   text contains: "${text}"`);
+        //         return text;
+        //     });
+        // });
     }
 
     getElementsListText() {
@@ -43,7 +56,7 @@ class BaseElement {
         this.getElement().dblclick();
     }
 
-    scrollToElement() {
+    scrollElementToView() {
         logger.log(`[info] ▶ scroll to ${this.elementName}`);
         this.getElement().scrollIntoView();
     }
@@ -58,13 +71,14 @@ class BaseElement {
         this.getElement().type(data);
     }
 
+    enterData(data) {
+        logger.log(`[info] ▶ enter ${this.elementName}`);
+        this.getElement().type(`${data}{enter}`);
+    }
+
     getAttributeValue(attr) {
         logger.log(`[info] ▶ get ${this.elementName} attribute value`);
         return this.getElement().attribute(attr);
-    }
-
-    getElementsListAttributesValues(attr) {
-        return this.getElements().map((elem) => elem.attribute(attr));
     }
 
     elementIsDisplayed() {
@@ -89,18 +103,59 @@ class BaseElement {
         this.getElement().should('have.text', text);
     }
 
-    // if intervalObj not needed it's value must be false;
     // args contain required count of returning random elements and exceptions locators array:
-    clickRandomElementsFromDropdown(dropdownElementLocator, intervalObj, ...args) {
-        const getTexts = ($el) => {
+    clickRandomElementsFromDropdownByText(dropdownElement, ...args) {
+        const getText = ($el) => {
             return Cypress._.map($el, 'innerText')
         }
 
-        cy.xpath(dropdownElementLocator).first().as('dropdownElement');
+        cy.xpath(dropdownElement.elementLocator).first().as('dropdown');
+        let count = args[0];
+        let exceptionsLocators = args.slice(1, args.length);
+        if (args === undefined) {
+            count = 1;
+        } else if (typeof args[0] !== 'number') {
+            count = 1;
+            exceptionsLocators = args.slice(0, args.length);
+        }
 
-        let interval = intervalObj;
-        if (!intervalObj) {
-            interval = { start: 0, end: undefined}
+        const randomElementsList = [];
+        let exceptionsList =[];
+        if (exceptionsLocators.length !== 0) {
+            exceptionsList = exceptionsLocators.map((locator) => cy.xpath(locator).first().text());
+        }
+
+        for (let counter = 0; counter < count; counter++) {
+            logger.log(`[info] ▶ click ${dropdownElement.elementName}`);
+            cy.get('@dropdown').click()
+            logger.log(`[info] ▶ get random element from ${this.elementName}`);
+            this.getElements().then((value) => {
+                const randomElementText = randomizer.getRandomElementByText(getText(value), exceptionsList);
+                exceptionsList.push(randomElementText);
+                randomElementsList.push(randomElementText);
+                logger.log(`[info] ▶ click ${randomElementText}`);
+                cy.contains('span', randomElementText).click({ force: true });
+            });
+        }
+    }
+
+    flipCalendarIfNotContainsDate(calendarElement, rightArrowElement, monthIncrement) {        
+        cy.xpath(calendarElement.elementLocator).first().as('calendar');
+        logger.log(`[info] ▶ click ${calendarElement.elementName}`);
+        cy.get('@calendar').click();
+        cy.get('@calendar').click();
+        cy.get('@calendar').click();
+        cy.xpath(rightArrowElement.elementLocator).first().as('rightArrow');
+        for (let i = 0; i < monthIncrement; i++) {
+            logger.log(`[info] ▶ click ${rightArrowElement.elementName}`);
+            cy.get('@rightArrow').click();
+        }
+    }
+
+    // args contain required count of returning random elements and exceptions locators array:
+    clickRandomCheckboxesByText(...args) {
+        const getText = ($el) => {
+            return Cypress._.map($el, 'innerText')
         }
 
         let count = args[0];
@@ -119,53 +174,14 @@ class BaseElement {
         }
 
         for (let counter = 0; counter < count; counter++) {
-            cy.get('@dropdownElement').click()
             logger.log(`[info] ▶ get random element from ${this.elementName}`);
             this.getElements().then((value) => {
-                const randomElement = randomizer.getRandomElementByText(getTexts(value).slice(interval.start, interval.end), exceptionsList);
-                exceptionsList.push(randomElement);
-                randomElementsList.push(randomElement);
-                logger.log(`[info] ▶ click ${randomElement}`);
-                cy.findByText(randomElement).click({ force: true });
+                const randomElementText = randomizer.getRandomElementByText(getText(value), exceptionsList);
+                exceptionsList.push(randomElementText);
+                randomElementsList.push(randomElementText);
+                logger.log(`[info] ▶ click ${randomElementText}`);
+                cy.contains('div', randomElementText).find('input[type=checkbox]').click({ force: true });
             });
-        }
-    }
-
-    // if intervalObj not needed it's value must be false;
-    // args contain required count of returning random elements and exceptions locators array:
-    clickRandomCheckboxes(intervalObj, ...args) {
-        let interval = intervalObj;
-        if (!intervalObj) {
-            interval = { start: 0 }
-        }
-
-        let count = args[0];
-        let exceptionsLocators = args.slice(1, args.length);
-        if (args === undefined) {
-            count = 1;
-        } else if (typeof args[0] !== 'number') {
-            count = 1;
-            exceptionsLocators = args.slice(0, args.length);
-        }
-
-        const randomElementsList = [];
-        let exceptionsList =[];
-        if (exceptionsLocators.length !== 0) {
-            exceptionsList = exceptionsLocators.map((locator) => cy.xpath(locator).first());
-        }
-
-        const elementsList = this.getElements();
-        for (let counter = 0; counter < count; counter++) {
-            logger.log(`[info] ▶ get random element from ${this.elementName}`);
-            const randomElement = randomizer.getRandomElement(elementsList.slice(interval.start, interval.end), exceptionsList);
-            exceptionsList.push(randomElement);
-            randomElementsList.push(randomElement);
-        }
-        
-        for (let elem of randomElementsList) {
-            // elem.waitForClickable({ timeout: configManager.getConfigData().waitTime })
-            logger.log(`[info] ▶ click ${configManager.getTestData().checkboxesValues[elem.attribute('id')]}`);
-            elem.click();
         }
     }
 }
