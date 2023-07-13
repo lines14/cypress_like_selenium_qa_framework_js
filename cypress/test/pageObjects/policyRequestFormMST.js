@@ -36,10 +36,10 @@ class PolicyRequestFormMST extends BaseForm {
         this.phoneBox = new Textbox('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]', 'phone');
         this.SMSCodeBox = new Textbox('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'sms-code box');
         this.acceptanceCheckbox = new Checkbox('//input[@type="checkbox" and @id="check1"]', 'acceptance checkbox');
-        this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sum to pay');
+        this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sumToPay');
         this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
         this.successTitle = new Label('//h3[@class="success__title" and contains(text(), "Спасибо!")]', 'success title');
-        this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'payment number');
+        this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'paymentNumber');
     }
 
     selectThreeRandomCountries() {
@@ -112,10 +112,10 @@ class PolicyRequestFormMST extends BaseForm {
 
     payWithKaspi() {
         this.acceptanceCheckbox.clickElement();
-        const paySum = this.sumToPay.getText();
+        this.sumToPay.getText();
         this.kaspiPayButton.clickElement();
-        const payNumber = this.paymentNumber.getText();
-        return { account: payNumber, sum: paySum }
+        this.paymentNumber.getText();
+        return { account: this.paymentNumber.elementName, sum: this.sumToPay.elementName }
     }
 }
 

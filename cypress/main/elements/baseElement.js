@@ -1,4 +1,5 @@
 require('cypress-xpath');
+const dataUtils = require('../utils/data/dataUtils.js');
 const randomizer = require('../utils/random/randomizer.js');
 const logger = require('../utils/log/logger.js');
 
@@ -18,8 +19,11 @@ class BaseElement {
 
     getText() {
         logger.log(`[info] ▶ get ${this.elementName} text`);
-        this.getElement().invoke('text').as('text');
-        return cy.get('@text');
+        this.getElement().then(($text) => {
+            let txt = $text.text()
+            dataUtils.addToDictionary(this.elementName, txt);
+            // cy.wrap(txt).as(`${this.elementName}`);
+        });
 
         // return cy.get('@text').then((text) => {
         //     logger.log(`[info]   text contains: "${text}"`);

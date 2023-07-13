@@ -29,8 +29,8 @@ class KaspiAPI extends BaseAPI {
             command: 'pay', 
             txn_id: randomizer.getRandomString(false, false, true, false, false, 18, 18),
             txn_date: moment().format().slice(0, 19).replace(/-|T|:/g, ''),
-            account: paymentInfo.account,
-            sum: paymentInfo.sum,
+            account: paymentInfo.paymentNumber,
+            sum: paymentInfo.sumToPay,
         }
 
         return await this.get(configManager.getAPIEndpoint().kaspiPay, params);

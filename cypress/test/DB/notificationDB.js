@@ -1,4 +1,3 @@
-const moment = require('moment');
 const DatabaseUtils = require('../../main/utils/DB/databaseUtils.js');
 
 class NotificationDB extends DatabaseUtils {
