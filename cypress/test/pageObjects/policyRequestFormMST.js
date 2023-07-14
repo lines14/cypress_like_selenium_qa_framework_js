@@ -112,7 +112,33 @@ class PolicyRequestFormMST extends BaseForm {
 
     payWithKaspi() {
         this.acceptanceCheckbox.clickElement();
-        this.sumToPay.getText();
+
+        // const sum = this.sumToPay.getElement().invoke('text')
+
+        // console.log({sum})
+
+        // sum.then(s => console.log({s}))
+        let sumToPay = null
+        let paymentNumber = null
+
+        this.sumToPay.getElement()
+            .then(s => {
+                console.log({s})
+                sumToPay = s.text()
+            })
+            .then(() => this.kaspiPayButton.clickElement())
+            .then(() =>  this.paymentNumber.getElement())
+            .then(p => {
+                console.log({p})
+                paymentNumber = p.text()
+            })
+            .then(() => {
+                cy.task('payKaspi', {
+                    sumToPay, 
+                    paymentNumber
+                });
+            })
+
         // this.sumToPay.setTextFromDifferentPagesToTask('payKaspi', this.kaspiPayButton, this.paymentNumber);
     }
 }

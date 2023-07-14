@@ -98,17 +98,13 @@ class BaseElement {
         // });
 
         logger.log(`[info] ▶ get ${this.elementName} text:`);
-        this.getElement().invoke('text').as('text');
-        cy.get('@text').then((text) => {
-            logger.log(`[info]   text contains: "${text}"`);
-        });
-
-        // return cy.get('@text').then((res) => {
-        //     return res.then((text) => {
-        //         logger.log(`[info]   text contains: "${text}"`);
-        //         return text;
-        //     });
+        // this.getElement().invoke('text').as('text');
+        // cy.get('@text').then((text) => {
+        //     logger.log(`[info]   text contains: "${text}"`);
+        //     cy.task('textAccumulator')
         // });
+
+        return this.getElement().invoke('text');
     }
 
 
