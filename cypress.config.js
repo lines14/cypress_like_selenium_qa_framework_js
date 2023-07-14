@@ -25,22 +25,15 @@ module.exports = defineConfig({
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
-            const dictionary = {};
             on('task', {
+                textAccumulator: [],
                 async getLastCodeFromDB() {
                     return await notificationDB.getLastCode();
                 },
-                async payKaspi(dictionary) {
-                    // cy.get(`@${paymentInfo.payNumber}`).then(text => {
-                    //     this.payNumber = text;
-                    // });
-                    // cy.get(`@${paymentInfo.paySum}`).then(text => {
-                    //     this.paySum = text;
-                    // });
+                async payKaspi(paymentInfo) {
                     await kaspiAPI.loginAPI();
-                    await kaspiAPI.payKaspi(dictionary);
-                    // cy.get(`@${paymentInfo}`).then((obj) => console.log(obj));
-                    // console.log(paymentInfo);
+                    await kaspiAPI.payKaspi();
+                    console.log(paymentInfo);
                     return null;
                 },
                 addToDictionary(key, value) {

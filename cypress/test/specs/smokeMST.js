@@ -36,9 +36,17 @@ describe('MST smoke test', () => {
 
         cy.task('getLastCodeFromDB').then((resp) => policyRequestFormMST.enterSMSCode(resp));
 
+        policyRequestFormMST.payWithKaspi();
+
+
+
+
+
+
+        
         // cy.wrap(policyRequestFormMST.payWithKaspi()).as('paymentInfo');
-        const paymentInfo = policyRequestFormMST.payWithKaspi();
-        // cy.task('log', paymentInfo);
+        // cy.task('log', paymentInfo.account);
+        // cy.task('log', Cypress.env());
 
         // cy.get('@paymentInfo').then((payInfo) => {
             // cy.task('log', payInfo);

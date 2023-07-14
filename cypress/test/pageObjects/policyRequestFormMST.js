@@ -38,7 +38,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.acceptanceCheckbox = new Checkbox('//input[@type="checkbox" and @id="check1"]', 'acceptance checkbox');
         this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sumToPay');
         this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
-        this.successTitle = new Label('//h3[@class="success__title" and contains(text(), "Спасибо!")]', 'success title');
+        // this.successTitle = new Label('//h3[@class="success__title" and contains(text(), "Спасибо!")]', 'success title');
         this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'paymentNumber');
     }
 
@@ -113,9 +113,7 @@ class PolicyRequestFormMST extends BaseForm {
     payWithKaspi() {
         this.acceptanceCheckbox.clickElement();
         this.sumToPay.getText();
-        this.kaspiPayButton.clickElement();
-        this.paymentNumber.getText();
-        return { account: this.paymentNumber.elementName, sum: this.sumToPay.elementName }
+        // this.sumToPay.setTextFromDifferentPagesToTask('payKaspi', this.kaspiPayButton, this.paymentNumber);
     }
 }
 
