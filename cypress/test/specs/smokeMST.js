@@ -38,29 +38,6 @@ describe('MST smoke test', () => {
 
         policyRequestFormMST.payWithKaspi();
 
-
-
-
-
-
-        
-        // cy.wrap(policyRequestFormMST.payWithKaspi()).as('paymentInfo');
-        // cy.task('log', paymentInfo.account);
-        // cy.task('log', Cypress.env());
-
-        // cy.get('@paymentInfo').then((payInfo) => {
-            // cy.task('log', payInfo);
-            // cy.get(`@${payInfo.account}`).then((text) => this.account = text);
-            // cy.get(`@${payInfo.sum}`).then((text) => this.sum = text);
-            // cy.task('payKaspi', { account: this.account, sum: this.sum });
-        // });
-        // cy.get(`@${paymentInfo}`).then((text) => cy.task('log', text));
-        // cy.task('payKaspi', paymentInfo);
-        // policyRequestFormMST.payWithKaspi().then((paymentInfo) => {
-        //     // cy.task('log', paymentInfo);
-        //     cy.task('payKaspi', 'kek');
-        // });
-
         logger.logToFile();
     });
 });

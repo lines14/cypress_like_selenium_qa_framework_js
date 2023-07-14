@@ -34,6 +34,15 @@ class KaspiAPI extends BaseAPI {
         }
 
         return await this.get(configManager.getAPIEndpoint().kaspiPay, params);
+
+        // <?xml version="1.0" encoding="UTF-8"?>
+        // <response>
+        //     <txn_id>13518874</txn_id>
+        //     <prv_txn>8022219901232011</prv_txn>
+        //     <sum>12000</sum>
+        //     <result>0</result>
+        //     <comment>Договор с номером: 802-22-199-01232011 полностью оплачен </comment>
+        // </response>
     }
 }
 

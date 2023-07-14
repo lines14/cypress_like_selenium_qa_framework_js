@@ -1,38 +1,30 @@
-# cache:
-    # paths:
-        # - node_modules/
-
 # stages:
-  # - test
+#   - test
+#   - generate-allure-report
 
-# variables:
-  # MYSQL_DATABASE: "union_reporting"
-  # MYSQL_USER: "login"
-  # MYSQL_PASSWORD: "password"
-  # MYSQL_HOST: "2.tcp.eu.ngrok.io"
-  # MYSQL_PORT: 12416
-
-# e2e:chrome:
-  # image: atools/chrome-headless:java17-nodelts-latest
-  # stage: test
-  # services:
-    # - mysql:5.7
-  # script:
-    # - npm install
-    # - npm run wdio-chrome
-    # - allure generate -c ./allure-results -o ./allure-report
-  # artifacts:
-    # when: always
-    # paths:
-      # - allure-report
-      # - allure-results
-  # expire_in: 1 day
-
-# e2e:firefox:
-#   image: atools/firefox-headless:java17-nodelts-latest
+# test:
+#   image: cypress/browsers:latest
 #   stage: test
-#   services:
-#     # - mysql:5.7
 #   script:
-#     - npm install
-#     - npm run wdio-firefox
+#     - npm ci
+#     - npx cypress run --browser chrome --env allure=true --reporter mocha-allure-reporter
+#   when: always
+#   artifacts:
+#     when: always
+#     paths:
+#       - allure-results
+#     expire_in: 1 day
+
+# generate-allure-result:
+#   stage: generate-allure-report
+#   image: pradapjackie/allure-reports-generation:1.0
+#   artifacts:
+#     paths:
+#       - allure-results
+#       - allure-report
+#     when: always
+#     expire_in: 1 days
+#   script:
+#     - allure generate allure-results --clean -o allure-report
+#   when: always
+#   allow_failure: true

@@ -25,25 +25,13 @@ module.exports = defineConfig({
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
-            const textAccumulator = [];
             on('task', {
-                addTextToAccumulator(text) {
-                    textAccumulator.push(text);
-                    console.log(text);
-                    console.log(textAccumulator);
-                },
                 async getLastCodeFromDB() {
                     return await notificationDB.getLastCode();
                 },
                 async payKaspi(paymentInfo) {
-                    console.log({paymentInfo});
                     await kaspiAPI.loginAPI();
-                    const res = await kaspiAPI.payKaspi(paymentInfo);
-                    console.log({res});
-                    return null;
-                },
-                addToDictionary(key, value) {
-                    dictionary[`${key}`] = value;
+                    await kaspiAPI.payKaspi(paymentInfo);
                     return null;
                 },
                 log(message) {

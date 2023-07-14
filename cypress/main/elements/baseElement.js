@@ -1,7 +1,6 @@
 require('cypress-xpath');
 const randomizer = require('../utils/random/randomizer.js');
 const logger = require('../utils/log/logger.js');
-const textAccumulator = [];
 
 class BaseElement {
     constructor(elementLocator, elementName) {
@@ -16,112 +15,6 @@ class BaseElement {
     getElements() {
         return cy.xpath(this.elementLocator);
     }
-    
-    // additionalElements may contain additional elements objects to get text from into array:
-    // accumulateText(element) {
-    //     logger.log(`[info] ▶ get ${element.elementName} text`);
-    //     cy.xpath(element.elementLocator).first().invoke('text').then(text => {
-    //         textAccumulator.push(text);
-    //     });
-    // }
-
-    // additionalElements may contain additional elements objects to get text from into array:
-    // setTextFromDifferentPagesToTask(taskName, pageSwitcher, ...additionalElements) {
-    //     const elements = [this];
-    //     if (additionalElements) {
-    //         elements.push(...additionalElements);
-    //     }
-
-    //     cy.wrap(elements).each(element => {
-    //         cy.then(() => this.accumulateText(element)).then(() => {
-    //             cy.xpath(pageSwitcher.elementLocator).first().click();
-    //         });
-    //     }).then(() => {
-    //         cy.task(`${taskName}`, textAccumulator);
-    //     });
-
-    //     cy.task('log', textAccumulator);
-    // }
-
-    // additionalElements may contain additional elements objects to get text from into array:
-    // setTextToTask(taskName, ...additionalElements) {
-    //     const textValues = [];
-    //     const elementsLocators = [this.elementLocator];
-    //     logger.log(`[info] ▶ get ${this.elementName} text`);
-    //     if (additionalElements) {
-    //         for (let i of additionalElements) {
-    //             logger.log(`[info] ▶ get ${i.elementName} text`);
-    //             elementsLocators.push(i.elementLocator);
-    //         }
-    //     }
-
-    //     cy.wrap(elementsLocators).each(locator => {
-    //         cy.xpath(locator).first().invoke('text').then(text => {
-    //             textValues.push(text);
-    //         });
-    //     }).then(() => {
-    //         cy.task(`${taskName}`, textValues);
-    //     });
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    getText() {
-        // logger.log(`[info] ▶ get ${this.elementName} text`);
-        // this.getElement().invoke('text').then(text => {
-        //     cy.wrap(text).as(`${this.elementName}`);
-        //     cy.task('your-task-name', text);
-        // });
-        // this.getElement().then(($text) => {
-        //     Cypress.env(`${this.elementName}`, $text.text());
-        //     return $text.text();
-        //     cy.task('log', Cypress.env(this.elementName));
-        //     cy.wrap(txt).as(`${this.elementName}`);
-        // }).as(`${this.elementName}`);
-
-        // return cy.get('@text').then((text) => {
-        //     logger.log(`[info]   text contains: "${text}"`);
-        //     return text;
-        // });
-
-        logger.log(`[info] ▶ get ${this.elementName} text:`);
-        // this.getElement().invoke('text').as('text');
-        // cy.get('@text').then((text) => {
-        //     logger.log(`[info]   text contains: "${text}"`);
-        //     cy.task('textAccumulator')
-        // });
-
-        return this.getElement().invoke('text');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     clickElement() {
         logger.log(`[info] ▶ click ${this.elementName}`);
