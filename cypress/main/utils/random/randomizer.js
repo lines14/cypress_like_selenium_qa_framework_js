@@ -1,15 +1,19 @@
+const moment = require('moment');
+
 class Randomizer {
     getRandomElementByText(baseElements, exceptionsList) {
         const baseElementsList = baseElements.slice(0, baseElements.length);
         let element;
         if (exceptionsList.length > 0) {
-            do {
+            while (true) {
                 element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
-            } while ((exceptionsList.map((elem) => elem)).includes(element) && (element === ''));
+                if (!exceptionsList.includes(element) && (element !== '')) break;
+            }
         } else {
-            do {
+            while (true) {
                 element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
-            } while ((element === ''));
+                if (element !== '') break;
+            }
         }
         
         return element;
@@ -69,125 +73,32 @@ class Randomizer {
         return Math.random() * (max - min) + min;
     }
 
-    incrementMonth(str) {
-        const evenEndMonth = ['4', '6', '9', '11'];
-        let updatedMonth;
-        if (str.includes('/')) {
-            let arr = str.split('/');
-            if (arr[0] < '12') {
-                let month = arr.shift();
-                updatedMonth = (++month).toString();
-            } else {
-                arr.shift();
-                updatedMonth = '1';
-                let year = arr.pop();
-                arr.push((++year).toString());
-            }
-    
-            arr.unshift(updatedMonth);
-            if (evenEndMonth.includes(updatedMonth) && arr[1] > 30) arr[1] = 30;
-            if ((updatedMonth === 2) && arr[1] > 28) arr[1] = 28;
-            return arr.join('/');
-        } else {
-            let arr = str.split('-');
-            if (arr[1] < '12') {
-                let month = arr[1];
-                updatedMonth = (++month).toString();
-                if (updatedMonth.length === 1) updatedMonth = '0' + updatedMonth;
-            } else {
-                updatedMonth = '01';
-                let year = arr.shift();
-                arr.unshift((++year).toString());
-            }
-    
-            arr[1] = updatedMonth;
-            if (evenEndMonth.includes(updatedMonth) && arr[2] > 30) arr[2] = 30;
-            if ((updatedMonth === 2) && arr[2] > 28) arr[2] = 28;
-            return arr.join('-');
-        }
-    }
+    getRandomDatesIntervalFromTomorrow(months) {
+        const unixOne = moment().add(1, 'days').unix();
+        const unixTwo = moment(moment().add(1, 'days')).add(months, 'months').unix();
 
-    incrementTwoMonth(str) {
-        const evenEndMonth = ['4', '6', '9', '11'];
-        let updatedMonth;
-        if (str.includes('/')) {
-            let arr = str.split('/');
-            if (arr[0] < '11') {
-                let month = arr.shift();
-                updatedMonth = ++month;
-                updatedMonth = (++updatedMonth).toString();
-            } else if (arr[0] === '11') {
-                arr.shift();
-                updatedMonth = '1';
-                let year = arr.pop();
-                arr.push((++year).toString());
-            } else {
-                arr.shift();
-                updatedMonth = '2';
-                let year = arr.pop();
-                arr.push((++year).toString());
-            }
-    
-            arr.unshift(updatedMonth);
-            if (evenEndMonth.includes(updatedMonth) && arr[1] > 30) arr[1] = 30;
-            if ((updatedMonth === 2) && arr[1] > 28) arr[1] = 28;
-            return arr.join('/');
-        } else {
-            let arr = str.split('-');
-            if (arr[1] < '11') {
-                let month = arr[1];
-                updatedMonth = ++month;
-                updatedMonth = (++updatedMonth).toString();
-                if (updatedMonth.length === 1) updatedMonth = '0' + updatedMonth;
-
-            } else if (arr[1] === '11') {
-                updatedMonth = '01';
-                let year = arr.shift();
-                arr.unshift((++year).toString());
-            } else {
-                updatedMonth = '02';
-                let year = arr.shift();
-                arr.unshift((++year).toString());
-            }
-    
-            arr[1] = updatedMonth;
-            if (evenEndMonth.includes(updatedMonth) && arr[2] > 30) arr[2] = 30;
-            if ((updatedMonth === 2) && arr[2] > 28) arr[2] = 28;
-            return arr.join('-');
-        }
-    }
-
-    getRandomDatesInterval(dateOne, dateTwo) {
-        const firstDate = dateOne || new Date().toLocaleDateString();
-        const secondDate = dateTwo || (dateOne ? this.incrementMonth(dateOne) : this.incrementMonth(new Date().toLocaleDateString()));
-
-        const unixOne = new Date(firstDate).getTime();
-        const unixTwo = new Date(secondDate).getTime();
-
-        const startDateUnix = new Date(this.getRandomFloat(unixOne, unixTwo)).getTime();
+        const startDateUnix = moment.unix(this.getRandomFloat(unixOne, unixTwo)).unix();
         let finishDateUnix;
         do {
-            finishDateUnix = new Date(this.getRandomFloat(startDateUnix, unixTwo)).getTime();
-        } while ((finishDateUnix - startDateUnix) < 86400000 * 2);
-
-        const startDateArr = new Date(startDateUnix).toLocaleDateString().split('/');
-        const finishDateArr = new Date(finishDateUnix).toLocaleDateString().split('/');
-
-        const formattedStartDateArr = startDateArr.map((elem) => {
-            return elem.length === 1 ? '0' + elem : elem;
-        });
-        const formattedFinishDateArr = finishDateArr.map((elem) => {
-            return elem.length === 1 ? '0' + elem : elem;
-        });
-
-        let temp = formattedStartDateArr[0];
-        formattedStartDateArr[0] = formattedStartDateArr[1];
-        formattedStartDateArr[1] = temp;
-        temp = formattedFinishDateArr[0];
-        formattedFinishDateArr[0] = formattedFinishDateArr[1];
-        formattedFinishDateArr[1] = temp;
+            finishDateUnix = moment.unix(this.getRandomFloat(startDateUnix, unixTwo)).unix();
+        } while ((finishDateUnix - startDateUnix) < 86400 * 2);
         
-        return { startDate: formattedStartDateArr.reverse().join('-'), finishDate: formattedFinishDateArr.reverse().join('-') }
+        const startDate = moment.unix(startDateUnix).format('YYYY-MM-DD');
+        const finishDate = moment.unix(finishDateUnix).format('YYYY-MM-DD');
+
+        const getAbsoluteMonth = (date) => {
+            const months = Number(moment(date).format("MM"));
+            const years = Number(moment(date).format("YYYY"));
+            return months + (years * 12);
+        }
+
+        const currentMonth = getAbsoluteMonth(moment().format('YYYY-MM-DD'));
+        const startMonth = getAbsoluteMonth(startDate);
+        const finishMonth = getAbsoluteMonth(finishDate);
+        const startMonthDifference = startMonth - currentMonth;
+        const finishMonthDifference = finishMonth - currentMonth;
+
+        return { startDate: startDate, finishDate: finishDate, startMonthDifference: startMonthDifference, finishMonthDifference: finishMonthDifference }
     }
 }
 

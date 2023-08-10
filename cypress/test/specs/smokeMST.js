@@ -1,4 +1,3 @@
-// const { assert } = require("chai");
 const logger = require('../../main/utils/log/logger.js');
 const configManager = require('../../main/utils/data/configManager.js');
 const mainPageMST = require('../pageObjects/mainPageMST.js');

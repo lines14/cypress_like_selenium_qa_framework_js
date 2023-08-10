@@ -1,4 +1,3 @@
-const moment = require('moment');
 const BaseForm = require('../../main/baseForm.js');
 const Button = require('../../main/elements/baseElementChildren/button.js');
 const Label = require('../../main/elements/baseElementChildren/label.js');
@@ -46,13 +45,11 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputRandomDates() {
-        const datesInterval = randomizer.getRandomDatesInterval(moment().add(1, 'days').format().slice(0, 10));
+        const datesInterval = randomizer.getRandomDatesIntervalFromTomorrow(configManager.getTestData().monthsCount);
         const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
-        let monthIncrement = moment(datesInterval.startDate).format("M") - moment().format("M");
-        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarTowardsButton, this.calendarRightArrowButton, monthIncrement);
+        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarTowardsButton, this.calendarRightArrowButton, datesInterval.startMonthDifference);
         newInstance.dateStartButton.clickElement();
-        monthIncrement = moment(datesInterval.finishDate).format("M") - moment().format("M");
-        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarBackwardsButton, this.calendarRightArrowButton, monthIncrement);
+        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarBackwardsButton, this.calendarRightArrowButton, datesInterval.finishMonthDifference);
         newInstance.dateFinishButton.clickElement();
     }
 
@@ -86,16 +83,16 @@ class PolicyRequestFormMST extends BaseForm {
         this.nextButton.clickElement();
     }
 
-    inputPassportGivenDate() {
-        this.calendarPassportGivenButton.clickElement();
-        this.passportGivenDateBox.inputData(configManager.getTestData().clientPassportGivenDate);
-    }
+    // inputPassportGivenDate() {
+    //     this.calendarPassportGivenButton.clickElement();
+    //     this.passportGivenDateBox.inputData(configManager.getTestData().clientPassportGivenDate);
+    // }
 
-    inputPassportData() {
-        this.secondNameBox.inputData(configManager.getTestData().clientSecondNameLatin);
-        this.firstNameBox.inputData(configManager.getTestData().clientFirstNameLatin);
-        this.passportNumberBox.inputData(configManager.getTestData().clientPassportNumber);
-    }
+    // inputPassportData() {
+    //     this.secondNameBox.inputData(configManager.getTestData().clientSecondNameLatin);
+    //     this.firstNameBox.inputData(configManager.getTestData().clientFirstNameLatin);
+    //     this.passportNumberBox.inputData(configManager.getTestData().clientPassportNumber);
+    // }
 
     inputEmail() {
         this.emailBox.inputData(configManager.getTestData().clientEmail);
@@ -126,30 +123,6 @@ class PolicyRequestFormMST extends BaseForm {
             cy.task('payKaspi', { sumToPay, paymentNumber });
         });
     }
-
-    // payWithKaspi() {
-    //     this.acceptanceCheckbox.clickElement();
-
-    //     let sumToPay = null;
-    //     let paymentNumber = null;
-    //     this.sumToPay.getElement()
-    //         .then(s => {
-    //             console.log({s})
-    //             sumToPay = s.text()
-    //         })
-    //         .then(() => this.kaspiPayButton.clickElement())
-    //         .then(() =>  this.paymentNumber.getElement())
-    //         .then(p => {
-    //             console.log({p})
-    //             paymentNumber = p.text()
-    //         })
-    //         .then(() => {
-    //             cy.task('payKaspi', {
-    //                 sumToPay, 
-    //                 paymentNumber
-    //             });
-    //         })
-    // }
 }
 
 module.exports = new PolicyRequestFormMST();
