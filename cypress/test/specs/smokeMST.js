@@ -33,7 +33,7 @@ describe('MST smoke test', () => {
         policyRequestFormMST.inputPhone();
         policyRequestFormMST.clickNextButton();
 
-        cy.task('getLastCodeFromDB').then((resp) => policyRequestFormMST.enterSMSCode(resp));
+        policyRequestFormMST.enterSMSCode();
 
         policyRequestFormMST.payWithKaspi();
 

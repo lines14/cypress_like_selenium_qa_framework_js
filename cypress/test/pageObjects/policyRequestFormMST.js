@@ -102,8 +102,8 @@ class PolicyRequestFormMST extends BaseForm {
         this.phoneBox.inputData(configManager.getTestData().clientPhone);
     }
 
-    enterSMSCode(code) {
-        this.SMSCodeBox.enterData(code);
+    enterSMSCode() {
+        cy.task('getLastCodeFromDB').then((code) => this.SMSCodeBox.enterData(code));
     }
 
     payWithKaspi() {
