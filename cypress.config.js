@@ -29,9 +29,9 @@ module.exports = defineConfig({
                 async getLastCodeFromDB() {
                     return await notificationDB.getLastCode();
                 },
-                async payKaspi(paymentInfo) {
+                async payWithKaspi(paymentInfo) {
                     await kaspiAPI.loginAPI();
-                    await kaspiAPI.payKaspi(paymentInfo);
+                    await kaspiAPI.payWithKaspi(paymentInfo);
                     return null;
                 },
                 log(message) {

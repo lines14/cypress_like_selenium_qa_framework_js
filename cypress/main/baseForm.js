@@ -1,5 +1,4 @@
 require('cypress-xpath');
-// const configManager = require('./utils/data/configManager.js');
 const logger = require('./utils/log/logger.js');
 
 class BaseForm {
@@ -13,29 +12,16 @@ class BaseForm {
     }
 
     pageIsDisplayed() {
-        logger.log(`[info] ▶ ${this.pageName} is open`);
-        return this.getUniqueElement().should('be.visible');
+        logger.log(`[info] ▶ check ${this.pageName} is open:`);
+        logger.log(this.getUniqueElement().isDisplayed() ? `[info] ▶ ${this.pageName} is open` : `[info] ▶ ${this.pageName} is not open`);
+        return this.getUniqueElement().isDisplayed();
     }
 
     pageIsEnabled() {
-        logger.log(`[info] ▶ ${this.pageName} is enable`);
-        return this.getUniqueElement().should('be.enabled');
+        logger.log(`[info] ▶ check ${this.pageName} is enable:`);
+        logger.log(this.getUniqueElement().isEnabled() ? `[info] ▶ ${this.pageName} is enable` : `[info] ▶ ${this.pageName} is not enable`);
+        return this.getUniqueElement().isEnabled();
     }
-
-    // waitPageIsDisplayed() {
-    //     logger.log('[info] ▶ wait page is open:');
-    //     this.getUniqueElement().wait(configManager.getConfigData().waitTime).should('be.displayed');
-    // }
-    
-    // waitPageIsEnabled() {
-    //     logger.log('[info] ▶ wait page is enable:');
-    //     this.getUniqueElement().wait(configManager.getConfigData().waitTime).should('be.enabled');
-    // }
-
-    // waitPageIsExist() {
-    //     logger.log('[info] ▶ wait page is exist:');
-    //     this.getUniqueElement().wait(configManager.getConfigData().waitTime).should('exist');
-    // }
 }
 
 module.exports = BaseForm;

@@ -11,12 +11,16 @@ class PolicyRequestFormMST extends BaseForm {
         super('//h3[contains(text(), "Оформление полиса")]', 'policy request page');
         this.countriesDropdownButton = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]', 'countries dropdown button');
         this.countriesDropdownElements = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'countries dropdown element');
+        this.selectedCountriesTags = new Label('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span', 'selected countries tags');
+        this.selectedCountries = new Label('//span[contains(text(), "Страна:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'selected countries');
         this.dateStartButton = new Button(`//td[@title="${startDate}"]`, 'start date');
         this.dateFinishButton = new Button(`//td[@title="${finishDate}"]`, 'finish date');
         this.calendarTowardsButton = new Button('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar towards button');
         this.calendarBackwardsButton = new Button('//span[contains(text(), "Обратно")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar backwards button');
         this.calendarCells = new Label('//table[contains(@class, "mx-table-date")]//tbody//tr//td', 'calendar cells');
         this.calendarRightArrowButton = new Button('//button[contains(@class, "mx-btn-icon-right")]//i', 'right calendar arrow button');
+        this.selectedDatesInPicker = new Button('//input[@name="date"]', 'selected dates in picker');
+        this.selectedDates = new Label('//span[contains(text(), "Срок действия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'selected dates');
         this.IINBox = new Textbox('//input[@id="iinInput"]', 'iin');
         this.clientName = new Label('//span[@class="subtitle-16"]', 'client name');
         this.insuranceLimitDropdownButton = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'insurance limit dropdown');
@@ -44,6 +48,10 @@ class PolicyRequestFormMST extends BaseForm {
         this.countriesDropdownElements.clickRandomElementsFromDropdownByText(this.countriesDropdownButton, configManager.getTestData().elementsCount);
     }
 
+    isDisplayedCountriesEqualSelected() {
+        return this.selectedCountriesTags.getBothElementsTextLists(this.selectedCountries, 'innerText').then((value) => Cypress._.isEqual(value.firstTextList, value.secondTextList));
+    }
+
     inputRandomDates() {
         const datesInterval = randomizer.getRandomDatesIntervalFromTomorrow(configManager.getTestData().monthsCount);
         const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
@@ -51,6 +59,14 @@ class PolicyRequestFormMST extends BaseForm {
         newInstance.dateStartButton.clickElement();
         this.calendarCells.flipCalendarIfNotContainsDate(this.calendarBackwardsButton, this.calendarRightArrowButton, datesInterval.finishMonthDifference);
         newInstance.dateFinishButton.clickElement();
+    }
+
+    isDisplayedDatesEqualSelected() {
+        return this.selectedDatesInPicker.getBothElementsTextLists(this.selectedDates, 'value', 'innerText').then((value) => {
+            const regexPattern = /\d{2}\.\d{2}\.\d{4}/g;
+            const secondTextList = value.secondTextList.pop().match(regexPattern);
+            return Cypress._.isEqual(value.firstTextList, secondTextList);
+        });
     }
 
     inputIIN() {
@@ -120,7 +136,7 @@ class PolicyRequestFormMST extends BaseForm {
         }).then(number => {
             paymentNumber = (number.text()).slice(0, -1).replace(/₸| /g, '');
         }).then(() => {
-            cy.task('payKaspi', { sumToPay, paymentNumber });
+            cy.task('payWithKaspi', { sumToPay, paymentNumber });
         });
     }
 }
