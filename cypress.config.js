@@ -4,7 +4,6 @@ const { defineConfig } = require('cypress');
 const kaspiAPI = require('./cypress/test/API/kaspiAPI.js');
 const notificationDB = require('./cypress/test/DB/notificationDB.js');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
-
 dotenv.config();
 
 module.exports = defineConfig({
@@ -31,8 +30,7 @@ module.exports = defineConfig({
                 },
                 async payWithKaspi(paymentInfo) {
                     await kaspiAPI.loginAPI();
-                    await kaspiAPI.payWithKaspi(paymentInfo);
-                    return null;
+                    return await kaspiAPI.payWithKaspi(paymentInfo);
                 },
                 log(message) {
                     console.log(message);
@@ -49,6 +47,6 @@ module.exports = defineConfig({
             });
             allureWriter(on, config);
             return config;
-        },
-    },
+        }     
+    }
 });

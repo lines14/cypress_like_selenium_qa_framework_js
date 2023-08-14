@@ -1,7 +1,9 @@
 const moment = require('moment');
+const jsonStringifySafe = require('json-stringify-safe');
 const BaseAPI = require('../../main/utils/API/baseAPI.js');
 const configManager = require('../../main/utils/data/configManager.js');
 const randomizer = require('../../main/utils/random/randomizer.js');
+const DataUtils = require('../../main/utils/data/dataUtils.js')
 
 class KaspiAPI extends BaseAPI {
     constructor(options = {}) {
@@ -21,10 +23,10 @@ class KaspiAPI extends BaseAPI {
         }
         
         this.accessToken = (await this.post(configManager.getAPIEndpoint().loginAPI, params)).data.data.access_token;
+        new KaspiAPI({ headers: { Authorization: `Bearer ${this.accessToken}` } });
     }
 
     async payWithKaspi(paymentInfo) {
-        new KaspiAPI({ headers: { Authorization: `Bearer ${this.accessToken}` } });
         const params = { 
             command: 'pay', 
             txn_id: randomizer.getRandomString(false, false, true, false, false, 18, 18),
@@ -33,7 +35,8 @@ class KaspiAPI extends BaseAPI {
             sum: paymentInfo.sumToPay,
         }
 
-        return await this.get(configManager.getAPIEndpoint().kaspiPay, params);
+        const XML = JSON.parse(jsonStringifySafe(await this.get(configManager.getAPIEndpoint().kaspiPay, params))).data
+        return await DataUtils.XMLToJSON(XML);
     }
 }
 

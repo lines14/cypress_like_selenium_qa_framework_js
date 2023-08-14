@@ -11,24 +11,30 @@ class PolicyRequestFormMST extends BaseForm {
         super('//h3[contains(text(), "Оформление полиса")]', 'policy request page');
         this.countriesDropdownButton = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]', 'countries dropdown button');
         this.countriesDropdownElements = new Button('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'countries dropdown element');
-        this.selectedCountriesTags = new Label('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span', 'selected countries tags');
-        this.selectedCountries = new Label('//span[contains(text(), "Страна:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'selected countries');
+        this.selectedCountries = new Label('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span', 'selected countries');
+        this.displayedCountries = new Label('//span[contains(text(), "Страна:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'displayed countries');
         this.dateStartButton = new Button(`//td[@title="${startDate}"]`, 'start date');
         this.dateFinishButton = new Button(`//td[@title="${finishDate}"]`, 'finish date');
         this.calendarTowardsButton = new Button('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar towards button');
         this.calendarBackwardsButton = new Button('//span[contains(text(), "Обратно")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]', 'calendar backwards button');
         this.calendarCells = new Label('//table[contains(@class, "mx-table-date")]//tbody//tr//td', 'calendar cells');
         this.calendarRightArrowButton = new Button('//button[contains(@class, "mx-btn-icon-right")]//i', 'right calendar arrow button');
-        this.selectedDatesInPicker = new Button('//input[@name="date"]', 'selected dates in picker');
-        this.selectedDates = new Label('//span[contains(text(), "Срок действия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'selected dates');
+        this.selectedDates = new Button('//input[@name="date"]', 'selected dates');
+        this.displayedDates = new Label('//span[contains(text(), "Срок действия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'displayed dates');
         this.IINBox = new Textbox('//input[@id="iinInput"]', 'iin');
-        this.clientName = new Label('//span[@class="subtitle-16"]', 'client name');
+        this.selectedClientName = new Label('//span[@class="subtitle-16"]', 'selected client name');
+        this.displayedClientName = new Label('//span[contains(text(), "Туристы:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'displayed client name');
         this.insuranceLimitDropdownButton = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'insurance limit dropdown');
         this.insuranceLimitDropdownElements = new Button('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'insurance limit dropdown elements');
         this.purposeOfTheTripDropdownButton = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]', 'purpose of the trip dropdown');
+        this.selectedPurposeOfTheTrip = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__tags"]//span[@class="multiselect__single"]', 'selected purpose of the trip');
+        this.displayedPurposeOfTheTrip = new Label('//span[contains(text(), "Цель путешествия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'displayed purpose of the trip');
         this.purposeOfTheTripDropdownElements = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'purpose of the trip dropdown elements');
         this.additionalCheckboxes = new Checkbox('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label', 'additional checkboxes');
         this.calculateButton = new Button('//button[contains(text(), "Рассчитать")]', 'calculate button');
+        this.displayedPolicyCost = new Label('//span[contains(text(), "Стоимость полиса")]//following-sibling::span', 'displayed policy cost');
+        this.displayedPolicyDiscount = new Label('//span[contains(text(), "Ваша скидка")]//following-sibling::span', 'displayed policy discount');
+        this.calculations = new Label('//h6[contains(text(), "Предварительный расчёт")]//following-sibling::div', 'calculations');
         this.nextButton = new Button('//button[contains(text(), "Далее")]', 'next button');
         this.secondNameBox = new Textbox('//label[contains(text(), "Фамилия на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'second name in latin');
         this.firstNameBox = new Textbox('//label[contains(text(), "Имя на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'first name in latin');
@@ -37,36 +43,40 @@ class PolicyRequestFormMST extends BaseForm {
         this.passportGivenDateBox = new Textbox('//input[@placeholder="дд.мм.гггг"]', 'passport given date');
         this.emailBox = new Textbox('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'email');
         this.phoneBox = new Textbox('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]', 'phone');
-        this.SMSCodeBox = new Textbox('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'sms-code box');
+        this.SMSCodeBox = new Textbox('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]', 'sms code box');
         this.acceptanceCheckbox = new Checkbox('//input[@type="checkbox" and @id="check1"]', 'acceptance checkbox');
-        this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sumToPay');
+        this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sum to pay');
         this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
-        this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'paymentNumber');
+        this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'payment number');
     }
 
     selectThreeRandomCountries() {
         this.countriesDropdownElements.clickRandomElementsFromDropdownByText(this.countriesDropdownButton, configManager.getTestData().elementsCount);
     }
 
-    isDisplayedCountriesEqualSelected() {
-        return this.selectedCountriesTags.getBothElementsTextLists(this.selectedCountries, 'innerText').then((value) => Cypress._.isEqual(value.firstTextList, value.secondTextList));
+    getSelectedCountries() {
+        return this.selectedCountries.getElementsTextList('innerText');
+    }
+
+    getDisplayedCountries() {
+        return this.displayedCountries.getElementsTextList('innerText');
     }
 
     inputRandomDates() {
         const datesInterval = randomizer.getRandomDatesIntervalFromTomorrow(configManager.getTestData().monthsCount);
         const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
-        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarTowardsButton, this.calendarRightArrowButton, datesInterval.startMonthDifference);
+        this.calendarTowardsButton.flipCalendarIfNotContainsDate(this.calendarRightArrowButton, datesInterval.startMonthDifference);
         newInstance.dateStartButton.clickElement();
-        this.calendarCells.flipCalendarIfNotContainsDate(this.calendarBackwardsButton, this.calendarRightArrowButton, datesInterval.finishMonthDifference);
+        this.calendarBackwardsButton.flipCalendarIfNotContainsDate(this.calendarRightArrowButton, datesInterval.finishMonthDifference);
         newInstance.dateFinishButton.clickElement();
     }
 
-    isDisplayedDatesEqualSelected() {
-        return this.selectedDatesInPicker.getBothElementsTextLists(this.selectedDates, 'value', 'innerText').then((value) => {
-            const regexPattern = /\d{2}\.\d{2}\.\d{4}/g;
-            const secondTextList = value.secondTextList.pop().match(regexPattern);
-            return Cypress._.isEqual(value.firstTextList, secondTextList);
-        });
+    getSelectedDates() {
+        return this.selectedDates.getElementsTextList('value');
+    }
+
+    getDisplayedDates() {
+        return this.displayedDates.getText().then((text) => text.match(new RegExp(configManager.getTestData().regexPattern, 'g')));
     }
 
     inputIIN() {
@@ -74,8 +84,20 @@ class PolicyRequestFormMST extends BaseForm {
         this.IINBox.clickElement();
         this.IINBox.clickElement();
         this.IINBox.inputData(configManager.getTestData().clientIIN);
-        this.clientName.waitForText(configManager.getTestData().clientName);
+        this.selectedClientName.waitForText(configManager.getTestData().clientName);
         cy.scrollTo('center');
+    }
+
+    getSelectedClientName() {
+        return this.selectedClientName.getText();
+    }
+
+    getDisplayedClientName() {
+        return this.displayedClientName.getText().then((text) => {
+            const nameList = text.split(' ');
+            nameList.push(`${nameList.pop().slice(0, 1)}.`);
+            return nameList.join(' ');
+        });
     }
 
     selectRandomInsuranceLimit() {
@@ -86,17 +108,62 @@ class PolicyRequestFormMST extends BaseForm {
         this.purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(this.purposeOfTheTripDropdownButton);
     }
 
-    selectRandomAdditionalCheckboxesAndCalculate() {
+    getSelectedPurposeOfTheTrip() {
+        return this.selectedPurposeOfTheTrip.getText();
+    }
+
+    getDisplayedPurposeOfTheTrip() {
+        return this.displayedPurposeOfTheTrip.getText();
+    }
+
+    clickRandomAdditionalCheckboxesAndCalculate() {
         const checkboxesToClickCount = randomizer.getRandomInteger(configManager.getTestData().elementsCount);
-        if (checkboxesToClickCount) {
-            this.additionalCheckboxes.clickRandomCheckboxesByText(checkboxesToClickCount);
-        } else {
-            this.calculateButton.clickElement();
-        }
+        checkboxesToClickCount 
+        ? this.additionalCheckboxes.clickRandomCheckboxesByText(checkboxesToClickCount) 
+        : this.calculateButton.clickElement();
+        this.calculations.waitElementHasNotProperty('display', 'none');
+    }
+
+    getPolicyCostDiscountDelta() {
+        let policyCost;
+        return this.displayedPolicyCost.getText()
+        .then((cost) => policyCost = cost)
+        .then(() => this.displayedPolicyDiscount.getText())
+        .then((discount) => {
+            return Number(policyCost.slice(0, -1).replace(/₸| /g, '')) + Number(discount.slice(0, -1).replace(/₸| /g, ''));
+        });
     }
 
     clickNextButton() {
         this.nextButton.clickElement();
+    }
+
+    inputEmail() {
+        this.emailBox.inputData(configManager.getTestData().clientEmail);
+    }
+
+    inputPhone() {
+        this.phoneBox.inputData(configManager.getTestData().clientPhone);
+    }
+
+    enterSMSCode(code) {
+        this.SMSCodeBox.enterData(code);
+    }
+
+    clickAcceptanceCheckbox() {
+        this.acceptanceCheckbox.clickElement();
+    }
+
+    getSumToPay() {
+        return this.sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
+    }
+
+    clickKaspiButton() {
+        this.kaspiPayButton.clickElement();
+    }
+
+    getPaymentNumber() {
+        return this.paymentNumber.getText();
     }
 
     // inputPassportGivenDate() {
@@ -109,36 +176,6 @@ class PolicyRequestFormMST extends BaseForm {
     //     this.firstNameBox.inputData(configManager.getTestData().clientFirstNameLatin);
     //     this.passportNumberBox.inputData(configManager.getTestData().clientPassportNumber);
     // }
-
-    inputEmail() {
-        this.emailBox.inputData(configManager.getTestData().clientEmail);
-    }
-
-    inputPhone() {
-        this.phoneBox.inputData(configManager.getTestData().clientPhone);
-    }
-
-    enterSMSCode() {
-        cy.task('getLastCodeFromDB').then((code) => this.SMSCodeBox.enterData(code));
-    }
-
-    payWithKaspi() {
-        this.acceptanceCheckbox.clickElement();
-        
-        let sumToPay;
-        let paymentNumber;
-        this.sumToPay.getElement().then(sum => {
-            sumToPay = sum.text();
-        }).then(() => {
-            this.kaspiPayButton.clickElement();
-        }).then(() => {
-            this.paymentNumber.getElement();
-        }).then(number => {
-            paymentNumber = (number.text()).slice(0, -1).replace(/₸| /g, '');
-        }).then(() => {
-            cy.task('payWithKaspi', { sumToPay, paymentNumber });
-        });
-    }
 }
 
 module.exports = new PolicyRequestFormMST();

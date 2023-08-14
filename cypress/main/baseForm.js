@@ -13,13 +13,17 @@ class BaseForm {
 
     pageIsDisplayed() {
         logger.log(`[info] ▶ check ${this.pageName} is open:`);
-        logger.log(this.getUniqueElement().isDisplayed() ? `[info] ▶ ${this.pageName} is open` : `[info] ▶ ${this.pageName} is not open`);
+        logger.log(this.getUniqueElement().isDisplayed() 
+        ? `[info] ▶ ${this.pageName} is open` 
+        : `[info] ▶ ${this.pageName} is not open`);
         return this.getUniqueElement().isDisplayed();
     }
 
     pageIsEnabled() {
         logger.log(`[info] ▶ check ${this.pageName} is enable:`);
-        logger.log(this.getUniqueElement().isEnabled() ? `[info] ▶ ${this.pageName} is enable` : `[info] ▶ ${this.pageName} is not enable`);
+        logger.log(this.getUniqueElement().isEnabled() 
+        ? `[info] ▶ ${this.pageName} is enable` 
+        : `[info] ▶ ${this.pageName} is not enable`);
         return this.getUniqueElement().isEnabled();
     }
 }

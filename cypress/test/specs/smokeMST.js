@@ -4,41 +4,52 @@ const mainPageMST = require('../pageObjects/mainPageMST.js');
 const tourismPageMST = require('../pageObjects/tourismPageMST.js');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST.js');
 
-describe('MST smoke test', () => {    
-    it('Kaspi client path', { scrollBehavior: false }, () => {
+describe('MST smoke test:', () => {    
+    it('Kaspi client path:', { scrollBehavior: false }, () => {
+        let sumToPay;
         cy.visit(configManager.getConfigData().baseURL);
         mainPageMST.pageIsDisplayed().should('be.true');
         mainPageMST.clickGetInsuredButton();
         mainPageMST.clickTourismLink();
-
         tourismPageMST.pageIsDisplayed().should('be.true');
         tourismPageMST.clickPurchaseButton();
-
         policyRequestFormMST.pageIsDisplayed().should('be.true');
         policyRequestFormMST.selectThreeRandomCountries();
-        policyRequestFormMST.isDisplayedCountriesEqualSelected().should('be.true');
+        policyRequestFormMST.getDisplayedCountries()
+        .then((displayedList) => policyRequestFormMST.getSelectedCountries()
+        .should('be.deep.equal', displayedList));
         policyRequestFormMST.inputRandomDates();
-        policyRequestFormMST.isDisplayedDatesEqualSelected().should('be.true');
+        policyRequestFormMST.getDisplayedDates()
+        .then((displayedList) => policyRequestFormMST.getSelectedDates()
+        .should('be.deep.equal', displayedList));
         policyRequestFormMST.inputIIN();
+        policyRequestFormMST.getDisplayedClientName()
+        .then((displayedName) => policyRequestFormMST.getSelectedClientName()
+        .should('be.equal', displayedName));
         policyRequestFormMST.selectRandomInsuranceLimit();
         policyRequestFormMST.selectRandomPurposeOfTheTrip();
-        policyRequestFormMST.selectRandomAdditionalCheckboxesAndCalculate();
+        policyRequestFormMST.getDisplayedPurposeOfTheTrip()
+        .then((displayedPurpose) => policyRequestFormMST.getSelectedPurposeOfTheTrip()
+        .should('be.equal', displayedPurpose));
+        policyRequestFormMST.clickRandomAdditionalCheckboxesAndCalculate();
         policyRequestFormMST.clickNextButton();
-
-        // policyRequestFormMST.inputPassportGivenDate();
-        // policyRequestFormMST.inputPassportData();
+        policyRequestFormMST.getSumToPay()
+        .then((sum) => sumToPay = sum)
+        .then(() => policyRequestFormMST.getPolicyCostDiscountDelta()
+        .should('be.equal', Number(sumToPay)));
         policyRequestFormMST.clickNextButton();
-
         policyRequestFormMST.inputEmail();
         policyRequestFormMST.clickNextButton();
-
         policyRequestFormMST.inputPhone();
         policyRequestFormMST.clickNextButton();
-
-        policyRequestFormMST.enterSMSCode();
-
-        policyRequestFormMST.payWithKaspi();
-
+        cy.task('getLastCodeFromDB')
+        .then((code) => policyRequestFormMST.enterSMSCode(code));
+        policyRequestFormMST.clickAcceptanceCheckbox();
+        policyRequestFormMST.clickKaspiButton();
+        policyRequestFormMST.getPaymentNumber()
+        .then((paymentNumber) => cy.task('payWithKaspi', { sumToPay, paymentNumber }))
+        .then((response) => cy.wrap(response.comment.pop())
+        .should('have.text', 'оплачен'));
         logger.logToFile();
     });
 });
