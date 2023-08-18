@@ -1,22 +1,40 @@
-const fs = require('fs');
-const dotenv = require('dotenv');
+const path = require('path');
 const { defineConfig } = require('cypress');
-const kaspiAPI = require('./cypress/test/API/kaspiAPI.js');
-const notificationDB = require('./cypress/test/DB/notificationDB.js');
+const allureCommandline = require('allure-commandline');
+const logger = require('./cypress/main/utils/log/logger');
+const kaspiAPI = require('./cypress/test/API/kaspiAPI');
+const configManager = require('./cypress/main/utils/data/configManager');
+const notificationDB = require('./cypress/test/DB/notificationDB');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
-dotenv.config();
+require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
+
+const generateAllureReport = () => {
+    const reportError = new Error('Could not generate Allure report');
+    const generation = allureCommandline(['generate', 'allure-results', '--clean']);
+    return new Promise((resolve, reject) => {
+        const generationTimeout = setTimeout(() => reject(reportError), 5000);
+        generation.on('exit', function(exitCode) {
+            clearTimeout(generationTimeout);
+            if (exitCode !== 0) return reject(reportError);
+            resolve();
+        });
+    });
+}
 
 module.exports = defineConfig({
     morgan: false, 
     screenshotOnRunFailure: false,
     video: false,
     env: {
-        // defaultPassword: process.env.SEED_DEFAULT_USER_PASSWORD,
+        allure: true,
+        allureLogCypress: true,
+        allureAvoidLoggingCommands: configManager.getConfigData().allureAvoidLoggingCommands
     },
     e2e: {
-        // baseUrl: "http://localhost:3001",
-        specPattern: "./cypress/test/specs/*.js",
+        baseUrl: '' || process.env.BASE_URL,
+        specPattern: "./cypress/test/specs/*Pay*.js",
         supportFile: "./cypress/support/e2e.js",
+        testIsolation: false,
         viewportHeight: 1080,
         viewportWidth: 1920,
         defaultCommandTimeout: 45000,
@@ -24,25 +42,26 @@ module.exports = defineConfig({
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
+            on('after:run', async (results) => {
+                logger.logToFile();
+                generateAllureReport();
+            });
             on('task', {
+                log(step) {
+                    return logger.log(step);
+                },
                 async getLastCodeFromDB() {
-                    return await notificationDB.getLastCode();
+                    return [
+                        await notificationDB.createConnection(), 
+                        await notificationDB.getLastCode(), 
+                        await notificationDB.closeConnection()
+                    ];
                 },
                 async payWithKaspi(paymentInfo) {
-                    await kaspiAPI.loginAPI();
-                    return await kaspiAPI.payWithKaspi(paymentInfo);
-                },
-                log(message) {
-                    console.log(message);
-                    return null;
-                },
-                logToFile(array) {
-                    const stream = fs.createWriteStream("cypress/test/log.txt");
-                    stream.once('open', () => {
-                        array.forEach((element) => element.forEach((elem) => stream.write(elem)));
-                        stream.end();
-                    });
-                    return null;
+                    return [
+                        await kaspiAPI.auth(), 
+                        await kaspiAPI.pay(paymentInfo)
+                    ];
                 }
             });
             allureWriter(on, config);

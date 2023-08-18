@@ -1,10 +1,10 @@
-const BaseForm = require('../../main/baseForm.js');
-const Button = require('../../main/elements/baseElementChildren/button.js');
-const Label = require('../../main/elements/baseElementChildren/label.js');
-const Textbox = require('../../main/elements/baseElementChildren/textbox.js');
-const Checkbox = require('../../main/elements/baseElementChildren/checkbox.js');
-const randomizer = require('../../main/utils/random/randomizer.js');
-const configManager = require('../../main/utils/data/configManager.js');
+const BaseForm = require('../../main/baseForm');
+const Button = require('../../main/elements/baseElementChildren/button');
+const Label = require('../../main/elements/baseElementChildren/label');
+const Textbox = require('../../main/elements/baseElementChildren/textbox');
+const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
+const randomizer = require('../../main/utils/random/randomizer');
+const configManager = require('../../main/utils/data/configManager');
 
 class PolicyRequestFormMST extends BaseForm {
     constructor(startDate, finishDate) {
@@ -47,6 +47,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.acceptanceCheckbox = new Checkbox('//input[@type="checkbox" and @id="check1"]', 'acceptance checkbox');
         this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sum to pay');
         this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
+        this.epayButton = new Button('//button[contains(@text, "Картой")]', 'epay button');
         this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'payment number');
     }
 
@@ -55,11 +56,11 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     getSelectedCountries() {
-        return this.selectedCountries.getElementsTextList('innerText');
+        return this.selectedCountries.getElementsListText('innerText');
     }
 
     getDisplayedCountries() {
-        return this.displayedCountries.getElementsTextList('innerText');
+        return this.displayedCountries.getElementsListText('innerText');
     }
 
     inputRandomDates() {
@@ -72,7 +73,7 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     getSelectedDates() {
-        return this.selectedDates.getElementsTextList('value');
+        return this.selectedDates.getElementsListText('value');
     }
 
     getDisplayedDates() {
@@ -158,8 +159,12 @@ class PolicyRequestFormMST extends BaseForm {
         return this.sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
     }
 
-    clickKaspiButton() {
+    clickKaspiPayButton() {
         this.kaspiPayButton.clickElement();
+    }
+
+    clickEpayButton() {
+        this.epayButton.clickElement();
     }
 
     getPaymentNumber() {
