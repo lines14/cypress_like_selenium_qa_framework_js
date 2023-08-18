@@ -1,5 +1,10 @@
 require('@testing-library/cypress/add-commands');
 
+Cypress.Commands.add('open', (url, options) => {
+    cy.logger(`[info] ▶ open base URL: ${Cypress.config('baseUrl')}`);
+    cy.visit(url, options);
+});
+
 Cypress.Commands.add('isDisplayed', { prevSubject: true }, (subject) => {
     const isDisplayed = Cypress.dom.isVisible(subject);
     return isDisplayed;
@@ -13,30 +18,22 @@ Cypress.Commands.add('isEnabled', { prevSubject: true }, (subject) => {
 Cypress.Commands.add('isExisting', { prevSubject: true }, (subject) => {
     const isExisting = subject.length > 0;
     return isExisting;
-});  
+});
+
+Cypress.Commands.add('logger', (step) => {
+    cy.task('log', step).then((timeStamp) => cy.log(`${timeStamp} ${step}`));
+});
+
+Cypress.Commands.add('setSharedData', (key, value) => {
+    cy.window().then((win) => {
+        win.localStorage.setItem(key, JSON.stringify(value));
+    });
+});
   
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('getSharedData', (key) => {
+    return cy.window().then((win) => {
+        const value = win.localStorage.getItem(key);
+        return value ? JSON.parse(value) : null;
+    });
+});
+  

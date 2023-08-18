@@ -47,7 +47,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.acceptanceCheckbox = new Checkbox('//input[@type="checkbox" and @id="check1"]', 'acceptance checkbox');
         this.sumToPay = new Label('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]', 'sum to pay');
         this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
-        this.epayButton = new Button('//button[contains(@text, "Картой")]', 'epay button');
+        this.epayButton = new Button('//button[contains(text(), "Картой")]', 'epay button');
         this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'payment number');
     }
 

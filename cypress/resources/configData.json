@@ -1,7 +1,18 @@
 {
-  "baseURL": "http://localhost:3001/",
-  "baseURLL": "https://amanat24layout-dev.amanat.systems/",
-  "baseURLLL": "https://amanat24.kz/",
-  "waitTime": 20000,
-  "isMaximize": true
+    "allureAvoidLoggingCommands": [
+        "wrap",
+        "logger",
+        "task",
+        "open", 
+        "type", 
+        "visit", 
+        "find", 
+        "xpath", 
+        "first", 
+        "isDisplayed", 
+        "click", 
+        "request", 
+        "contains",
+        "scrollTo"
+    ]
 }

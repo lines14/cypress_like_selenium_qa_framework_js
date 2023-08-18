@@ -10,7 +10,7 @@ class DatabaseUtils {
     }
 
     async createConnection() {
-        const log = `[info] ▶ connect to ${this.database} database`;
+        const logs = [`[info] ▶ connect to ${this.database} database`];
         this.connection = await mysql.createConnection({ 
             host: this.host, 
             user: this.user,
@@ -18,24 +18,25 @@ class DatabaseUtils {
             database: this.database, 
             port: this.port, 
         });
-        return { log }
+        return { logs }
     }
 
     async closeConnection() {
-        const log = `[info] ▶ close connection to database`;
+        const logs = [`[info] ▶ close connection to database`];
         await this.connection.end();
-        return { log }
+        return { logs }
     }
 
-    async sqlQuery(query, values, log) {
+    async sqlQuery(query, target, values, logs) {
         const [rows] = await this.connection.query(query, [values]);
-        return { rows, log }
+        logs.push(`[info]   ${target} contains: "${rows[0][target]}"`)
+        return { rows, logs }
     }
 
     async sqlSelect(tableName, target='*', conditions='', values=[]) {
-        const log = `[info] ▶ select data from ${tableName} table`;
+        const logs = [`[info] ▶ select ${target} from ${tableName} table`];
         const query =`SELECT ${target} FROM ${tableName} ${conditions};`;
-        return await this.sqlQuery(query, values, log);
+        return await this.sqlQuery(query, target, values, logs);
     }
 }
 

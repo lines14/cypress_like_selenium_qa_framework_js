@@ -5,7 +5,6 @@ const nodeEvents = require('../../support/nodeEvents');
 
 const userPathMST = (payTest) => {
     describe('MST smoke test:', () => {    
-        let sumToPay; 
         it('MST client path:', { scrollBehavior: false }, () => {
             cy.open('/');
             mainPageMST.pageIsDisplayed().should('be.true');
@@ -36,10 +35,6 @@ const userPathMST = (payTest) => {
             policyRequestFormMST.clickRandomAdditionalCheckboxesAndCalculate();
             policyRequestFormMST.clickNextButton();
 
-            policyRequestFormMST.getSumToPay()
-            .then((sum) => sumToPay = sum)
-            .then(() => policyRequestFormMST.getPolicyCostDiscountDelta()
-            .should('be.equal', Number(sumToPay)));
             policyRequestFormMST.clickNextButton();
 
             policyRequestFormMST.inputEmail();
@@ -50,8 +45,24 @@ const userPathMST = (payTest) => {
 
             nodeEvents.getLastCodeFromDB()
             .then((code) => policyRequestFormMST.enterSMSCode(code));
-
+ 
             policyRequestFormMST.clickAcceptanceCheckbox();
+            policyRequestFormMST.getSumToPay().then((sum) => {
+                cy.setSharedData('sumToPay', sum);
+                policyRequestFormMST.getPolicyCostDiscountDelta()
+                .should('be.equal', Number(sum));
+            });
+            // let sumToPay;
+            // policyRequestFormMST.getSumToPay()
+            // .then((sum) => sumToPay = sum)
+            // .then(() => policyRequestFormMST.getPolicyCostDiscountDelta()
+            // .should('be.equal', Number(sumToPay)));
+
+            // policyRequestFormMST.getSumToPay()
+            // .then((sumToPay) => cy.setSharedData('sumToPay', sumToPay));
+            // cy.getSharedData('sumToPay')
+            // .then((sumToPay) => policyRequestFormMST.getPolicyCostDiscountDelta()
+            // .should('be.equal', Number(sumToPay)));
         });
 
         payTest();
