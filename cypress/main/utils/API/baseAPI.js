@@ -16,7 +16,6 @@ class BaseAPI {
             logs.push(`[info]   status code: ${response.status}`);
             return { response, logs };
         } catch (error) {
-            console.log(error);
             logs.push(`[info]   status code: ${error.response.status}`);
             return { response: error.response, logs };
         }
@@ -30,7 +29,6 @@ class BaseAPI {
             logs.push(`[info]   status code: ${response.status}`);
             return { response, logs };
         } catch (error) {
-            console.log(error);
             logs.push(`[info]   status code: ${error.response.status}`);
             return { response: error.response, logs };
         }

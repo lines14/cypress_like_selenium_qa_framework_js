@@ -10,6 +10,6 @@ userPathMST(function payTest() {
         policyRequestFormMST.getPaymentNumber()
         .then((paymentNumber) => nodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
         .then((response) => cy.wrap(response)
-        .should('have.text', 'оплачен'));
+        .should('contain', 'оплачен'));
     });
 });

@@ -4,7 +4,8 @@ class nodeEvents {
     payWithKaspi(paymentInfo) {
         return cy.task('payWithKaspi', paymentInfo).then((response) => {
             response.forEach((method) => method.logs.forEach((log) => cy.logger(log)));
-            return (DataUtils.XMLToJSON(response.pop().response.data)).comment.pop();
+            return DataUtils.XMLToJSON(response.pop().response.data)
+            .then((response) => response.comment.pop());
         });
     }
 

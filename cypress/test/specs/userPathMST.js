@@ -52,17 +52,6 @@ const userPathMST = (payTest) => {
                 policyRequestFormMST.getPolicyCostDiscountDelta()
                 .should('be.equal', Number(sum));
             });
-            // let sumToPay;
-            // policyRequestFormMST.getSumToPay()
-            // .then((sum) => sumToPay = sum)
-            // .then(() => policyRequestFormMST.getPolicyCostDiscountDelta()
-            // .should('be.equal', Number(sumToPay)));
-
-            // policyRequestFormMST.getSumToPay()
-            // .then((sumToPay) => cy.setSharedData('sumToPay', sumToPay));
-            // cy.getSharedData('sumToPay')
-            // .then((sumToPay) => policyRequestFormMST.getPolicyCostDiscountDelta()
-            // .should('be.equal', Number(sumToPay)));
         });
 
         payTest();

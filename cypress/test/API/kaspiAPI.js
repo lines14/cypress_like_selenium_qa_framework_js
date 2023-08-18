@@ -1,32 +1,34 @@
+const path = require('path');
 const moment = require('moment');
 const jsonStringifySafe = require('json-stringify-safe');
-const BaseAPI = require('../../main/utils/API/baseAPI.js');
-const configManager = require('../../main/utils/data/configManager.js');
-const randomizer = require('../../main/utils/random/randomizer.js');
-const DataUtils = require('../../main/utils/data/dataUtils.js')
+const BaseAPI = require('../../main/utils/API/baseAPI');
+const configManager = require('../../main/utils/data/configManager');
+const randomizer = require('../../main/utils/random/randomizer');
+require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
 
 class KaspiAPI extends BaseAPI {
     constructor(options = {}) {
         super(
-            options.baseURL || configManager.getAPIConfigData().APIBaseURL,
-            options.log || '[info] ▶ set base api url',
-            options.timeout || configManager.getConfigData().waitTime, 
+            options.baseURL || '' || process.env.GATEWAY_URL,
+            options.log || '[info] ▶ set base API URL',
+            options.timeout || configManager.getAPIConfigData().timeout, 
             options.headers || {
                 'Content-Type': 'application/x-www-form-urlencoded',
             });
     }
 
-    async loginAPI() {
+    async auth() {
         const params = { 
-            login: 'online', 
-            password: 'online21@CK!',
+            login: '' || process.env.AUTH_LOGIN, 
+            password: '' || process.env.AUTH_PASSWORD,
         }
         
-        this.accessToken = (await this.post(configManager.getAPIEndpoint().loginAPI, params)).data.data.access_token;
-        new KaspiAPI({ headers: { Authorization: `Bearer ${this.accessToken}` } });
+        const response = await this.post(configManager.getAPIEndpoint().loginAPI, params);
+        new KaspiAPI({ headers: { Authorization: `Bearer ${response.response.data.data.access_token}` } });
+        return JSON.parse(jsonStringifySafe(response));
     }
 
-    async payWithKaspi(paymentInfo) {
+    async pay(paymentInfo) {
         const params = { 
             command: 'pay', 
             txn_id: randomizer.getRandomString(false, false, true, false, false, 18, 18),
@@ -35,8 +37,7 @@ class KaspiAPI extends BaseAPI {
             sum: paymentInfo.sumToPay,
         }
 
-        const XML = JSON.parse(jsonStringifySafe(await this.get(configManager.getAPIEndpoint().kaspiPay, params))).data
-        return await DataUtils.XMLToJSON(XML);
+        return JSON.parse(jsonStringifySafe(await this.get(configManager.getAPIEndpoint().kaspiPay, params)));
     }
 }
 

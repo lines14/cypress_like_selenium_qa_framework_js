@@ -1,5 +1,8 @@
 {
     "allureAvoidLoggingCommands": [
+        "window",
+        "setSharedData",
+        "getSharedData",
         "wrap",
         "logger",
         "task",
