@@ -10,6 +10,7 @@ const configManager = require('./cypress/main/utils/data/configManager');
 require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
 
 const generateAllureReport = () => {
+    logger.log('[info] ▶ generate allure report');
     const reportError = new Error('Could not generate Allure report');
     const generation = allureCommandline(['generate', 'allure-results', '--clean']);
     return new Promise((resolve, reject) => {
@@ -45,8 +46,8 @@ module.exports = defineConfig({
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
             on('after:run', async (results) => {
-                logger.logToFile();
                 generateAllureReport();
+                logger.logToFile();
             });
             on('task', {
                 log(step) {
