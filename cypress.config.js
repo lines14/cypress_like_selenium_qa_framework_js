@@ -46,7 +46,7 @@ module.exports = defineConfig({
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
-            on('after:run', async (results) => {
+            on('after:run', (results) => {
                 generateAllureReport();
                 logger.logToFile();
             });
