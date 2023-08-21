@@ -1,3 +1,4 @@
+const path = require('path');
 const jsonStringifySafe = require('json-stringify-safe');
 const DatabaseUtils = require('../../main/utils/DB/databaseUtils');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
