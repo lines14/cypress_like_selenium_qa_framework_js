@@ -51,7 +51,7 @@ test:
     paths:
       - node_modules/
   before_script:
-    - apk update && apk add openjdk11
+    - apk update && apk add xvfb openjdk11
 
   script:
     - npm install
