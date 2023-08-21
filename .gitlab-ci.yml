@@ -5,7 +5,7 @@ test:
   image: cypress/browsers:latest
   stage: test
   before_script:
-    - apt-get update && apt-get -y install default-jre
+    - apt-get -y install default-jre
   script:
     - npm install
     - npm test
