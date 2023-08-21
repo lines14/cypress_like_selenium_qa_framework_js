@@ -5,7 +5,8 @@ test:
   image: cypress/browsers:latest
   stage: test
   before_script:
-    - apt-get -y install default-jre
+    - add-apt-repository ppa:webupd8team/java
+    - apt-get -y install oracle-java8-installer
   script:
     - npm install
     - npm test
