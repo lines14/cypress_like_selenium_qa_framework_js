@@ -1,21 +1,23 @@
-# stages:
-#   - test
+stages:
+  - test
 
-# test:
-#   image: cypress/browsers:latest
-#   stage: test
-#   script:
-#     - npm install
-#     - npm test
-#   when: always
-#   artifacts:
-#     when: always
-#     paths:
-#       - allure-results
-#       - allure-report
-#       - cypress/screenshots
-#       - cypress/videos
-#     expire_in: 1 day
+test:
+  image: cypress/browsers:latest
+  stage: test
+  before_script:
+    - apt-get update && apt-get -y install default-jre
+  script:
+    - npm install
+    - npm test
+  when: always
+  artifacts:
+    when: always
+    paths:
+      - allure-results
+      - allure-report
+      - cypress/screenshots
+      - cypress/videos
+    expire_in: 1 day
 
 # stages:
 #   - test
@@ -40,25 +42,25 @@
 #       - cypress/screenshots
 #       - cypress/videos
 
-stages:
-  - test
+# stages:
+#   - test
 
-test:
-  image: zenika/alpine-chrome:with-node
-  stage: test
+# test:
+#   image: zenika/alpine-chrome:with-node
+#   stage: test
 
-  cache:
-    paths:
-      - node_modules/
-  before_script:
-    - apk update && apk add xvfb openjdk11
+#   cache:
+#     paths:
+#       - node_modules/
+#   before_script:
+#     - apk update && apk add xvfb openjdk11
 
-  script:
-    - npm install
-    - npm test
-  artifacts:
-    paths:
-      - allure-results
-      - allure-report
-      - cypress/screenshots
-      - cypress/videos
+#   script:
+#     - npm install
+#     - npm test
+#   artifacts:
+#     paths:
+#       - allure-results
+#       - allure-report
+#       - cypress/screenshots
+#       - cypress/videos
