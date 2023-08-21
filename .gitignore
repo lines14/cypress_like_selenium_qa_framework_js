@@ -6,5 +6,4 @@ cypress/downloads/
 cypress/fixtures/
 allure-results/
 allure-report/
-.env.test
 package-lock.json
