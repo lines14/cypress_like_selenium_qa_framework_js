@@ -9,7 +9,7 @@ const localStorage = require("cypress-localstorage-commands/plugin");
 const configManager = require('./cypress/main/utils/data/configManager');
 require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
 
-const generateAllureReport = () => {
+const generateAllureReport = async () => {
     logger.log('[info] ▶ generate allure report:');
     const reportError = new Error('[erro]   could not generate allure report!');
     const generation = allureCommandline(['generate', 'allure-results', '--clean']);
@@ -18,7 +18,6 @@ const generateAllureReport = () => {
         generation.on('exit', function(exitCode) {
             clearTimeout(generationTimeout);
             if (exitCode !== 0) return reject(reportError);
-            logger.log('[info]   allure report successfully generated')
             resolve();
         });
     });
@@ -46,8 +45,8 @@ module.exports = defineConfig({
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
-            on('after:run', (results) => {
-                generateAllureReport();
+            on('after:run', async (results) => {
+                await generateAllureReport();
                 logger.logToFile();
             });
             on('task', {
