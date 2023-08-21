@@ -20,7 +20,7 @@
 stages:
   - test
 
-.test:
+test:
   image: node:16-alpine
   stage: test
 
