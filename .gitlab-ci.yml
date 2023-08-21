@@ -44,7 +44,7 @@ stages:
   - test
 
 test:
-  image: zenika/alpine-chrome
+  image: zenika/alpine-chrome:latest
   stage: test
 
   cache:
