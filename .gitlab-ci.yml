@@ -17,18 +17,41 @@
 #       - cypress/videos
 #     expire_in: 1 day
 
+# stages:
+#   - test
+
+# test:
+#   image: node:16-alpine
+#   stage: test
+
+#   cache:
+#     paths:
+#       - node_modules/
+#   before_script:
+#     - apk update && apk add xvfb openjdk11 chromium
+
+#   script:
+#     - npm install
+#     - npm test
+#   artifacts:
+#     paths:
+#       - allure-results
+#       - allure-report
+#       - cypress/screenshots
+#       - cypress/videos
+
 stages:
   - test
 
 test:
-  image: node:16-alpine
+  image: zenika/alpine-chrome
   stage: test
 
   cache:
     paths:
       - node_modules/
   before_script:
-    - apk update && apk add xvfb openjdk11 chromium
+    - apk update && apk add nodejs npm openjdk11
 
   script:
     - npm install
