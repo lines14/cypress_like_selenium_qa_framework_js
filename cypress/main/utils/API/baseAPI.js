@@ -1,3 +1,4 @@
+const qs = require('qs');
 const axios = require('axios');
 
 class BaseAPI {
@@ -25,7 +26,7 @@ class BaseAPI {
         const logs = [`[info] ▶ post ${JSON.stringify(params)} to ${endpoint}:`];
         logs.unshift(this.logBaseURL);
         try {
-            const response = await axios.post(`/${endpoint}`, params);
+            const response = await axios.post(`/${endpoint}`, qs.stringify(params));
             logs.push(`[info]   status code: ${response.status}`);
             return { response, logs };
         } catch (error) {
