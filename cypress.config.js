@@ -1,11 +1,12 @@
 const path = require('path');
 const { defineConfig } = require('cypress');
 const allureCommandline = require('allure-commandline');
-const logger = require('./cypress/main/utils/log/logger');
 const kaspiAPI = require('./cypress/test/API/kaspiAPI');
-const configManager = require('./cypress/main/utils/data/configManager');
+const logger = require('./cypress/main/utils/log/logger');
 const notificationDB = require('./cypress/test/DB/notificationDB');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
+const localStorage = require("cypress-localstorage-commands/plugin");
+const configManager = require('./cypress/main/utils/data/configManager');
 require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
 
 const generateAllureReport = () => {
@@ -28,16 +29,17 @@ module.exports = defineConfig({
     env: {
         allure: true,
         allureLogCypress: true,
-        allureAvoidLoggingCommands: configManager.getConfigData().allureAvoidLoggingCommands
+        allureAvoidLoggingCommands: configManager.getConfigData().allureAvoidLoggingCommands,
+        logLevel: "INFO"
     },
     e2e: {
         baseUrl: '' || process.env.BASE_URL,
-        specPattern: "./cypress/test/specs/kaspiPay*.js",
+        specPattern: "./cypress/test/specs/ePay*.js",
         supportFile: "./cypress/support/e2e.js",
         testIsolation: false,
         viewportHeight: 1080,
         viewportWidth: 1920,
-        defaultCommandTimeout: 45000,
+        defaultCommandTimeout: 60000,
         requestTimeout: 30000,
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
@@ -65,6 +67,7 @@ module.exports = defineConfig({
                 }
             });
             allureWriter(on, config);
+            localStorage(on, config);
             return config;
         }     
     }

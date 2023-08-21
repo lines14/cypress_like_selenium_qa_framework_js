@@ -1,7 +1,8 @@
+const nodeEvents = require('../../support/nodeEvents');
 const mainPageMST = require('../pageObjects/mainPageMST');
 const tourismPageMST = require('../pageObjects/tourismPageMST');
+const configManager = require('../../main/utils/data/configManager');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
-const nodeEvents = require('../../support/nodeEvents');
 
 const userPathMST = (payTest) => {
     describe('MST smoke test:', () => {    
@@ -17,22 +18,25 @@ const userPathMST = (payTest) => {
             policyRequestFormMST.pageIsDisplayed().should('be.true');
             policyRequestFormMST.selectThreeRandomCountries();
             policyRequestFormMST.getDisplayedCountries()
-            .then((displayedList) => policyRequestFormMST.getSelectedCountries()
-            .should('be.deep.equal', displayedList));
+            .then((displayedCountries) => policyRequestFormMST.getSelectedCountries()
+            .should('be.deep.equal', displayedCountries));
             policyRequestFormMST.inputRandomDates();
             policyRequestFormMST.getDisplayedDates()
-            .then((displayedList) => policyRequestFormMST.getSelectedDates()
-            .should('be.deep.equal', displayedList));
+            .then((displayedDates) => policyRequestFormMST.getSelectedDates()
+            .should('be.deep.equal', displayedDates));
             policyRequestFormMST.inputIIN();
-            policyRequestFormMST.getDisplayedClientName()
-            .then((displayedName) => policyRequestFormMST.getSelectedClientName()
-            .should('be.equal', displayedName));
+            policyRequestFormMST.getSelectedClientNameElement()
+            .should('have.text', configManager.getTestData().clientName);
+            policyRequestFormMST.getSlicedDisplayedClientName()
+            .then((slicedName) => policyRequestFormMST.getSelectedClientNameElement()
+            .should('contain', slicedName));
             policyRequestFormMST.selectRandomInsuranceLimit();
             policyRequestFormMST.selectRandomPurposeOfTheTrip();
             policyRequestFormMST.getDisplayedPurposeOfTheTrip()
             .then((displayedPurpose) => policyRequestFormMST.getSelectedPurposeOfTheTrip()
             .should('be.equal', displayedPurpose));
-            policyRequestFormMST.clickRandomAdditionalCheckboxesAndCalculate();
+            policyRequestFormMST.clickRandomAdditionalCheckboxes();
+            policyRequestFormMST.clickCalculateButton();
             policyRequestFormMST.clickNextButton();
 
             policyRequestFormMST.clickNextButton();
@@ -48,7 +52,7 @@ const userPathMST = (payTest) => {
  
             policyRequestFormMST.clickAcceptanceCheckbox();
             policyRequestFormMST.getSumToPay().then((sum) => {
-                cy.setSharedData('sumToPay', sum);
+                cy.setLocalStorage('sumToPay', sum);
                 policyRequestFormMST.getPolicyCostDiscountDelta()
                 .should('be.equal', Number(sum));
             });

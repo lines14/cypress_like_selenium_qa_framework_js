@@ -5,7 +5,7 @@ const { userPathMST } = require('./userPathMST');
 userPathMST(function payTest() {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
         let sumToPay;
-        cy.getSharedData('sumToPay').then((sum) => sumToPay = sum);
+        cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
         policyRequestFormMST.clickKaspiPayButton();
         policyRequestFormMST.getPaymentNumber()
         .then((paymentNumber) => nodeEvents.payWithKaspi({ sumToPay, paymentNumber }))

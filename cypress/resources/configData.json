@@ -1,8 +1,10 @@
 {
     "allureAvoidLoggingCommands": [
+        "as",
+        "clicks",
         "window",
-        "setSharedData",
-        "getSharedData",
+        "setLocalStorage",
+        "getLocalStorage",
         "wrap",
         "logger",
         "task",
