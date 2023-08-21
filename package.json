@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "cypress run --browser chrome"
+    "test": "cypress run --browser chromium"
   },
   "devDependencies": {
     "@shelex/cypress-allure-plugin": "^2.40.0",
