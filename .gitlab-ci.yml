@@ -1,30 +1,115 @@
+stages:
+  - test
+
+test:
+  image: cypress/browsers:latest
+  stage: test
+  script:
+    - npm install
+    - npm test
+  when: always
+  artifacts:
+    when: always
+    paths:
+      - allure-results
+      - allure-report
+      - cypress/screenshots
+      - cypress/videos
+    expire_in: 1 day
+
 # stages:
 #   - test
-#   - generate-allure-report
+#   - build
+#   - deploy
 
-# test:
-#   image: cypress/browsers:latest
-#   stage: test
-#   script:
-#     - npm ci
-#     - npx cypress run --browser chrome --env allure=true --reporter mocha-allure-reporter
-#   when: always
-#   artifacts:
-#     when: always
-#     paths:
-#       - allure-results
-#     expire_in: 1 day
+# .build:
+#   image: node:16-alpine
+#   stage: build
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375/
+#     DOCKER_DRIVER: overlay2
+#     DOCKER_TLS_CERTDIR: ""
 
-# generate-allure-result:
-#   stage: generate-allure-report
-#   image: pradapjackie/allure-reports-generation:1.0
+#   cache:
+#     key: ${CI_COMMIT_REF_SLUG}
+#     paths:
+#       - node_modules/
+#   before_script:
+#     - apk update
+#     - apk add --no-cache docker
+#     - docker login --username $USER --password $PASS registry.gitlab.com
+#     - cp .env.${ENV} .env
+
+#   services:
+#     - docker:dind
+#   tags:
+#     - k8s
+#   script:
+#     - npm install
+#     - npm install --save crypto-js
+#     - npm run generate
+#     - docker build -f Dockerfile-dev -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
 #   artifacts:
 #     paths:
-#       - allure-results
-#       - allure-report
-#     when: always
-#     expire_in: 1 days
+#       - node_modules/
+
+# .deploy:
+#   image: alpine/k8s:1.20.7
+#   stage: deploy
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375/
+#     DOCKER_DRIVER: overlay2
+#   tags:
+#     - k8s
 #   script:
-#     - allure generate allure-results --clean -o allure-report
-#   when: always
-#   allow_failure: true
+#     - sed -i "s,{api-image},$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA,g" manifests/deployment-${ENV}.yml
+#     - kubectl apply -f manifests/deployment-${ENV}.yml
+#     - kubectl apply -f manifests/service-${ENV}.yml
+    
+# build_containers_dev:
+#   extends: .build
+#   only:
+#     - dev
+#   variables:
+#     ENV: dev
+
+
+# deploy_k8s_dev:
+#   extends: .deploy
+#   only:
+#     - dev
+#   variables:
+#     ENV: dev
+
+
+# build_containers_staging:
+#   extends: .build
+#   only:
+#     - staging
+#   variables:
+#     ENV: staging
+
+
+# deploy_k8s_staging:
+#   extends: .deploy
+#   only:
+#     - staging
+#   variables:
+#     ENV: staging
+
+
+# build_containers_prod:
+#   extends: .build
+#   only:
+#     - prod
+#   variables:
+#     ENV: prod
+
+
+# deploy_k8s_prod:
+#   extends: .deploy
+#   only:
+#     - prod
+#   variables:
+#     ENV: prod

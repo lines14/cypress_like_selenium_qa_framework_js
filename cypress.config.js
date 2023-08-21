@@ -24,8 +24,8 @@ const generateAllureReport = () => {
 
 module.exports = defineConfig({
     morgan: false, 
-    screenshotOnRunFailure: false,
-    video: false,
+    screenshotOnRunFailure: true,
+    video: true,
     env: {
         allure: true,
         allureLogCypress: true,
@@ -34,7 +34,7 @@ module.exports = defineConfig({
     },
     e2e: {
         baseUrl: '' || process.env.BASE_URL,
-        specPattern: "./cypress/test/specs/ePay*.js",
+        specPattern: "./cypress/test/specs/*Pay*.js",
         supportFile: "./cypress/support/e2e.js",
         testIsolation: false,
         viewportHeight: 1080,

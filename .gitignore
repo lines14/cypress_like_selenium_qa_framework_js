@@ -1,6 +1,10 @@
 node_modules/
-package-lock.json
 cypress/test/log.txt
 cypress/screenshots/
 cypress/videos/
 cypress/downloads/
+cypress/fixtures/
+allure-results/
+allure-report/
+.env.test
+package-lock.json
