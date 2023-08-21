@@ -1,19 +1,19 @@
-stages:
-  - test
+# stages:
+#   - test
 
-test:
-  image: swtracker/cypress-java:latest
-  stage: test
-  script:
-    - npm install
-    - npm test
-  when: always
-  artifacts:
-    when: always
-    paths:
-      - allure-results
-      - allure-report
-      - cypress/test/log.txt
-      - cypress/screenshots
-      - cypress/videos
-    expire_in: 1 day
+# test:
+#   image: swtracker/cypress-java:latest
+#   stage: test
+#   script:
+#     - npm install
+#     - npm test
+#   when: always
+#   artifacts:
+#     when: always
+#     paths:
+#       - allure-results
+#       - allure-report
+#       - cypress/test/log.txt
+#       - cypress/screenshots
+#       - cypress/videos
+#     expire_in: 1 day

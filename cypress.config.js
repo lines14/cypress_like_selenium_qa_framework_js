@@ -25,8 +25,8 @@ const generateAllureReport = async () => {
 
 module.exports = defineConfig({
     morgan: false, 
-    screenshotOnRunFailure: false,
-    video: false,
+    screenshotOnRunFailure: true,
+    video: true,
     env: {
         allure: true,
         allureLogCypress: true,
