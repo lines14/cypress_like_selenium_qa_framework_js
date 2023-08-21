@@ -2,12 +2,12 @@ stages:
   - test
 
 test:
-  image: cypress/browsers:latest
+  image: agoldis/cypress-with-java:latest
   stage: test
-  before_script:
-    - apt-get -y install software-properties-common
-    - add-apt-repository ppa:webupd8team/java
-    - apt-get -y install oracle-java8-installer
+  # before_script:
+  #   - apt-get -y install software-properties-common
+  #   - add-apt-repository ppa:webupd8team/java
+  #   - apt-get -y install oracle-java8-installer
   script:
     - npm install
     - npm test
