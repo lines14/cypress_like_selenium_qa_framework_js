@@ -13,6 +13,6 @@ test:
     paths:
       - allure-results
       - allure-report
-      - cypress/screenshots
-      - cypress/videos
+      # - cypress/screenshots
+      # - cypress/videos
     expire_in: 1 day
