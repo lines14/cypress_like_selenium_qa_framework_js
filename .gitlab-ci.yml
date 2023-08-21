@@ -17,3 +17,133 @@
 #       - cypress/screenshots
 #       - cypress/videos
 #     expire_in: 1 day
+
+
+# stages:
+#   - test
+#   - build
+#   - deploy
+
+# .test:
+#   image: swtracker/cypress-java:latest
+#   stage: test
+
+#   cache:
+#     paths:
+#       - node_modules/
+
+#   script:
+#     - npm install
+#     - npm run generate
+#     - npm run build
+#     - npm run start
+#     - npm test
+#   when: always
+#   artifacts:
+#     when: always
+#     paths:
+#       - allure-results
+#       - allure-report
+#       - cypress/test/log.txt
+#       - cypress/screenshots
+#       - cypress/videos
+#     expire_in: 1 month
+
+# .build:
+#   image: node:16-alpine
+#   stage: build
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375/
+#     DOCKER_DRIVER: overlay2
+#     DOCKER_TLS_CERTDIR: ""
+
+#   cache:
+#     key: ${CI_COMMIT_REF_SLUG}
+#     paths:
+#       - node_modules/
+#   before_script:
+#     - apk update
+#     - apk add --no-cache docker
+#     - docker login --username $USER --password $PASS registry.gitlab.com
+#     - cp .env.${ENV} .env
+
+#   services:
+#     - docker:dind
+#   tags:
+#     - k8s
+#   script:
+#     - npm install
+#     - npm install --save crypto-js
+#     - npm run generate
+#     - docker build -f Dockerfile-dev -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+#   artifacts:
+#     paths:
+#       - node_modules/
+
+# .deploy:
+#   image: alpine/k8s:1.20.7
+#   stage: deploy
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375/
+#     DOCKER_DRIVER: overlay2
+#   tags:
+#     - k8s
+#   script:
+#     - sed -i "s,{api-image},$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA,g" manifests/deployment-${ENV}.yml
+#     - kubectl apply -f manifests/deployment-${ENV}.yml
+#     - kubectl apply -f manifests/service-${ENV}.yml
+
+# test:
+#   extends: .test
+#   only:
+#     - dev
+#   variables:
+#     ENV: dev
+
+# build_containers_dev:
+#   extends: .build
+#   only:
+#     - dev
+#   variables:
+#     ENV: dev
+
+
+# deploy_k8s_dev:
+#   extends: .deploy
+#   only:
+#     - dev
+#   variables:
+#     ENV: dev
+
+
+# build_containers_staging:
+#   extends: .build
+#   only:
+#     - staging
+#   variables:
+#     ENV: staging
+
+
+# deploy_k8s_staging:
+#   extends: .deploy
+#   only:
+#     - staging
+#   variables:
+#     ENV: staging
+
+
+# build_containers_prod:
+#   extends: .build
+#   only:
+#     - prod
+#   variables:
+#     ENV: prod
+
+
+# deploy_k8s_prod:
+#   extends: .deploy
+#   only:
+#     - prod
+#   variables:
+#     ENV: prod
