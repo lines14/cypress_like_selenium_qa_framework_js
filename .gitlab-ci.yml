@@ -44,14 +44,14 @@ stages:
   - test
 
 test:
-  image: zenika/alpine-chrome:latest
+  image: zenika/alpine-chrome:with-node
   stage: test
 
   cache:
     paths:
       - node_modules/
   before_script:
-    - apk update && apk add nodejs npm openjdk11
+    - apk update && apk add openjdk11
 
   script:
     - npm install
