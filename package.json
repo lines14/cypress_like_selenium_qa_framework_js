@@ -6,7 +6,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "start:ci": "npm run generate && npm run build && npm run start",
-    "test:ci": "start-server-and-test start:ci http://localhost:3001 test"
+    "test:ci": "start-server-and-test start:ci http://172.17.0.3:3001 test"
   },
   "devDependencies": {
     "@shelex/cypress-allure-plugin": "^2.40.0",
