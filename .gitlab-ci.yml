@@ -35,10 +35,7 @@
 #     - cp .env.${ENV} .env
 #   script:
 #     - npm ci
-#     - npm run generate
-#     - npm run build
-#     - npm run start
-#     - npm test
+#     - npm run test:ci
 #   when: always
 #   artifacts:
 #     when: always
