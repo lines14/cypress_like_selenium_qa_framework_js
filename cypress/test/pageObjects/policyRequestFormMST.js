@@ -30,6 +30,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.selectedPurposeOfTheTrip = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__tags"]//span[@class="multiselect__single"]', 'selected purpose of the trip');
         this.displayedPurposeOfTheTrip = new Label('//span[contains(text(), "Цель путешествия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span', 'displayed purpose of the trip');
         this.purposeOfTheTripDropdownElements = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span', 'purpose of the trip dropdown elements');
+        this.purposeOfTheTripEducation = new Button('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span[contains(text(), "Обучение")]', 'purpose of the trip "education"');
         this.additionalCheckboxes = new Checkbox('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label', 'additional checkboxes');
         this.calculateButton = new Button('//button[contains(text(), "Рассчитать")]', 'calculate button');
         this.displayedPolicyCost = new Label('//span[contains(text(), "Стоимость полиса")]//following-sibling::span', 'displayed policy cost');
@@ -52,7 +53,7 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     selectThreeRandomCountries() {
-        this.countriesDropdownElements.clickRandomElementsFromDropdownByText(this.countriesDropdownButton, configManager.getTestData().elementsCount);
+        this.countriesDropdownElements.clickRandomElementsFromDropdownByText(this.countriesDropdownButton, configManager.getTestData().countriesCount);
     }
 
     getSelectedCountries() {
@@ -81,32 +82,29 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputIIN() {
-        this.IINBox.clickElement();
-        this.IINBox.clickElement();
-        this.IINBox.clickElement();
+        this.IINBox.multipleClickElement(3);
         this.IINBox.inputData(configManager.getTestData().clientIIN);
-        this.selectedClientName.waitForText(configManager.getTestData().clientName);
-        cy.scrollTo('center');
     }
 
-    getSelectedClientName() {
-        return this.selectedClientName.getText();
+    getSelectedClientNameElement() {
+        return this.selectedClientName.getElement();
     }
 
-    getDisplayedClientName() {
+    getSlicedDisplayedClientName() {
         return this.displayedClientName.getText().then((text) => {
             const nameList = text.split(' ');
-            nameList.push(`${nameList.pop().slice(0, 1)}.`);
+            nameList.push(nameList.pop().slice(0, 1));
             return nameList.join(' ');
         });
     }
 
     selectRandomInsuranceLimit() {
+        cy.scrollTo('center');
         this.insuranceLimitDropdownElements.clickRandomElementsFromDropdownByText(this.insuranceLimitDropdownButton);
     }
 
     selectRandomPurposeOfTheTrip() {
-        this.purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(this.purposeOfTheTripDropdownButton);
+        this.purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(this.purposeOfTheTripDropdownButton, this.purposeOfTheTripEducation);
     }
 
     getSelectedPurposeOfTheTrip() {
@@ -117,12 +115,12 @@ class PolicyRequestFormMST extends BaseForm {
         return this.displayedPurposeOfTheTrip.getText();
     }
 
-    clickRandomAdditionalCheckboxesAndCalculate() {
-        const checkboxesToClickCount = randomizer.getRandomInteger(configManager.getTestData().elementsCount);
-        checkboxesToClickCount 
-        ? this.additionalCheckboxes.clickRandomCheckboxesByText(checkboxesToClickCount) 
-        : this.calculateButton.clickElement();
-        this.calculations.waitElementHasNotProperty('display', 'none');
+    clickRandomAdditionalCheckboxes() {
+        this.additionalCheckboxes.clickCheckboxesByText();
+    }
+
+    clickCalculateButton() {
+        this.calculateButton.clickElement();
     }
 
     getPolicyCostDiscountDelta() {
