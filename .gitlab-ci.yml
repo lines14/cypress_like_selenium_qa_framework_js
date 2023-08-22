@@ -24,28 +24,9 @@
 #   - test
 #   - build
 #   - deploy
-
-# .test:
-#   image: swtracker/cypress-java:latest
-#   stage: test
-#   cache:
-#     paths:
-#       - node_modules/
-#   before_script:
-#     - cp .env.${ENV} .env
-#   script:
-#     - npm ci
-#     - npm run test:ci
-#   when: always
-#   artifacts:
-#     when: always
-#     paths:
-#       - allure-results
-#       - allure-report
-#       - cypress/test/log.txt
-#       - cypress/screenshots
-#       - cypress/videos
-#     expire_in: 1 month
+# include:
+#   - project: 'amanatpolicy/devops/test'
+#     file: 'amanat24-test.yml'
 
 # .build:
 #   image: node:16-alpine
@@ -92,12 +73,6 @@
 #     - kubectl apply -f manifests/deployment-${ENV}.yml
 #     - kubectl apply -f manifests/service-${ENV}.yml
 
-# test:
-#   extends: .test
-#   only:
-#     - dev
-#   variables:
-#     ENV: dev
 
 # build_containers_dev:
 #   extends: .build
