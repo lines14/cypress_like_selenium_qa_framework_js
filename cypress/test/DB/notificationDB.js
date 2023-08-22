@@ -6,11 +6,11 @@ require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'),
 class NotificationDB extends DatabaseUtils {
     constructor() {
         super(
-            '127.0.0.1' || process.env.DB_HOST,
-            'root' || process.env.DB_USERNAME,
-            'root' || process.env.DB_PASSWORD,
-            'notification' || process.env.DB_DATABASE,
-            '33090' || process.env.DB_PORT,
+            '' || process.env.DB_HOST,
+            '' || process.env.DB_USERNAME,
+            '' || process.env.DB_PASSWORD,
+            '' || process.env.DB_DATABASE,
+            '' || process.env.DB_PORT,
             );
     }
 

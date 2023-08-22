@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "cypress run --browser chrome",
+    "test": "cypress run --headed --browser chrome",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
