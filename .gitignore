@@ -6,4 +6,3 @@ cypress/downloads/
 cypress/fixtures/
 allure-results/
 allure-report/
-package-lock.json

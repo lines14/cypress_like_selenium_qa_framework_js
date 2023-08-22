@@ -5,7 +5,7 @@
 #   image: swtracker/cypress-java:latest
 #   stage: test
 #   script:
-#     - npm install
+#     - npm ci
 #     - npm test
 #   when: always
 #   artifacts:
@@ -19,6 +19,7 @@
 #     expire_in: 1 day
 
 
+
 # stages:
 #   - test
 #   - build
@@ -27,13 +28,13 @@
 # .test:
 #   image: swtracker/cypress-java:latest
 #   stage: test
-
 #   cache:
 #     paths:
 #       - node_modules/
-
+#   before_script:
+#     - cp .env.${ENV} .env
 #   script:
-#     - npm install
+#     - npm ci
 #     - npm run generate
 #     - npm run build
 #     - npm run start
