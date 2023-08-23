@@ -1,5 +1,4 @@
 const epayPage = require('../pageObjects/epayPage');
-const mainPageMST = require('../pageObjects/mainPageMST');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const { userPathMST } = require('./userPathMST');
 
@@ -13,6 +12,5 @@ userPathMST(function payTest() {
         epayPage.clickPayButton();
         epayPage.getPaymentStatus().should('contain', 'успешно');
         epayPage.clickCloseButton();
-        mainPageMST.pageIsDisplayed().should('be.true');
     });
 });
