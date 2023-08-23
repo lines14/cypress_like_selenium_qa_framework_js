@@ -1,15 +1,17 @@
 const nodeEvents = require('../../support/nodeEvents');
+const mainPageMST = require('../pageObjects/mainPageMST');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const { userPathMST } = require('./userPathMST');
 
 userPathMST(function payTest() {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
-        // let sumToPay;
-        // cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
-        // policyRequestFormMST.clickKaspiPayButton();
-        // policyRequestFormMST.getPaymentNumber()
-        // .then((paymentNumber) => nodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
-        // .then((response) => cy.wrap(response)
-        // .should('contain', 'оплачен'));
+        let sumToPay;
+        cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
+        policyRequestFormMST.clickKaspiPayButton();
+        policyRequestFormMST.getPaymentNumber()
+        .then((paymentNumber) => nodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
+        .then((response) => cy.wrap(response).should('contain', 'оплачен'));
+        policyRequestFormMST.clickMainPageButton();
+        mainPageMST.pageIsDisplayed().should('be.true');
     });
 });

@@ -1,5 +1,5 @@
 {
-  "elementsCount": 3,
+  "countriesCount" : 3,
   "monthsCount": 2,
   "regexPattern": "\\d{2}\\.\\d{2}\\.\\d{4}",
   "clientIIN": "880701351146",
@@ -11,8 +11,10 @@
   "clientPassportGivenDate": "20.06.2010",
   "clientEmail": "a.lipatov@a-i.kz",
   "clientPhone": "777 777 77 77",
-  "clientCardNumber": "4405639704015096",
   "clientCardExpMonth": "01",
   "clientCardExpYear": "25",
-  "clientCardCVC": "815"
+  "clientCardNumberr": "4405639704015096",
+  "clientCardNumber": "5522042705066736",
+  "clientCardCVCC": "815",
+  "clientCardCVC": "525"
 }

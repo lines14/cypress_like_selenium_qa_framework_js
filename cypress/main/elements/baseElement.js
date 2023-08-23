@@ -1,6 +1,5 @@
 require('cypress-xpath');
-const randomizer = require('../utils/random/randomizer.js');
-const logger = require('../utils/log/logger.js');
+const randomizer = require('../utils/random/randomizer');
 
 class BaseElement {
     constructor(elementLocator, elementName) {
@@ -17,80 +16,82 @@ class BaseElement {
     }
 
     clickElement() {
-        logger.log(`[info] ▶ click ${this.elementName}`);
+        cy.logger(`[info] ▶ click ${this.elementName}`);
         this.getElement().click();
     }
 
     doubleClickElement() {
-        logger.log(`[info] ▶ click ${this.elementName}`);
+        cy.logger(`[info] ▶ double click ${this.elementName}`);
         this.getElement().dblclick();
     }
 
-    clickElementFromList(index) {
-        logger.log(`[info] ▶ click element from ${this.elementName}`);
-        this.getElements()[index].click();
+    multipleClickElement(count) {
+        cy.logger(`[info] ▶ click ${this.elementName} ${count} times`);
+        this.getElement().clicks(count);
     }
+
+    clickElementFromList(index) {
+        cy.logger(`[info] ▶ click element from ${this.elementName}`);
+        this.getElements()[index].click();
+    } 
 
     getText() {
+        cy.logger(`[info] ▶ get ${this.elementName} text:`);
+        this.getElement().then(($el) => cy.logger(`[info]   text contains: "${$el.text()}"`));
         return this.getElement().then(($el) => $el.text());
-    }
+    }    
 
-    getElementsTextList(attrName) {
+    getElementsListText(attrName) {
         return this.getElements().then(($el) => Cypress._.map($el, attrName));
     }
 
-    waitForText(text) {
-        this.getElement().should('have.text', text);
-    }
-
     getAttributeValue(attrName) {
-        logger.log(`[info] ▶ get ${this.elementName} attribute value`);
+        cy.logger(`[info] ▶ get ${this.elementName} attribute value`);
         return this.getElement().attribute(attrName);
     }
 
     scrollElementToView() {
-        logger.log(`[info] ▶ scroll to ${this.elementName}`);
+        cy.logger(`[info] ▶ scroll to ${this.elementName}`);
         this.getElement().scrollIntoView();
     }
 
     inputData(data) {
-        logger.log(`[info] ▶ input ${this.elementName}`);
+        cy.logger(`[info] ▶ input ${this.elementName}`);
         this.getElement().type(data);
     }
 
+    forceInputData(data) {
+        cy.logger(`[info] ▶ force input ${this.elementName}`);
+        this.getElement().type(data, { force: true });
+    }
+
     enterData(data) {
-        logger.log(`[info] ▶ enter ${this.elementName}`);
+        cy.logger(`[info] ▶ enter ${this.elementName}`);
         this.getElement().type(`${data}{enter}`);
     }
 
     elementIsDisplayed() {
-        logger.log(`[info] ▶ check ${this.elementName} is present:`);
-        logger.log(this.getElement().isDisplayed() 
+        cy.logger(`[info] ▶ check ${this.elementName} is present:`);
+        cy.logger(this.getElement().isDisplayed() 
         ? `[info]   ${this.elementName} is present` 
         : `[info]   ${this.elementName} is not present`);
         return this.getElement().isDisplayed();
     }
 
     elementIsExisting() {
-        logger.log(`[info] ▶ check ${this.elementName} is exists:`);
-        logger.log(this.getElement().isExisting() 
+        cy.logger(`[info] ▶ check ${this.elementName} is exists:`);
+        cy.logger(this.getElement().isExisting() 
         ? `[info]   ${this.elementName} is exists` 
         : `[info]   ${this.elementName} is not exists`);
         return this.getElement().isExisting();
     }
 
     elementIsEnabled() {
-        logger.log(`[info] ▶ check ${this.elementName} is enable:`);
-        logger.log(this.getElement().isEnabled() 
+        cy.logger(`[info] ▶ check ${this.elementName} is enable:`);
+        cy.logger(this.getElement().isEnabled() 
         ? `[info]   ${this.elementName} is enable` 
         : `[info]   ${this.elementName} is not enable`);
         return this.getElement().isEnabled();
-    }
-
-    waitElementHasNotProperty(attrName, attrValue) {
-        this.getElement().should(($el) => {
-            expect($el.css(attrName)).not.to.equal(attrValue);
-        });
     }
 
     // args contain required count of returning random elements and exceptions elements array:
@@ -111,56 +112,48 @@ class BaseElement {
         }
 
         for (let counter = 0; counter < count; counter++) {
-            logger.log(`[info] ▶ click ${dropdownElement.elementName}`);
+            cy.logger(`[info] ▶ click ${dropdownElement.elementName}`);
             cy.xpath(dropdownElement.elementLocator).first().click()
-            logger.log(`[info] ▶ get random element from ${this.elementName}`);
-            this.getElementsTextList('innerText').then((elementsTextList) => {
+            cy.logger(`[info] ▶ get random element from ${this.elementName}`);
+            this.getElementsListText('innerText').then((elementsTextList) => {
                 const randomElementText = randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
                 exceptionsTextList.push(randomElementText);
-                logger.log(`[info] ▶ click ${randomElementText}`);
+                cy.logger(`[info] ▶ click ${randomElementText}`);
                 cy.contains('span', randomElementText).click({ force: true });
             });
         }
     }
 
-    // args contain required count of returning random elements and exceptions elements array:
-    clickRandomCheckboxesByText(...args) {
-        let count = args[0];
-        let exceptionsElements = args.slice(1, args.length);
-        if (args === undefined) {
-            count = 1;
-        } else if (typeof args[0] !== 'number') {
-            count = 1;
-            exceptionsElements = args.slice(0, args.length);
-        }
-
-        let exceptionsTextList =[];
-        if (exceptionsElements.length !== 0) {
-            exceptionsElements.forEach((element) => cy.xpath(element.elementLocator).first()
-            .then(($el) => exceptionsTextList.push($el.text())));
-        }
-
-        for (let counter = 0; counter < count; counter++) {
-            logger.log(`[info] ▶ get random element from ${this.elementName}`);
-            this.getElementsTextList('innerText').then((elementsTextList) => {
+    // args contain exceptions elements array:
+    clickCheckboxesByText(randomCount=true, ...args) {
+        let exceptionsElements = args;
+        this.getElementsListText('innerText').then((elementsTextList) => {
+            let count = elementsTextList.length;
+            if (randomCount) count = randomizer.getRandomInteger(elementsTextList.length);
+            let exceptionsTextList =[];
+            if (exceptionsElements.length !== 0) {
+                exceptionsElements.forEach((element) => cy.xpath(element.elementLocator).first()
+                .then(($el) => exceptionsTextList.push($el.text())));
+            }
+            
+            for (let counter = 0; counter < count; counter++) {
+                cy.logger(`[info] ▶ get random element from ${this.elementName}`);
                 const randomElementText = randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
                 exceptionsTextList.push(randomElementText);
-                logger.log(`[info] ▶ click ${randomElementText}`);
+                cy.logger(`[info] ▶ click ${randomElementText}`);
                 cy.contains('div', randomElementText).find('input[type=checkbox]').click({ force: true });
-            });
-        }
+            }
+        });
     }
 
     flipCalendarIfNotContainsDate(rightArrowElement, monthIncrement) {        
-        logger.log(`[info] ▶ click ${this.elementName}`);
-        this.getElement().click();
-        this.getElement().click();
-        this.getElement().click();
+        cy.logger(`[info] ▶ click ${this.elementName}`);
+        this.getElement().clicks(3);
         for (let i = 0; i < monthIncrement; i++) {
-            logger.log(`[info] ▶ click ${rightArrowElement.elementName}`);
+            cy.logger(`[info] ▶ click ${rightArrowElement.elementName}`);
             cy.xpath(rightArrowElement.elementLocator).first().click();
         }
     }
 }
-    
+
 module.exports = BaseElement;

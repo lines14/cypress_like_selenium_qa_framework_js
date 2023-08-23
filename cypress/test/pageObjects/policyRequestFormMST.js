@@ -50,6 +50,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.kaspiPayButton = new Button('//button[contains(@class, "-red")]', 'kaspi pay button');
         this.epayButton = new Button('//button[contains(text(), "Картой")]', 'epay button');
         this.paymentNumber = new Label('//li[contains(@class, "mb-2")]//span', 'payment number');
+        this.mainPageButton = new Button('//span[contains(text(), "На главную")]', 'main page button');
     }
 
     selectThreeRandomCountries() {
@@ -167,6 +168,10 @@ class PolicyRequestFormMST extends BaseForm {
 
     getPaymentNumber() {
         return this.paymentNumber.getText();
+    }
+
+    clickMainPageButton() {
+        this.mainPageButton.clickElement();
     }
 
     // inputPassportGivenDate() {

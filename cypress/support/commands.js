@@ -24,16 +24,6 @@ Cypress.Commands.add('logger', (step) => {
     cy.task('log', step).then((timeStamp) => cy.log(`${timeStamp} ${step}`));
 });
 
-Cypress.Commands.add('setSharedData', (key, value) => {
-    cy.window().then((win) => {
-        win.localStorage.setItem(key, JSON.stringify(value));
-    });
+Cypress.on('uncaught:exception', (err) => {
+    if (err.message.includes("Cannot read properties of null (reading 'focus')")) return false;
 });
-  
-Cypress.Commands.add('getSharedData', (key) => {
-    return cy.window().then((win) => {
-        const value = win.localStorage.getItem(key);
-        return value ? JSON.parse(value) : null;
-    });
-});
-  
