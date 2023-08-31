@@ -1,5 +1,6 @@
 {
     "allureAvoidLoggingCommands": [
+        "url",
         "as",
         "clicks",
         "window",

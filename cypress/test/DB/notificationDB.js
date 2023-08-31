@@ -17,9 +17,10 @@ class NotificationDB extends DatabaseUtils {
     async getLastCode() {
         let id = (await this.sqlSelect('phone_verification', 'id', 'ORDER BY `created_at` DESC LIMIT 1')).rows.pop().id;
         const idIncrement = id++;
-        do {
+        for (let counter = 0; counter < 10; counter++) {
             id = (await this.sqlSelect('phone_verification', 'id', 'ORDER BY `created_at` DESC LIMIT 1')).rows.pop().id;
-        } while (id === idIncrement);
+            if (id === idIncrement) break;
+        }
 
         return JSON.parse(jsonStringifySafe(await this.sqlSelect('phone_verification', 'code', 'ORDER BY `created_at` DESC LIMIT 1')));
     }

@@ -74,7 +74,8 @@ class Randomizer {
     }
 
     getRandomDatesIntervalFromTomorrow(months) {
-        const unixOne = moment().add(1, 'days').unix();
+        const nextDay = moment().add(1, 'days');
+        const unixOne = nextDay.unix();
         const unixTwo = moment(moment().add(1, 'days')).add(months, 'months').unix();
 
         const startDateUnix = moment.unix(this.getRandomFloat(unixOne, unixTwo)).unix();
@@ -92,11 +93,13 @@ class Randomizer {
             return months + (years * 12);
         }
 
-        const currentMonth = getAbsoluteMonth(moment().format('YYYY-MM-DD'));
+        const currentMonth = getAbsoluteMonth(moment.unix(unixOne).format('YYYY-MM-DD'));
         const startMonth = getAbsoluteMonth(startDate);
         const finishMonth = getAbsoluteMonth(finishDate);
         const startMonthDifference = startMonth - currentMonth;
-        const finishMonthDifference = finishMonth - currentMonth;
+        let finishMonthDifference = finishMonth - currentMonth;
+
+        if (nextDay.date() === 1) finishMonthDifference++;
 
         return { startDate: startDate, finishDate: finishDate, startMonthDifference: startMonthDifference, finishMonthDifference: finishMonthDifference }
     }

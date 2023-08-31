@@ -11,13 +11,12 @@ require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: tr
 
 const generateAllureReport = async () => {
     logger.log('[info] ▶ generate allure report');
-    const reportError = new Error('[erro]   could not generate allure report!');
     const generation = allureCommandline(['generate', 'allure-results', '--clean']);
     return new Promise((resolve, reject) => {
-        const generationTimeout = setTimeout(() => reject(reportError), 5000);
+        const generationTimeout = setTimeout(() => reject({ message: '[erro]   timeout reached while generating allure report!'}), 10000);
         generation.on('exit', function(exitCode) {
             clearTimeout(generationTimeout);
-            if (exitCode !== 0) return reject(reportError);
+            if (exitCode !== 0) return reject({ message: '[erro]   could not generate allure report!'});
             resolve();
         });
     });
@@ -47,7 +46,12 @@ module.exports = defineConfig({
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
             on('after:run', async (results) => {
-                await generateAllureReport();
+                try {
+                    await generateAllureReport();
+                } catch (error) {
+                    logger.log(error.message);
+                }
+                
                 logger.logToFile();
             });
             on('task', {

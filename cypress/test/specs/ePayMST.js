@@ -1,4 +1,5 @@
 const epayPage = require('../pageObjects/epayPage');
+const configManager = require('../../main/utils/data/configManager');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const { userPathMST } = require('./userPathMST');
 
@@ -12,5 +13,6 @@ userPathMST(function payTest() {
         epayPage.clickPayButton();
         epayPage.getPaymentStatus().should('contain', 'успешно');
         epayPage.clickCloseButton();
+        cy.url().should('be.equal', configManager.getTestData().link);
     });
 });
