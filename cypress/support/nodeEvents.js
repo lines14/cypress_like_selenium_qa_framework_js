@@ -10,9 +10,9 @@ class nodeEvents {
     }
 
     getLastCodeFromDB() {
-        return cy.task('getLastCodeFromDB').then((response) => {
-            response.forEach((method) => method.logs.forEach((log) => cy.logger(log)));
-            return cy.wrap(response[1].rows.pop().code);
+        return cy.task('getLastCodeFromDB').then((responses) => {
+            responses.forEach((response) => response.logs.forEach((log) => cy.logger(log)));
+            return cy.wrap(responses[1].rows.pop().code);
         });
     }
 }

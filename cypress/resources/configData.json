@@ -1,4 +1,6 @@
 {
+    "logTimeStampFormat": "YYYY-MM-DD HH:mm:ss",
+    "DBTimeStampFormat": "YYYY-MM-DDTHH:mm:ss.SSSZ",
     "allureAvoidLoggingCommands": [
         "url",
         "as",
