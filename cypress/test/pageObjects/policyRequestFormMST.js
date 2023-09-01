@@ -146,6 +146,10 @@ class PolicyRequestFormMST extends BaseForm {
         this.phoneBox.inputData(configManager.getTestData().clientPhone);
     }
 
+    getSMSCodeBoxElement() {
+        return this.SMSCodeBox.getElement();
+    }
+
     enterSMSCode(code) {
         this.SMSCodeBox.enterData(code);
     }

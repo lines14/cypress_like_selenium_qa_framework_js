@@ -26,8 +26,8 @@ module.exports = defineConfig({
     bail: true,
     chromeWebSecurity: false,
     morgan: false, 
-    screenshotOnRunFailure: false,
-    video: false,
+    screenshotOnRunFailure: true,
+    video: true,
     env: {
         allure: true,
         allureLogCypress: true,

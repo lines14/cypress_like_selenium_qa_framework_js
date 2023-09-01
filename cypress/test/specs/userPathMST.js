@@ -45,9 +45,10 @@ const userPathMST = (payTest) => {
             policyRequestFormMST.clickNextButton();
 
             policyRequestFormMST.inputPhone();
-            policyRequestFormMST.clickNextButton();
+            policyRequestFormMST.clickNextButton()
 
-            nodeEvents.getLastCodeFromDB()
+            policyRequestFormMST.getSMSCodeBoxElement().should('be.visible')
+            .then(() => nodeEvents.getLastCodeFromDB())
             .then((code) => policyRequestFormMST.enterSMSCode(code));
  
             policyRequestFormMST.clickAcceptanceCheckbox();
