@@ -23,7 +23,6 @@ const generateAllureReport = async () => {
 }
 
 module.exports = defineConfig({
-    bail: true,
     chromeWebSecurity: false,
     morgan: false, 
     screenshotOnRunFailure: true,
