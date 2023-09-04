@@ -1,5 +1,6 @@
 require('cypress-xpath');
-const randomizer = require('../utils/random/randomizer');
+const { XPATH } = require('../../support/locators');
+const Randomizer = require('../utils/random/randomizer');
 
 class BaseElement {
     constructor(elementLocator, elementName) {
@@ -7,12 +8,17 @@ class BaseElement {
         this.elementName = elementName;
     }
 
-    getElement() {
-        return cy.xpath(this.elementLocator).first();
+    getElement(elementLocator) {
+        if (!elementLocator) elementLocator = this.elementLocator;
+        return elementLocator instanceof XPATH 
+        ? cy.xpath(elementLocator.locator).first() 
+        : cy.get(elementLocator.locator).first();
     }
 
     getElements() {
-        return cy.xpath(this.elementLocator);
+        return this.elementLocator instanceof XPATH 
+        ? cy.xpath(this.elementLocator.locator) 
+        : cy.get(this.elementLocator.locator);
     }
 
     clickElement() {
@@ -66,7 +72,7 @@ class BaseElement {
     }
 
     enterData(data) {
-        cy.logger(`[info] ▶ enter ${this.elementName}`);
+        cy.logger(`[info] ▶ input ${this.elementName} and submit`);
         this.getElement().type(`${data}{enter}`);
     }
 
@@ -107,16 +113,16 @@ class BaseElement {
 
         let exceptionsTextList =[];
         if (exceptionsElements.length !== 0) {
-            exceptionsElements.forEach((element) => cy.xpath(element.elementLocator).first()
+            exceptionsElements.forEach((element) => this.getElement(element.elementLocator)
             .then(($el) => exceptionsTextList.push($el.text())));
         }
 
         for (let counter = 0; counter < count; counter++) {
             cy.logger(`[info] ▶ click ${dropdownElement.elementName}`);
-            cy.xpath(dropdownElement.elementLocator).first().click()
+            this.getElement(dropdownElement.elementLocator).click()
             cy.logger(`[info] ▶ get random element from ${this.elementName}`);
             this.getElementsListText('innerText').then((elementsTextList) => {
-                const randomElementText = randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
+                const randomElementText = Randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
                 exceptionsTextList.push(randomElementText);
                 cy.logger(`[info] ▶ click ${randomElementText}`);
                 cy.contains('span', randomElementText).click({ force: true });
@@ -129,16 +135,16 @@ class BaseElement {
         let exceptionsElements = args;
         this.getElementsListText('innerText').then((elementsTextList) => {
             let count = elementsTextList.length;
-            if (randomCount) count = randomizer.getRandomInteger(elementsTextList.length);
+            if (randomCount) count = Randomizer.getRandomInteger(elementsTextList.length);
             let exceptionsTextList =[];
             if (exceptionsElements.length !== 0) {
-                exceptionsElements.forEach((element) => cy.xpath(element.elementLocator).first()
+                exceptionsElements.forEach((element) => this.getElement(element.elementLocator)
                 .then(($el) => exceptionsTextList.push($el.text())));
             }
             
             for (let counter = 0; counter < count; counter++) {
                 cy.logger(`[info] ▶ get random element from ${this.elementName}`);
-                const randomElementText = randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
+                const randomElementText = Randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
                 exceptionsTextList.push(randomElementText);
                 cy.logger(`[info] ▶ click ${randomElementText}`);
                 cy.contains('div', randomElementText).find('input[type=checkbox]').click({ force: true });
@@ -151,9 +157,9 @@ class BaseElement {
         this.getElement().clicks(3);
         for (let i = 0; i < monthIncrement; i++) {
             cy.logger(`[info] ▶ click ${rightArrowElement.elementName}`);
-            cy.xpath(rightArrowElement.elementLocator).first().click();
+            this.getElement(rightArrowElement.elementLocator).click();
         }
     }
 }
 
-module.exports = BaseElement;
+module.exports = BaseElement;  
