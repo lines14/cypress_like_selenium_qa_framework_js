@@ -16,7 +16,6 @@ class PolicyRequestFormMST extends BaseForm {
     #dateFinishButton;
     #calendarTowardsButton;
     #calendarBackwardsButton;
-    #calendarCells;
     #calendarRightArrowButton;
     #selectedDates;
     #displayedDates;
@@ -34,13 +33,7 @@ class PolicyRequestFormMST extends BaseForm {
     #calculateButton;
     #displayedPolicyCost;
     #displayedPolicyDiscount;
-    #calculations;
     #nextButton;
-    #secondNameBox;
-    #firstNameBox;
-    #calendarPassportGivenButton;
-    #passportNumberBox;
-    #passportGivenDateBox;
     #emailBox;
     #phoneBox;
     #SMSCodeBox;
@@ -61,7 +54,6 @@ class PolicyRequestFormMST extends BaseForm {
         this.#dateFinishButton = new Button(new XPATH(`//td[@title="${finishDate}"]`), 'finish date');
         this.#calendarTowardsButton = new Button(new XPATH('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]'), 'calendar towards button');
         this.#calendarBackwardsButton = new Button(new XPATH('//span[contains(text(), "Обратно")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]'), 'calendar backwards button');
-        this.#calendarCells = new Label(new XPATH('//table[contains(@class, "mx-table-date")]//tbody//tr//td'), 'calendar cells');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#selectedDates = new Button(new XPATH('//input[@name="date"]'), 'selected dates');
         this.#displayedDates = new Label(new XPATH('//span[contains(text(), "Срок действия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span'), 'displayed dates');
@@ -79,13 +71,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.#calculateButton = new Button(new XPATH('//button[contains(text(), "Рассчитать")]'), 'calculate button');
         this.#displayedPolicyCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса")]//following-sibling::span'), 'displayed policy cost');
         this.#displayedPolicyDiscount = new Label(new XPATH('//span[contains(text(), "Ваша скидка")]//following-sibling::span'), 'displayed policy discount');
-        this.#calculations = new Label(new XPATH('//h6[contains(text(), "Предварительный расчёт")]//following-sibling::div'), 'calculations');
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
-        this.#secondNameBox = new Textbox(new XPATH('//label[contains(text(), "Фамилия на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'second name in latin');
-        this.#firstNameBox = new Textbox(new XPATH('//label[contains(text(), "Имя на латинице")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'first name in latin');
-        this.#calendarPassportGivenButton = new Button(new XPATH('//span[contains(text(), "Дата выдачи паспорта")]//parent::div[@class="form-item"]//following-sibling::div[@class="mx-datepicker"]'), 'calendar passport given date button');
-        this.#passportNumberBox = new Textbox(new XPATH('//label[contains(text(), "Номер паспорта")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'passport number');
-        this.#passportGivenDateBox = new Textbox(new XPATH('//input[@placeholder="дд.мм.гггг"]'), 'passport given date');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
         this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'sms code box');
