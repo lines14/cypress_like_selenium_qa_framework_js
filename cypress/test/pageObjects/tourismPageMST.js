@@ -1,14 +1,17 @@
-const BaseForm = require('../../main/baseForm.js');
-const Label = require('../../main/elements/baseElementChildren/label.js');
+const { XPATH } = require('../../support/locators');
+const BaseForm = require('../../main/baseForm');
+const Label = require('../../main/elements/baseElementChildren/label');
 
 class TourismPageMST extends BaseForm {
+    #purchaseButton;
+
     constructor() {
-        super('//h1[contains(text(), "Медицинское страхование туристов")]', 'tourism page');
-        this.purchaseButton = new Label('//a[contains(text(), "Купить")]', 'purchase button');
+        super(new XPATH('//h1[contains(text(), "Медицинское страхование туристов")]'), 'tourism page');
+        this.#purchaseButton = new Label(new XPATH('//a[contains(text(), "Купить")]'), 'purchase button');
     }
 
     clickPurchaseButton() {
-        this.purchaseButton.clickElement();
+        this.#purchaseButton.clickElement();
     }
 }
 

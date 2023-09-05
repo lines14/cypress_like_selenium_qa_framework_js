@@ -1,29 +1,34 @@
 require('cypress-xpath');
-const logger = require('./utils/log/logger.js');
+const { XPATH } = require('../support/locators');
 
 class BaseForm {
+    #pageName;
+    #pageLocator;
+
     constructor(pageLocator, pageName) {
-        this.pageLocator = pageLocator;
-        this.pageName = pageName;
+        this.#pageLocator = pageLocator;
+        this.#pageName = pageName;
     }
 
     getUniqueElement() {
-        return cy.xpath(this.pageLocator).first();
+        return this.#pageLocator instanceof XPATH 
+        ? cy.xpath(this.#pageLocator.locator).first() 
+        : cy.get(this.#pageLocator.locator).first();
     }
 
     pageIsDisplayed() {
-        logger.log(`[info] ▶ check ${this.pageName} is open:`);
-        logger.log(this.getUniqueElement().isDisplayed() 
-        ? `[info] ▶ ${this.pageName} is open` 
-        : `[info] ▶ ${this.pageName} is not open`);
+        cy.logger(`[info] ▶ check ${this.#pageName} is open:`);
+        cy.logger(this.getUniqueElement().isDisplayed() 
+        ? `[info] ▶ ${this.#pageName} is open` 
+        : `[info] ▶ ${this.#pageName} is not open`);
         return this.getUniqueElement().isDisplayed();
     }
 
     pageIsEnabled() {
-        logger.log(`[info] ▶ check ${this.pageName} is enable:`);
-        logger.log(this.getUniqueElement().isEnabled() 
-        ? `[info] ▶ ${this.pageName} is enable` 
-        : `[info] ▶ ${this.pageName} is not enable`);
+        cy.logger(`[info] ▶ check ${this.#pageName} is enable:`);
+        cy.logger(this.getUniqueElement().isEnabled() 
+        ? `[info] ▶ ${this.#pageName} is enable` 
+        : `[info] ▶ ${this.#pageName} is not enable`);
         return this.getUniqueElement().isEnabled();
     }
 }

@@ -1,45 +1,56 @@
+const { XPATH } = require('../../support/locators');
 const BaseForm = require('../../main/baseForm');
 const Label = require('../../main/elements/baseElementChildren/label');
 const Button = require('../../main/elements/baseElementChildren/button');
 const Textbox = require('../../main/elements/baseElementChildren/textbox');
-const configManager = require('../../main/utils/data/configManager');
+const ConfigManager = require('../../main/utils/data/configManager');
 
 class EpayPage extends BaseForm {
+    #amount;
+    #cardNumberBox;
+    #expireMonthBox;
+    #expireYearBox;
+    #CVCBox;
+    #emailBox;
+    #payButton;
+    #status;
+    #closeButton;
+
     constructor() {
-        super('//td[contains(text(), "На проведение платежа выделяется")]', 'epay page');
-        this.amount = new Label('//div[@class="amount"]//span', 'amount to pay');
-        this.cardNumberBox = new Textbox('//input[@name="cardnumber"]', 'card number');
-        this.expireMonthBox = new Textbox('//input[@name="ccmonth"]', 'expire month');
-        this.expireYearBox = new Textbox('//input[@name="ccyear"]', 'expire year');
-        this.CVCBox = new Textbox('//input[@name="cvc"]', 'cvc');
-        this.emailBox = new Textbox('//input[@name="email"]', 'email');
-        this.payButton = new Button('//span[contains(text(), "Оплатить")]', 'pay button');
-        this.status = new Label('//div[@class="status"]', 'payment status');
-        this.closeButton = new Button('//a[contains(text(), "Закрыть")]', 'close button');
+        super(new XPATH('//td[contains(text(), "На проведение платежа выделяется")]'), 'epay page');
+        this.#amount = new Label(new XPATH('//div[@class="amount"]//span'), 'amount to pay');
+        this.#cardNumberBox = new Textbox(new XPATH('//input[@name="cardnumber"]'), 'card number');
+        this.#expireMonthBox = new Textbox(new XPATH('//input[@name="ccmonth"]'), 'expire month');
+        this.#expireYearBox = new Textbox(new XPATH('//input[@name="ccyear"]'), 'expire year');
+        this.#CVCBox = new Textbox(new XPATH('//input[@name="cvc"]'), 'cvc');
+        this.#emailBox = new Textbox(new XPATH('//input[@name="email"]'), 'email');
+        this.#payButton = new Button(new XPATH('//span[contains(text(), "Оплатить")]'), 'pay button');
+        this.#status = new Label(new XPATH('//div[@class="status"]'), 'payment status');
+        this.#closeButton = new Button(new XPATH('//a[contains(text(), "Закрыть")]'), 'close button');
     }
 
     getAmountToPay() {
-        return this.amount.getText();
+        return this.#amount.getText();
     }
 
     inputPaymentInfo() {
-        this.cardNumberBox.inputData(configManager.getTestData().clientCardNumber);
-        this.expireMonthBox.forceInputData(configManager.getTestData().clientCardExpMonth);
-        this.expireYearBox.forceInputData(configManager.getTestData().clientCardExpYear);
-        this.CVCBox.inputData(configManager.getTestData().clientCardCVC);
-        this.emailBox.inputData(configManager.getTestData().clientEmail);
+        this.#cardNumberBox.inputData(ConfigManager.getTestData().clientCardNumber);
+        this.#expireMonthBox.forceInputData(ConfigManager.getTestData().clientCardExpMonth);
+        this.#expireYearBox.forceInputData(ConfigManager.getTestData().clientCardExpYear);
+        this.#CVCBox.inputData(ConfigManager.getTestData().clientCardCVC);
+        this.#emailBox.inputData(ConfigManager.getTestData().clientEmail);
     }
 
     clickPayButton() {
-        this.payButton.clickElement();
+        this.#payButton.clickElement();
     }
 
     getPaymentStatus() {
-        return this.status.getElement();
+        return this.#status.getElement();
     }
 
     clickCloseButton() {
-        this.closeButton.clickElement();
+        this.#closeButton.clickElement();
     }
 }
 

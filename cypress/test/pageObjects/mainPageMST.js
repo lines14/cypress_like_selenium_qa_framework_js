@@ -1,20 +1,24 @@
-const BaseForm = require('../../main/baseForm.js');
-const Label = require('../../main/elements/baseElementChildren/label.js');
-const Button = require('../../main/elements/baseElementChildren/button.js');
+const { XPATH } = require('../../support/locators');
+const BaseForm = require('../../main/baseForm');
+const Label = require('../../main/elements/baseElementChildren/label');
+const Button = require('../../main/elements/baseElementChildren/button');
 
 class MainPageMST extends BaseForm {
+    #tourismLink;
+    #getInsuredButton;
+
     constructor() {
-        super('//button[contains(text(), "Застраховаться")]', 'main page');
-        this.tourismLink = new Label('//a[contains(text(), "Подробнее") and @href="/mst"]', 'tourism link');
-        this.getInsuredButton = new Button('//button[contains(text(), "Застраховаться")]', 'get insured button');
+        super(new XPATH('//button[contains(text(), "Застраховаться")]'), 'main page');
+        this.#tourismLink = new Label(new XPATH('//a[contains(text(), "Подробнее") and @href="/mst"]'), 'tourism link');
+        this.#getInsuredButton = new Button(new XPATH('//button[contains(text(), "Застраховаться")]'), 'get insured button');
     }
 
     clickGetInsuredButton() {
-        this.getInsuredButton.clickElement();
+        this.#getInsuredButton.clickElement();
     }
 
     clickTourismLink() {
-        this.tourismLink.clickElement();
+        this.#tourismLink.clickElement();
     }
 }
 

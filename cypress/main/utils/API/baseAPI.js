@@ -2,8 +2,10 @@ const qs = require('qs');
 const axios = require('axios');
 
 class BaseAPI {
+    #logBaseURL;
+
     constructor(baseURL, logString, timeout, headers) {
-        if (logString) this.logBaseURL = `${logString} ${baseURL}`;
+        if (logString) this.#logBaseURL = `${logString} ${baseURL}`;
         axios.defaults.baseURL = baseURL;
         axios.defaults.timeout = timeout;
         axios.defaults.headers = headers;
@@ -11,7 +13,7 @@ class BaseAPI {
 
     async get(endpoint, params) {
         const logs = [`[info] ▶ get ${endpoint} with ${JSON.stringify(params)}:`];
-        logs.unshift(this.logBaseURL);
+        logs.unshift(this.#logBaseURL);
         try {
             const response = await axios.get(`/${endpoint}`, { params });
             logs.push(`[info]   status code: ${response.status}`);
@@ -24,7 +26,7 @@ class BaseAPI {
 
     async post(endpoint, params) {
         const logs = [`[info] ▶ post ${JSON.stringify(params)} to ${endpoint}:`];
-        logs.unshift(this.logBaseURL);
+        logs.unshift(this.#logBaseURL);
         try {
             const response = await axios.post(`/${endpoint}`, qs.stringify(params));
             logs.push(`[info]   status code: ${response.status}`);
