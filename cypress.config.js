@@ -1,16 +1,17 @@
 const path = require('path');
-const { defineConfig } = require('cypress');
 const allureCommandline = require('allure-commandline');
 const kaspiAPI = require('./cypress/test/API/kaspiAPI');
-const logger = require('./cypress/main/utils/log/logger');
+const dictionaryAPI = require('./cypress/test/API/dictionaryAPI');
 const notificationDB = require('./cypress/test/DB/notificationDB');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
+const Logger = require('./cypress/main/utils/log/logger');
+const ConfigManager = require('./cypress/main/utils/data/configManager');
+const { defineConfig } = require('cypress');
 const localStorage = require("cypress-localstorage-commands/plugin");
-const configManager = require('./cypress/main/utils/data/configManager');
 require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
 
 const generateAllureReport = async () => {
-    logger.log('[info] ▶ generate allure report');
+    Logger.log('[info] ▶ generate allure report');
     const generation = allureCommandline(['generate', 'allure-results', '--clean']);
     return new Promise((resolve, reject) => {
         const generationTimeout = setTimeout(() => reject({ message: '[erro]   timeout reached while generating allure report!'}), 10000);
@@ -30,12 +31,12 @@ module.exports = defineConfig({
     env: {
         allure: true,
         allureLogCypress: true,
-        allureAvoidLoggingCommands: configManager.getConfigData().allureAvoidLoggingCommands,
+        allureAvoidLoggingCommands: ConfigManager.getConfigData().allureAvoidLoggingCommands,
         logLevel: "INFO"
     },
     e2e: {
         baseUrl: '' || process.env.BASE_URL,
-        specPattern: "./cypress/test/specs/*Pay*.js",
+        specPattern: "./cypress/test/specs/kaspiPay*.js",
         supportFile: "./cypress/support/e2e.js",
         testIsolation: false,
         viewportHeight: 1080,
@@ -45,18 +46,22 @@ module.exports = defineConfig({
         responseTimeout: 50000,
         pageLoadTimeout: 80000,
         setupNodeEvents(on, config) {
+            on('before:run', async () => {
+                await dictionaryAPI.setToken();
+                await dictionaryAPI.toggleVerificationOn();
+            });
             on('after:run', async (results) => {
                 try {
                     await generateAllureReport();
                 } catch (error) {
-                    logger.log(error.message);
+                    Logger.log(error.message);
                 }
                 
-                logger.logToFile();
+                Logger.logToFile();
             });
             on('task', {
                 log(step) {
-                    return logger.log(step);
+                    return Logger.log(step);
                 },
                 async getLastCodeFromDB() {
                     return [
@@ -67,7 +72,7 @@ module.exports = defineConfig({
                 },
                 async payWithKaspi(paymentInfo) {
                     return [
-                        await kaspiAPI.auth(), 
+                        await kaspiAPI.setToken(), 
                         await kaspiAPI.pay(paymentInfo)
                     ];
                 }

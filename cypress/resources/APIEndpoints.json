@@ -1,4 +1,5 @@
 {
-    "loginAPI": "api/login",
-    "kaspiPay": "api/kaspi/kaspi/pay"
+    "verify": "api/dictionary/settings/verify_bool",
+    "login": "api/login",
+    "pay": "api/kaspi/kaspi/pay"
 }
