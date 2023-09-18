@@ -1,20 +1,29 @@
 const path = require('path');
 const moment = require('moment');
 const { createWriteStream } = require('fs');
+const ConfigManager = require('../data/configManager');
 const filePath = path.join(path.resolve(), 'cypress', 'test', 'log.txt');
 const timeList = [];
 const logList = [];
 
 class Logger {
-    log(step) {
-        console.log(step);
+    static log(step) {
         logList.push(` ${step}\n`);
         const timeStamp = moment().format().slice(0, 19).replace('T', ' ');
         timeList.push(`${timeStamp}`);
+        if (ConfigManager.getConfigData().hiddenLogBodies && step.includes('[req]')) {
+            const words = step.split(' ');
+            const firstPart = words.slice(0, 3).join(' ');
+            const secondPart = words.slice(words.length - 2).join(' ');
+            console.log(`${firstPart} ${secondPart}`);
+        } else {
+            console.log(step);
+        }
+
         return timeStamp;
     }
 
-    logToFile() {
+    static logToFile() {
         const zip = (a, b) => a.map((k, i) => [k, b[i]]);
         const summaryList = zip(timeList, logList);
         const stream = createWriteStream(filePath);
@@ -23,10 +32,6 @@ class Logger {
             stream.end();
         });
     }
-
-    async getTimings() {
-        return [...timeList];
-    }
 }
 
-module.exports = new Logger();
+module.exports = Logger;
