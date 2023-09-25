@@ -5,19 +5,19 @@ const dictionaryAPI = require('./cypress/test/API/dictionaryAPI');
 const notificationDB = require('./cypress/test/DB/notificationDB');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 const Logger = require('./cypress/main/utils/log/logger');
-const ConfigManager = require('./cypress/main/utils/data/configManager');
+const JSONLoader = require('./cypress/main/utils/data/JSONLoader');
 const { defineConfig } = require('cypress');
 const localStorage = require("cypress-localstorage-commands/plugin");
 require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
 
 const generateAllureReport = async () => {
-    Logger.log('[info] ▶ generate allure report');
+    Logger.log('[inf] ▶ generate allure report');
     const generation = allureCommandline(['generate', 'allure-results', '--clean']);
     return new Promise((resolve, reject) => {
-        const generationTimeout = setTimeout(() => reject({ message: '[erro]   timeout reached while generating allure report!'}), 10000);
+        const generationTimeout = setTimeout(() => reject({ message: '[err]   timeout reached while generating allure report!'}), 10000);
         generation.on('exit', function(exitCode) {
             clearTimeout(generationTimeout);
-            if (exitCode !== 0) return reject({ message: '[erro]   could not generate allure report!'});
+            if (exitCode !== 0) return reject({ message: '[err]   could not generate allure report!'});
             resolve();
         });
     });
@@ -31,7 +31,7 @@ module.exports = defineConfig({
     env: {
         allure: true,
         allureLogCypress: true,
-        allureAvoidLoggingCommands: ConfigManager.getConfigData().allureAvoidLoggingCommands,
+        allureAvoidLoggingCommands: JSONLoader.configData.allureAvoidLoggingCommands,
         logLevel: "INFO"
     },
     e2e: {
