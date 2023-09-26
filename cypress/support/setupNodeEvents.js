@@ -7,8 +7,8 @@ const localStorage = require("cypress-localstorage-commands/plugin");
 
 exports.setupNodeEvents = {
     setupNodeEvents(on, config) {
-        on('before:run', BaseTest.before);
-        on('after:run', BaseTest.after);
+        on('before:run', BaseTest.beforeAll);
+        on('after:run', BaseTest.afterAll);
         on('task', {
             log(step) {
                 return Logger.log(step);

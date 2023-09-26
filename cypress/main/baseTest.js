@@ -3,12 +3,12 @@ const dictionaryAPI = require('../test/API/dictionaryAPI');
 const Logger = require('../main/utils/log/logger');
 
 class BaseTest {
-    static async before() {
+    static async beforeAll() {
         await dictionaryAPI.setToken();
         await dictionaryAPI.toggleVerification();
     }
 
-    static async after() {
+    static async afterAll() {
         try {
             await BaseTest.generateAllureReport();
         } catch (error) {
