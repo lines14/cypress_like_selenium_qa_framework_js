@@ -1,9 +1,9 @@
 const path = require('path');
 const jsonStringifySafe = require('json-stringify-safe');
-const DatabaseUtils = require('../../main/utils/DB/databaseUtils');
+const BaseDB = require('../../main/utils/DB/baseDB');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
 
-class NotificationDB extends DatabaseUtils {
+class NotificationDB extends BaseDB {
     constructor() {
         super(
             '' || process.env.DB_HOST,
@@ -11,11 +11,14 @@ class NotificationDB extends DatabaseUtils {
             '' || process.env.DB_PASSWORD,
             '' || process.env.DB_DATABASE,
             '' || process.env.DB_PORT,
-            );
+        );
     }
 
     async getLastCode() {
-        return JSON.parse(jsonStringifySafe(await this.sqlSelect('phone_verification', 'code', 'ORDER BY `created_at` DESC LIMIT 1')));
+        const target = 'code';
+        const response = await this.sqlSelect('phone_verification', target, 'ORDER BY `created_at` DESC LIMIT 1');
+        response.logs.push(`[inf]   ${target} contains: "${response.rows[0][target]}"`)
+        return JSON.parse(jsonStringifySafe(response));
     }
 }
 

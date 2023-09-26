@@ -17,7 +17,7 @@ class BaseDB {
     }
 
     async createConnection() {
-        const logs = [`[info] ▶ connect to ${this.#database} database`];
+        const logs = [`[inf] ▶ connect to ${this.#database} database`];
         this.#connection = await mysql.createConnection({ 
             host: this.#host, 
             user: this.#user,
@@ -29,21 +29,21 @@ class BaseDB {
     }
 
     async closeConnection() {
-        const logs = [`[info] ▶ close connection to database`];
+        const logs = [`[inf] ▶ close connection to database`];
         await this.#connection.end();
         return { logs }
     }
 
     async sqlQuery(query, values) {
         const [rows] = await this.#connection.query(query, [values]);
-        return rows
+        return rows;
     }
 
-    async sqlSelect(tableName, target='*', conditions='', values=[]) {
-        const logs = [`[info] ▶ select ${target} from ${tableName} table`];
+    async sqlSelect(tableName, target='*', conditions='', values=[], logger=true) {
+        const logs = [];
+        if (logger) logs.push(`[inf] ▶ select ${target} from ${tableName} table`);
         const query =`SELECT ${target} FROM ${tableName} ${conditions};`;
         const rows = await this.sqlQuery(query, values);
-        logs.push(`[info]   ${target} contains: "${rows[0][target]}"`)
         return { rows, logs }
     }
 }
