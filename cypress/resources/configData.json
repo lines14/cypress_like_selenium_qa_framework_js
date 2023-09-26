@@ -1,4 +1,6 @@
 {
+    "hiddenLogBodies": true,
+    "verification": true,
     "logTimeStampFormat": "YYYY-MM-DD HH:mm:ss",
     "DBTimeStampFormat": "YYYY-MM-DDTHH:mm:ss.SSSZ",
     "allureAvoidLoggingCommands": [

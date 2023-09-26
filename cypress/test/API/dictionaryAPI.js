@@ -2,7 +2,7 @@ const path = require('path');
 const authAPI = require('./authAPI');
 const jsonStringifySafe = require('json-stringify-safe');
 const BaseAPI = require('../../main/utils/API/baseAPI');
-const ConfigManager = require('../../main/utils/data/configManager');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
 
 class DictionaryAPI extends BaseAPI {
@@ -23,14 +23,13 @@ class DictionaryAPI extends BaseAPI {
         return JSON.parse(jsonStringifySafe(response));
     }
 
-    async toggleVerificationOn() {
+    async toggleVerification() {
         const params = { 
-            value: 1
+            value: Number(JSONLoader.configData.verification)
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.patch(ConfigManager.getAPIEndpoint().verify, params)));
+        return JSON.parse(jsonStringifySafe(await this.#API.patch(JSONLoader.APIEndpoints.verify, params)));
     }
-
 }
 
 module.exports = new DictionaryAPI();

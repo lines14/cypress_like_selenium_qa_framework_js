@@ -5,7 +5,7 @@ const Logger = require('../main/utils/log/logger');
 class BaseTest {
     static async before() {
         await dictionaryAPI.setToken();
-        await dictionaryAPI.toggleVerificationOn();
+        await dictionaryAPI.toggleVerification();
     }
 
     static async after() {
