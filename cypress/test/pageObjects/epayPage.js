@@ -1,9 +1,9 @@
-const { XPATH } = require('../../support/locators');
 const BaseForm = require('../../main/baseForm');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
+const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../main/elements/baseElementChildren/label');
 const Button = require('../../main/elements/baseElementChildren/button');
 const Textbox = require('../../main/elements/baseElementChildren/textbox');
-const ConfigManager = require('../../main/utils/data/configManager');
 
 class EpayPage extends BaseForm {
     #amount;
@@ -34,11 +34,11 @@ class EpayPage extends BaseForm {
     }
 
     inputPaymentInfo() {
-        this.#cardNumberBox.inputData(ConfigManager.getTestData().clientCardNumber);
-        this.#expireMonthBox.forceInputData(ConfigManager.getTestData().clientCardExpMonth);
-        this.#expireYearBox.forceInputData(ConfigManager.getTestData().clientCardExpYear);
-        this.#CVCBox.inputData(ConfigManager.getTestData().clientCardCVC);
-        this.#emailBox.inputData(ConfigManager.getTestData().clientEmail);
+        this.#cardNumberBox.inputData(JSONLoader.testData.clientCardNumber);
+        this.#expireMonthBox.forceInputData(JSONLoader.testData.clientCardExpMonth);
+        this.#expireYearBox.forceInputData(JSONLoader.testData.clientCardExpYear);
+        this.#CVCBox.inputData(JSONLoader.testData.clientCardCVC);
+        this.#emailBox.inputData(JSONLoader.testData.clientEmail);
     }
 
     clickPayButton() {

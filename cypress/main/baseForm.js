@@ -1,5 +1,5 @@
 require('cypress-xpath');
-const { XPATH } = require('../support/locators');
+const XPATH = require('./locators/baseLocatorChildren/XPATH');
 
 class BaseForm {
     #pageName;
@@ -17,18 +17,18 @@ class BaseForm {
     }
 
     pageIsDisplayed() {
-        cy.logger(`[info] ▶ check ${this.#pageName} is open:`);
+        cy.logger(`[inf] ▶ check ${this.#pageName} is open:`);
         cy.logger(this.getUniqueElement().isDisplayed() 
-        ? `[info] ▶ ${this.#pageName} is open` 
-        : `[info] ▶ ${this.#pageName} is not open`);
+        ? `[inf] ▶ ${this.#pageName} is open` 
+        : `[inf] ▶ ${this.#pageName} is not open`);
         return this.getUniqueElement().isDisplayed();
     }
 
     pageIsEnabled() {
-        cy.logger(`[info] ▶ check ${this.#pageName} is enable:`);
+        cy.logger(`[inf] ▶ check ${this.#pageName} is enable:`);
         cy.logger(this.getUniqueElement().isEnabled() 
-        ? `[info] ▶ ${this.#pageName} is enable` 
-        : `[info] ▶ ${this.#pageName} is not enable`);
+        ? `[inf] ▶ ${this.#pageName} is enable` 
+        : `[inf] ▶ ${this.#pageName} is not enable`);
         return this.getUniqueElement().isEnabled();
     }
 }

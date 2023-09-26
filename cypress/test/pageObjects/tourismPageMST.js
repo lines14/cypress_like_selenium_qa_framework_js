@@ -1,5 +1,5 @@
-const { XPATH } = require('../../support/locators');
 const BaseForm = require('../../main/baseForm');
+const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../main/elements/baseElementChildren/label');
 
 class TourismPageMST extends BaseForm {

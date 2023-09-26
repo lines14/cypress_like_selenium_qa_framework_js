@@ -1,11 +1,11 @@
-const { XPATH } = require('../../support/locators');
 const BaseForm = require('../../main/baseForm');
-const Button = require('../../main/elements/baseElementChildren/button');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
+const Randomizer = require('../../main/utils/random/randomizer');
+const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../main/elements/baseElementChildren/label');
+const Button = require('../../main/elements/baseElementChildren/button');
 const Textbox = require('../../main/elements/baseElementChildren/textbox');
 const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
-const Randomizer = require('../../main/utils/random/randomizer');
-const ConfigManager = require('../../main/utils/data/configManager');
 
 class PolicyRequestFormMST extends BaseForm {
     #countriesDropdownButton;
@@ -84,7 +84,7 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     selectThreeRandomCountries() {
-        this.#countriesDropdownElements.clickRandomElementsFromDropdownByText(this.#countriesDropdownButton, ConfigManager.getTestData().countriesCount);
+        this.#countriesDropdownElements.clickRandomElementsFromDropdownByText(this.#countriesDropdownButton, JSONLoader.testData.countriesCount);
     }
 
     getSelectedCountries() {
@@ -96,7 +96,7 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputRandomDates() {
-        const datesInterval = Randomizer.getRandomDatesIntervalFromTomorrow(ConfigManager.getTestData().monthsCount);
+        const datesInterval = Randomizer.getRandomDatesIntervalFromTomorrow(JSONLoader.testData.monthsCount);
         const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
         this.#calendarTowardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, datesInterval.startMonthDifference);
         newInstance.#dateStartButton.clickElement();
@@ -109,12 +109,12 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     getDisplayedDates() {
-        return this.#displayedDates.getText().then((text) => text.match(new RegExp(ConfigManager.getTestData().regexPattern, 'g')));
+        return this.#displayedDates.getText().then((text) => text.match(new RegExp(JSONLoader.testData.datesRegexPattern, 'g')));
     }
 
     inputIIN() {
         this.#IINBox.multipleClickElement(3);
-        this.#IINBox.inputData(ConfigManager.getTestData().clientIIN);
+        this.#IINBox.inputData(JSONLoader.testData.clientIIN);
     }
 
     getSelectedClientNameElement() {
@@ -169,11 +169,11 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputEmail() {
-        this.#emailBox.inputData(ConfigManager.getTestData().clientEmail);
+        this.#emailBox.inputData(JSONLoader.testData.clientEmail);
     }
 
     inputPhone() {
-        this.#phoneBox.inputData(ConfigManager.getTestData().clientPhone);
+        this.#phoneBox.inputData(JSONLoader.testData.clientPhone);
     }
 
     getSMSCodeBoxElement() {
