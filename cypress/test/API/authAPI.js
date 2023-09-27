@@ -1,6 +1,6 @@
 const path = require('path');
 const BaseAPI = require('../../main/utils/API/baseAPI');
-const ConfigManager = require('../../main/utils/data/configManager');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
 
 class AuthAPI extends BaseAPI {
@@ -10,7 +10,7 @@ class AuthAPI extends BaseAPI {
     constructor(options = {}) {
         super(
             options.baseURL || process.env.GATEWAY_URL,
-            options.logString ?? '[info] ▶ set base API URL:',
+            options.logString ?? '[inf] ▶ set base API URL:',
             options.timeout,
             options.headers
         );
@@ -23,7 +23,7 @@ class AuthAPI extends BaseAPI {
         ? { login: user.login, password: user.password } 
         : { login: this.#login, password: this.#password };
 
-        return await this.post(ConfigManager.getAPIEndpoint().login, params);
+        return await this.post(JSONLoader.APIEndpoints.auth.login, params);
     }
 }
 

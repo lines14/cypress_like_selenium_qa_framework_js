@@ -3,7 +3,7 @@ const authAPI = require('./authAPI');
 const moment = require('moment');
 const jsonStringifySafe = require('json-stringify-safe');
 const BaseAPI = require('../../main/utils/API/baseAPI');
-const ConfigManager = require('../../main/utils/data/configManager');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 const Randomizer = require('../../main/utils/random/randomizer');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
 
@@ -14,7 +14,7 @@ class KaspiAPI extends BaseAPI {
         super(
             options.baseURL || process.env.GATEWAY_URL,
             options.logString,
-            options.timeout || ConfigManager.getAPIConfigData().timeout, 
+            options.timeout, 
             options.headers
         );
     }
@@ -34,7 +34,7 @@ class KaspiAPI extends BaseAPI {
             sum: paymentInfo.sumToPay,
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.get(ConfigManager.getAPIEndpoint().pay, params)));
+        return JSON.parse(jsonStringifySafe(await this.#API.get(JSONLoader.APIEndpoints.kaspi.pay, params)));
     }
 }
 

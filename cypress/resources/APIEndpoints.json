@@ -1,5 +1,11 @@
 {
-    "verify": "api/dictionary/settings/verify_bool",
-    "login": "api/login",
-    "pay": "api/kaspi/kaspi/pay"
+    "auth": {
+        "login": "api/login"
+    },
+    "dictionary": {
+        "verify": "api/dictionary/settings/verify_bool"
+    },
+    "kaspi": {
+        "pay": "api/kaspi/kaspi/pay"
+    }
 }

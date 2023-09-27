@@ -28,7 +28,7 @@ class DictionaryAPI extends BaseAPI {
             value: Number(JSONLoader.configData.verification)
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.patch(JSONLoader.APIEndpoints.verify, params)));
+        return JSON.parse(jsonStringifySafe(await this.#API.patch(JSONLoader.APIEndpoints.dictionary.verify, params)));
     }
 }
 
