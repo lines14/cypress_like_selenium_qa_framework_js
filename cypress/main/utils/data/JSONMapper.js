@@ -1,6 +1,3 @@
-const moment = require('moment');
-const JSONLoader = require('./JSONLoader');
-
 class JSONMapper {
     static getNestedProperty(flattenedObj, path) {
         const keys = [];
@@ -91,31 +88,19 @@ class JSONMapper {
         return this.deleteNotSimilarProperty(firstFlattenedObj, mappingSchema);
     }
 
-    static ESBDToTWB(getPolicyData, getContract_By_NumberData, getClientByIDData) {
-        const firstPart = JSONMapper.mapValues(
-            getPolicyData, 
-            getContract_By_NumberData,
-            JSONLoader.getContractComplex_By_NumberToGetPolicyMapSchema
-        );
-        const secondPart = JSONMapper.mapValues(
-            getPolicyData, 
-            getClientByIDData,
-            JSONLoader.getClientByIDToGetPolicyMapSchema
-        );
-        const mappedData = { ...firstPart, ...secondPart };
-        mappedData.date_create = (moment(mappedData.date_create, JSONLoader.dictESBD.timeFormat))
-        .format(JSONLoader.dictTWB.timeFormat);
-        for (const key in mappedData) {
-            if (JSONLoader.dictTWB.hasOwnProperty(key) && JSONLoader.dictESBD.hasOwnProperty(key)) {
-                for (const dictKey in JSONLoader.dictESBD[key]) {
-                    if (JSONLoader.dictESBD[key][dictKey] === mappedData[key]) {
-                        mappedData[key] = JSONLoader.dictTWB[key][dictKey];
+    static rewriteValues(mappedObj, firstDict, secondDict) {
+        const rewritedObj = { ...mappedObj };
+        for (const key in rewritedObj) {
+            if (firstDict.hasOwnProperty(key) && secondDict.hasOwnProperty(key)) {
+                for (const dictKey in secondDict[key]) {
+                    if (secondDict[key][dictKey] === rewritedObj[key]) {
+                        rewritedObj[key] = firstDict[key][dictKey];
                     }
                 }
             }
         }
 
-        return JSONMapper.unflattenJSON(mappedData);
+        return rewritedObj;
     }
 }
 
