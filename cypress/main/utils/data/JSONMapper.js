@@ -1,4 +1,34 @@
 class JSONMapper {
+    static mapValues(firstObj, secondObj, mappingSchema) {
+        const firstFlattenedObj = this.flattenJSON(firstObj);
+        const secondFlattenedObj = this.flattenJSON(secondObj);
+        for (const key in firstFlattenedObj) {
+            for (const path in mappingSchema) {
+                if (((this.getNestedProperty(firstFlattenedObj, path)).keys).includes(key)) {
+                    firstFlattenedObj[key] = (this.getNestedProperty(secondFlattenedObj, mappingSchema[path]))
+                    .values.pop();
+                }
+            }
+        }
+
+        return this.deleteNotSimilarProperty(firstFlattenedObj, mappingSchema);
+    }
+
+    static rewriteValues(mappedObj, firstDict, secondDict) {
+        const rewritedObj = { ...mappedObj };
+        for (const key in rewritedObj) {
+            if (firstDict.hasOwnProperty(key) && secondDict.hasOwnProperty(key)) {
+                for (const dictKey in secondDict[key]) {
+                    if (secondDict[key][dictKey] === rewritedObj[key]) {
+                        rewritedObj[key] = firstDict[key][dictKey];
+                    }
+                }
+            }
+        }
+
+        return rewritedObj;
+    }
+    
     static getNestedProperty(flattenedObj, path) {
         const keys = [];
         const values = [];  
@@ -71,36 +101,6 @@ class JSONMapper {
         }
     
         return result;
-    }
-
-    static mapValues(firstObj, secondObj, mappingSchema) {
-        const firstFlattenedObj = this.flattenJSON(firstObj);
-        const secondFlattenedObj = this.flattenJSON(secondObj);
-        for (const key in firstFlattenedObj) {
-            for (const path in mappingSchema) {
-                if (((this.getNestedProperty(firstFlattenedObj, path)).keys).includes(key)) {
-                    firstFlattenedObj[key] = (this.getNestedProperty(secondFlattenedObj, mappingSchema[path]))
-                    .values.pop();
-                }
-            }
-        }
-
-        return this.deleteNotSimilarProperty(firstFlattenedObj, mappingSchema);
-    }
-
-    static rewriteValues(mappedObj, firstDict, secondDict) {
-        const rewritedObj = { ...mappedObj };
-        for (const key in rewritedObj) {
-            if (firstDict.hasOwnProperty(key) && secondDict.hasOwnProperty(key)) {
-                for (const dictKey in secondDict[key]) {
-                    if (secondDict[key][dictKey] === rewritedObj[key]) {
-                        rewritedObj[key] = firstDict[key][dictKey];
-                    }
-                }
-            }
-        }
-
-        return rewritedObj;
     }
 }
 
