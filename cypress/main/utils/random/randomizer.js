@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 class Randomizer {
-    getRandomElementByText(baseElements, exceptionsList) {
+    static getRandomElementByText(baseElements, exceptionsList) {
         const baseElementsList = baseElements.slice(0, baseElements.length);
         let element;
         if (exceptionsList.length > 0) {
@@ -19,7 +19,7 @@ class Randomizer {
         return element;
     }
 
-    getRandomString(hasLowerCase=false, hasUpperCase=false, hasNumber=false, hasCyrillic=false, chosenLetter=false, minLength=1, maxLength=10) {
+    static getRandomString(hasLowerCase=false, hasUpperCase=false, hasNumber=false, hasCyrillic=false, chosenLetter=false, minLength=1, maxLength=10) {
         const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
         const numbers = '0123456789';
@@ -49,7 +49,7 @@ class Randomizer {
         return this.stringShuffler(randomString);
     }
 
-    stringShuffler(inputString) {
+    static stringShuffler(inputString) {
         let array = inputString.split('');
         let currentIndex = array.length;
         let temporaryValue;
@@ -65,15 +65,15 @@ class Randomizer {
         return array.join('');
     }
 
-    getRandomInteger(max=9, min=0) {
+    static getRandomInteger(max=9, min=0) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    getRandomFloat(min, max) {
+    static getRandomFloat(min, max) {
         return Math.random() * (max - min) + min;
     }
 
-    getRandomDatesIntervalFromTomorrow(months) {
+    static getRandomDatesIntervalFromTomorrow(months) {
         const nextDay = moment().add(1, 'days');
         const unixOne = nextDay.unix();
         const unixTwo = moment(moment().add(1, 'days')).add(months, 'months').unix();
@@ -88,8 +88,8 @@ class Randomizer {
         const finishDate = moment.unix(finishDateUnix).format('YYYY-MM-DD');
 
         const getAbsoluteMonth = (date) => {
-            const months = Number(moment(date).format("MM"));
-            const years = Number(moment(date).format("YYYY"));
+            const months = Number(moment(date, 'YYYY-MM-DD').format("MM"));
+            const years = Number(moment(date, 'YYYY-MM-DD').format("YYYY"));
             return months + (years * 12);
         }
 
@@ -101,8 +101,13 @@ class Randomizer {
 
         if (nextDay.date() === 1) finishMonthDifference++;
 
-        return { startDate: startDate, finishDate: finishDate, startMonthDifference: startMonthDifference, finishMonthDifference: finishMonthDifference }
+        return { 
+            startDate: startDate, 
+            finishDate: finishDate, 
+            startMonthDifference: startMonthDifference, 
+            finishMonthDifference: finishMonthDifference 
+        }
     }
 }
 
-module.exports = new Randomizer();
+module.exports = Randomizer;
