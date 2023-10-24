@@ -1,4 +1,5 @@
 const moment = require('moment');
+const JSONLoader = require('../data/JSONLoader');
 
 class Randomizer {
     static getRandomElementByText(baseElements, exceptionsList) {
@@ -19,7 +20,15 @@ class Randomizer {
         return element;
     }
 
-    static getRandomString(hasLowerCase=false, hasUpperCase=false, hasNumber=false, hasCyrillic=false, chosenLetter=false, minLength=1, maxLength=10) {
+    static getRandomString(
+        hasLowerCase=false, 
+        hasUpperCase=false, 
+        hasNumber=false, 
+        hasCyrillic=false, 
+        chosenLetter=false, 
+        minLength=1, 
+        maxLength=10
+        ) {
         const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz';
         const numbers = '0123456789';
@@ -38,7 +47,10 @@ class Randomizer {
 
         randomString += requiredCharacters;
       
-        const characters = (hasLowerCase ? lowerCaseLetters : '') + (hasUpperCase ? upperCaseLetters : '') + (hasNumber ? numbers : '') + (hasCyrillic ? cyrillicLetters : '');
+        const characters = (hasLowerCase ? lowerCaseLetters : '') 
+        + (hasUpperCase ? upperCaseLetters : '') 
+        + (hasNumber ? numbers : '') 
+        + (hasCyrillic ? cyrillicLetters : '');
         const charactersLength = characters.length;
         const randomLength = length - randomString.length;
 
@@ -84,16 +96,17 @@ class Randomizer {
             finishDateUnix = moment.unix(this.getRandomFloat(startDateUnix, unixTwo)).unix();
         } while ((finishDateUnix - startDateUnix) < 86400 * 2);
         
-        const startDate = moment.unix(startDateUnix).format('YYYY-MM-DD');
-        const finishDate = moment.unix(finishDateUnix).format('YYYY-MM-DD');
+        const startDate = moment.unix(startDateUnix).format(JSONLoader.testData.datesFormat);
+        const finishDate = moment.unix(finishDateUnix).format(JSONLoader.testData.datesFormat);
 
         const getAbsoluteMonth = (date) => {
-            const months = Number(moment(date, 'YYYY-MM-DD').format("MM"));
-            const years = Number(moment(date, 'YYYY-MM-DD').format("YYYY"));
+            const months = Number(moment(date, JSONLoader.testData.datesFormat).format("MM"));
+            const years = Number(moment(date, JSONLoader.testData.datesFormat).format("YYYY"));
             return months + (years * 12);
         }
 
-        const currentMonth = getAbsoluteMonth(moment.unix(unixOne).format('YYYY-MM-DD'));
+        const currentMonth = getAbsoluteMonth(moment.unix(unixOne)
+        .format(JSONLoader.testData.datesFormat));
         const startMonth = getAbsoluteMonth(startDate);
         const finishMonth = getAbsoluteMonth(finishDate);
         const startMonthDifference = startMonth - currentMonth;
