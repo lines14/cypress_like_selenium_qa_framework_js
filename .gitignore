@@ -1,5 +1,6 @@
 node_modules/
-cypress/test/log.txt
+cypress/main/utils/data/JSONLoader.js
+cypress/artifacts/
 cypress/screenshots/
 cypress/videos/
 cypress/downloads/
