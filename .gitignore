@@ -1,6 +1,5 @@
 node_modules/
 cypress/main/utils/data/JSONLoader.js
-cypress/artifacts/*
 cypress/screenshots/
 cypress/videos/
 cypress/downloads/
