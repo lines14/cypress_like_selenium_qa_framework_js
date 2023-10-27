@@ -29,7 +29,7 @@ class BaseDB {
     }
 
     async closeConnection() {
-        const logs = [`[inf] ▶ close connection to database`];
+        const logs = [`[inf] ▶ close connection to ${this.#database} database`];
         await this.#connection.end();
         return { logs }
     }
