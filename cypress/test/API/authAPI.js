@@ -18,12 +18,14 @@ class AuthAPI extends BaseAPI {
         this.#password = process.env.AUTH_PASSWORD;
     }
 
-    async auth(user) {
+    async auth({ user, APIName }) {
         const params = user 
         ? { login: user.login, password: user.password } 
         : { login: this.#login, password: this.#password };
 
-        return await this.post(JSONLoader.APIEndpoints.auth.login, params);
+        const response = await this.post(JSONLoader.APIEndpoints.auth.login, params);
+        response.logs.unshift(`[inf]   login in ${APIName} as ${params.login}:`);
+        return response;
     }
 }
 

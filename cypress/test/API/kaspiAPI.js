@@ -20,7 +20,7 @@ class KaspiAPI extends BaseAPI {
     }
 
     async setToken() {
-        const response = await authAPI.auth();
+        const response = await authAPI.auth({ APIName: 'Kaspi API' });
         this.#API = new KaspiAPI({ headers: { Authorization: `Bearer ${response.response.data.data.access_token}` } });
         return JSON.parse(jsonStringifySafe(response));
     }

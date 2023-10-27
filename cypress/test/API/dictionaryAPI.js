@@ -18,7 +18,7 @@ class DictionaryAPI extends BaseAPI {
     }
 
     async setToken() {
-        const response = await authAPI.auth();
+        const response = await authAPI.auth({ APIName: 'Dictionary API' });
         this.#API = new DictionaryAPI({ headers: { Authorization: `Bearer ${response.response.data.data.access_token}` } });
         return JSON.parse(jsonStringifySafe(response));
     }
