@@ -11,6 +11,7 @@ module.exports = defineConfig({
     video: true,
     env: {
         allure: true,
+        allureResultsPath: "./cypress/artifacts/allure-results",
         allureLogCypress: true,
         allureAvoidLoggingCommands: JSONLoader.configData.allureAvoidLoggingCommands,
         logLevel: "INFO"

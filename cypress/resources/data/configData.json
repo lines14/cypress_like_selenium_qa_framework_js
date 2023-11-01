@@ -1,6 +1,13 @@
 {
     "hiddenLogBodies": true,
     "verification": true,
+    "allureCommandlineArgs": [
+        "generate", 
+        "./cypress/artifacts/allure-results", 
+        "--clean", 
+        "-o", 
+        "./cypress/artifacts/allure-report"
+    ],
     "logTimeStampFormat": "YYYY-MM-DD HH:mm:ss",
     "DBTimeStampFormat": "YYYY-MM-DDTHH:mm:ss.SSSZ",
     "allureAvoidLoggingCommands": [

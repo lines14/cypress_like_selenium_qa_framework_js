@@ -1,6 +1,7 @@
 const allureCommandline = require('allure-commandline');
 const dictionaryAPI = require('../test/API/dictionaryAPI');
 const Logger = require('../main/utils/log/logger');
+const JSONLoader = require('../main/utils/data/JSONLoader');
 
 class BaseTest {
     static async beforeAll() {
@@ -21,7 +22,7 @@ class BaseTest {
 
     static async generateAllureReport() {
         Logger.log('[inf] ▶ generate allure report');
-        const generation = allureCommandline(['generate', 'allure-results', '--clean']);
+        const generation = allureCommandline(JSONLoader.configData.allureCommandlineArgs);
     
         return new Promise((resolve, reject) => {
             const generationTimeout = setTimeout(() => reject({ 
