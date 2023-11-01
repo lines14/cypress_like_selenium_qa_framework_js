@@ -3,7 +3,8 @@
         "login": "api/login"
     },
     "dictionary": {
-        "verify": "api/dictionary/settings/verify_bool"
+        "servers": "api/dictionary/settings/5",
+        "verifyBool": "api/dictionary/settings/verify_bool"
     },
     "kaspi": {
         "pay": "api/kaspi/kaspi/pay"

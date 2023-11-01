@@ -23,12 +23,20 @@ class DictionaryAPI extends BaseAPI {
         return JSON.parse(jsonStringifySafe(response));
     }
 
+    async toggleServer() {
+        const params = { 
+            setting: JSONLoader.configData.servers
+        }
+
+        return JSON.parse(jsonStringifySafe(await this.#API.post(JSONLoader.APIEndpoints.dictionary.servers, params)));
+    }
+
     async toggleVerification() {
         const params = { 
             value: Number(JSONLoader.configData.verification)
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.patch(JSONLoader.APIEndpoints.dictionary.verify, params)));
+        return JSON.parse(jsonStringifySafe(await this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params)));
     }
 }
 
