@@ -1,6 +1,7 @@
-const nodeEvents = require('../../support/nodeEvents');
-const mainPageMST = require('../pageObjects/mainPageMST');
+const mainPage = require('../pageObjects/mainPage');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
+const NodeEvents = require('../../support/nodeEvents');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 const { userPathMST } = require('./userPathMST');
 
 userPathMST(function payTest() {
@@ -9,9 +10,10 @@ userPathMST(function payTest() {
         cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
         policyRequestFormMST.clickKaspiPayButton();
         policyRequestFormMST.getPaymentNumber()
-        .then((paymentNumber) => nodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
-        .then((response) => cy.wrap(response).should('contain', 'оплачен'));
+        .then((paymentNumber) => NodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
+        .then((response) => cy.wrap(response)
+        .should('contain', JSONLoader.testData.responsePaid));
         policyRequestFormMST.clickMainPageButton();
-        mainPageMST.pageIsDisplayed().should('be.true');
+        mainPage.pageIsDisplayed().should('be.true');
     });
 });

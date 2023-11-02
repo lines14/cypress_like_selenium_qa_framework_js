@@ -45,7 +45,7 @@ class PolicyRequestFormMST extends BaseForm {
     #mainPageButton;
 
     constructor(startDate, finishDate) {
-        super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'policy request page');
+        super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'tourism policy request page');
         this.#countriesDropdownButton = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]'), 'countries dropdown button');
         this.#countriesDropdownElements = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span'), 'countries dropdown element');
         this.#selectedCountries = new Label(new XPATH('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span'), 'selected countries');

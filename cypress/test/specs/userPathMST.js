@@ -1,19 +1,19 @@
-const nodeEvents = require('../../support/nodeEvents');
-const mainPageMST = require('../pageObjects/mainPageMST');
-const tourismPageMST = require('../pageObjects/tourismPageMST');
-const configManager = require('../../main/utils/data/configManager');
+const mainPage = require('../pageObjects/mainPage');
+const tourismPage = require('../pageObjects/tourismPage');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
+const NodeEvents = require('../../support/nodeEvents');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 
 const userPathMST = (payTest) => {
     describe('MST smoke test:', () => {    
         it('MST client path:', { scrollBehavior: false }, () => {
             cy.open('/');
-            mainPageMST.pageIsDisplayed().should('be.true');
-            mainPageMST.clickGetInsuredButton();
-            mainPageMST.clickTourismLink();
+            mainPage.pageIsDisplayed().should('be.true');
+            mainPage.clickGetInsuredButton();
+            mainPage.clickTourismLink();
 
-            tourismPageMST.pageIsDisplayed().should('be.true');
-            tourismPageMST.clickPurchaseButton();
+            tourismPage.pageIsDisplayed().should('be.true');
+            tourismPage.clickPurchaseButton();
 
             policyRequestFormMST.pageIsDisplayed().should('be.true');
             policyRequestFormMST.selectThreeRandomCountries();
@@ -26,7 +26,7 @@ const userPathMST = (payTest) => {
             .should('be.deep.equal', displayedDates));
             policyRequestFormMST.inputIIN();
             policyRequestFormMST.getSelectedClientNameElement()
-            .should('have.text', configManager.getTestData().clientName);
+            .should('have.text', JSONLoader.testData.clientName);
             policyRequestFormMST.getSlicedDisplayedClientName()
             .then((slicedName) => policyRequestFormMST.getSelectedClientNameElement()
             .should('contain', slicedName));
@@ -48,7 +48,7 @@ const userPathMST = (payTest) => {
             policyRequestFormMST.clickNextButton()
 
             policyRequestFormMST.getSMSCodeBoxElement().should('be.visible')
-            .then(() => nodeEvents.getLastCodeFromDB())
+            .then(() => NodeEvents.getLastCodeFromDB())
             .then((code) => policyRequestFormMST.enterSMSCode(code));
  
             policyRequestFormMST.clickAcceptanceCheckbox();

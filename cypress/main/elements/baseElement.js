@@ -64,6 +64,11 @@ class BaseElement {
         this.getElement().scrollIntoView();
     }
 
+    clearData() {
+        cy.logger(`[inf] ▶ clear ${this.#elementName}`);
+        this.getElement().clear();
+    }
+
     inputData(data) {
         cy.logger(`[inf] ▶ input ${this.#elementName}`);
         this.getElement().type(data);

@@ -2,7 +2,7 @@ const BaseForm = require('../../main/baseForm');
 const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../main/elements/baseElementChildren/label');
 
-class TourismPageMST extends BaseForm {
+class TourismPage extends BaseForm {
     #purchaseButton;
 
     constructor() {
@@ -15,4 +15,4 @@ class TourismPageMST extends BaseForm {
     }
 }
 
-module.exports = new TourismPageMST();
+module.exports = new TourismPage();
