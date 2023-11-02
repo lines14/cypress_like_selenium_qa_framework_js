@@ -5,5 +5,3 @@ cypress/screenshots/
 cypress/videos/
 cypress/downloads/
 cypress/fixtures/
-allure-results/
-allure-report/
