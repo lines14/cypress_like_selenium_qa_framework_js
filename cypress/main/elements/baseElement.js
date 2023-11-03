@@ -55,8 +55,11 @@ class BaseElement {
     }
 
     getAttributeValue(attrName) {
-        cy.logger(`[inf] ▶ get ${this.#elementName} attribute value`);
-        return this.getElement().attribute(attrName);
+        cy.logger(`[inf] ▶ get ${this.#elementName} attribute "${attrName}" value:`);
+        return this.getElement().invoke('attr', attrName).then((value) => {
+            cy.logger(`[inf]   value contains: "${value}"`);
+            return cy.wrap(value);
+        });
     }
 
     scrollElementToView() {
