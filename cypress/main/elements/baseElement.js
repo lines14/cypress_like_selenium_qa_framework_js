@@ -86,26 +86,38 @@ class BaseElement {
 
     elementIsDisplayed() {
         cy.logger(`[inf] ▶ check ${this.#elementName} is present:`);
-        cy.logger(this.getElement().isDisplayed() 
-        ? `[inf]   ${this.#elementName} is present` 
-        : `[inf]   ${this.#elementName} is not present`);
-        return this.getElement().isDisplayed();
+        return this.getElement().isDisplayed().then((isDisplayed) => {
+            cy.logger(
+                isDisplayed 
+                ? `[inf]   ${this.#elementName} is present` 
+                : `[inf]   ${this.#elementName} is not present`
+            );
+            return cy.wrap(isDisplayed);
+        });
     }
 
     elementIsExisting() {
         cy.logger(`[inf] ▶ check ${this.#elementName} is exists:`);
-        cy.logger(this.getElement().isExisting() 
-        ? `[inf]   ${this.#elementName} is exists` 
-        : `[inf]   ${this.#elementName} is not exists`);
-        return this.getElement().isExisting();
+        return this.getElement().isExisting().then((isExisting) => {
+            cy.logger(
+                isExisting 
+                ? `[inf]   ${this.#elementName} is exists` 
+                : `[inf]   ${this.#elementName} is not exists`
+            );
+            return cy.wrap(isExisting);
+        });
     }
 
     elementIsEnabled() {
         cy.logger(`[inf] ▶ check ${this.#elementName} is enable:`);
-        cy.logger(this.getElement().isEnabled() 
-        ? `[inf]   ${this.#elementName} is enable` 
-        : `[inf]   ${this.#elementName} is not enable`);
-        return this.getElement().isEnabled();
+        return this.getElement().isEnabled().then((isEnabled) => {
+            cy.logger(
+                isEnabled 
+                ? `[inf]   ${this.#elementName} is enable` 
+                : `[inf]   ${this.#elementName} is not enable`
+            );
+            return cy.wrap(isEnabled);
+        });
     }
 
     // args contain required count of returning random elements and exceptions elements array:

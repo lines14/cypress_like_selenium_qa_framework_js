@@ -1,23 +1,20 @@
 require('@testing-library/cypress/add-commands');
 
 Cypress.Commands.add('open', (url, options) => {
-    cy.logger(`[info] ▶ open base URL: ${Cypress.config('baseUrl')}`);
+    cy.logger(`[inf] ▶ open base URL: ${Cypress.config('baseUrl')}`);
     cy.visit(url, options);
 });
 
 Cypress.Commands.add('isDisplayed', { prevSubject: true }, (subject) => {
-    const isDisplayed = Cypress.dom.isVisible(subject);
-    return isDisplayed;
+    return Cypress.dom.isVisible(subject);
 });
 
 Cypress.Commands.add('isEnabled', { prevSubject: true }, (subject) => {
-    const isEnabled = !subject.prop('disabled');
-    return isEnabled;
+    return !subject.prop('disabled');
 });
 
 Cypress.Commands.add('isExisting', { prevSubject: true }, (subject) => {
-    const isExisting = subject.length > 0;
-    return isExisting;
+    return subject.length > 0;
 });
 
 Cypress.Commands.add('logger', (step) => {

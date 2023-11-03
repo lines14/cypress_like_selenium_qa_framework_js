@@ -27,6 +27,9 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.inputEmail();
             policyRequestFormShanyrak.selectRandomCity();
             policyRequestFormShanyrak.inputInsuranceObjectAddressStreet();
+            policyRequestFormShanyrak.randomClickPrivateHomeCheckbox();
+            policyRequestFormShanyrak.inputInsuranceObjectAddressHouseNumber();
+            policyRequestFormShanyrak.inputInsuranceObjectAddressApartmentNumber();
         });
 
         payTest();

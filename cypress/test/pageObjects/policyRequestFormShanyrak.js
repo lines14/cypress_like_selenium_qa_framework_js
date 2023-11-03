@@ -3,6 +3,7 @@ const JSONLoader = require('../../main/utils/data/JSONLoader');
 const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Button = require('../../main/elements/baseElementChildren/button');
 const Textbox = require('../../main/elements/baseElementChildren/textbox');
+const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
 
 class PolicyRequestFormShanyrak extends BaseForm {
     #nextButton;
@@ -13,6 +14,9 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #citiesDropdownButton;
     #citiesDropdownElements;
     #insuranceObjectAddressStreetBox;
+    #privateHomeCheckbox;
+    #insuranceObjectAddressHouseNumberBox;
+    #insuranceObjectAddressApartmentNumberBox;
 
     constructor() {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'shanyrak policy request page');
@@ -24,6 +28,9 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#citiesDropdownButton = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]'), 'cities dropdown');
         this.#citiesDropdownElements = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span'), 'cities dropdown elements');
         this.#insuranceObjectAddressStreetBox = new Textbox(new XPATH('//label[contains(text(), "Улица / проспект / микрорайон")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address street');
+        this.#privateHomeCheckbox = new Checkbox(new XPATH('//label[contains(text(), "Частный дом")]'), 'private home checkbox');
+        this.#insuranceObjectAddressHouseNumberBox = new Textbox(new XPATH('//label[contains(text(), "Дом")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address house number');
+        this.#insuranceObjectAddressApartmentNumberBox = new Textbox(new XPATH('//label[contains(text(), "Квартира")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address apartment number');
     }
 
     clickNextButton() {
@@ -63,6 +70,24 @@ class PolicyRequestFormShanyrak extends BaseForm {
     inputInsuranceObjectAddressStreet() {
         this.#insuranceObjectAddressStreetBox.multipleClickElement(3);
         this.#insuranceObjectAddressStreetBox.inputData(JSONLoader.testData.insuranceObjectAddressStreet);
+    }
+
+    randomClickPrivateHomeCheckbox() {
+        this.#privateHomeCheckbox.clickCheckboxesByText();
+    }
+
+    inputInsuranceObjectAddressHouseNumber() {
+        this.#insuranceObjectAddressHouseNumberBox.multipleClickElement(3);
+        this.#insuranceObjectAddressHouseNumberBox.inputData(JSONLoader.testData.insuranceObjectAddressHouseNumber);
+    }
+
+    inputInsuranceObjectAddressApartmentNumber() {
+        this.#insuranceObjectAddressApartmentNumberBox.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                this.#insuranceObjectAddressApartmentNumberBox.multipleClickElement(3);
+                this.#insuranceObjectAddressApartmentNumberBox.inputData(JSONLoader.testData.insuranceObjectAddressApartmentNumber);
+            }
+        });
     }
 }
 
