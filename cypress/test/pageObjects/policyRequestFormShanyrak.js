@@ -1,5 +1,6 @@
 const BaseForm = require('../../main/baseForm');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
+const Randomizer = require('../../main/utils/random/randomizer');
 const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../main/elements/baseElementChildren/label');
 const Button = require('../../main/elements/baseElementChildren/button');
@@ -19,8 +20,15 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #privateHomeCheckbox;
     #insuranceObjectAddressHouseNumberBox;
     #insuranceObjectAddressApartmentNumberBox;
+    #confirmationCheckbox;
+    #calendarButton;
+    #startDateButton;
+    #calendarRightArrowButton;
+    #saveButton;
+    #acceptanceCheckbox;
+    #kaspiPayButton;
 
-    constructor() {
+    constructor(startDate) {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'shanyrak policy request page');
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
@@ -34,6 +42,13 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#privateHomeCheckbox = new Checkbox(new XPATH('//label[contains(text(), "Частный дом")]'), 'private home checkbox');
         this.#insuranceObjectAddressHouseNumberBox = new Textbox(new XPATH('//label[contains(text(), "Дом")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address house number');
         this.#insuranceObjectAddressApartmentNumberBox = new Textbox(new XPATH('//label[contains(text(), "Квартира")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address apartment number');
+        this.#confirmationCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check2"]'), 'confirmation checkbox');
+        this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
+        this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
+        this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]'), 'calendar button');
+        this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
+        this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'acceptance checkbox');
+        this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'kaspi pay button');
     }
 
     clickNextButton() {
@@ -93,6 +108,29 @@ class PolicyRequestFormShanyrak extends BaseForm {
                 }
             });
         });
+    }
+
+    clickConfirmationCheckbox() {
+        this.#confirmationCheckbox.clickElement();
+    }
+
+    inputRandomStartDate() {
+        const dates = Randomizer.getRandomDatesIntervalFromTomorrow();
+        const newInstance = new PolicyRequestFormShanyrak(dates.startDate);
+        this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
+        newInstance.#startDateButton.clickElement();
+    }
+
+    clickSaveButton() {
+        this.#saveButton.clickElement();
+    }
+
+    clickAcceptanceCheckbox() {
+        this.#acceptanceCheckbox.clickElement();
+    }
+
+    clickKaspiPayButton() {
+        this.#kaspiPayButton.clickElement();
     }
 }
 

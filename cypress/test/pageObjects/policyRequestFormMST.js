@@ -12,8 +12,8 @@ class PolicyRequestFormMST extends BaseForm {
     #countriesDropdownElements;
     #selectedCountries;
     #displayedCountries;
-    #dateStartButton;
-    #dateFinishButton;
+    #startDateButton;
+    #finishDateButton;
     #calendarTowardsButton;
     #calendarBackwardsButton;
     #calendarRightArrowButton;
@@ -50,8 +50,8 @@ class PolicyRequestFormMST extends BaseForm {
         this.#countriesDropdownElements = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span'), 'countries dropdown element');
         this.#selectedCountries = new Label(new XPATH('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span'), 'selected countries');
         this.#displayedCountries = new Label(new XPATH('//span[contains(text(), "Страна:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span'), 'displayed countries');
-        this.#dateStartButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
-        this.#dateFinishButton = new Button(new XPATH(`//td[@title="${finishDate}"]`), 'finish date');
+        this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
+        this.#finishDateButton = new Button(new XPATH(`//td[@title="${finishDate}"]`), 'finish date');
         this.#calendarTowardsButton = new Button(new XPATH('//span[contains(text(), "Туда")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]'), 'calendar towards button');
         this.#calendarBackwardsButton = new Button(new XPATH('//span[contains(text(), "Обратно")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]'), 'calendar backwards button');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
@@ -96,12 +96,12 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputRandomDates() {
-        const datesInterval = Randomizer.getRandomDatesIntervalFromTomorrow(JSONLoader.testData.monthsCount);
-        const newInstance = new PolicyRequestFormMST(datesInterval.startDate, datesInterval.finishDate);
-        this.#calendarTowardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, datesInterval.startMonthDifference);
-        newInstance.#dateStartButton.clickElement();
-        this.#calendarBackwardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, datesInterval.finishMonthDifference);
-        newInstance.#dateFinishButton.clickElement();
+        const dates = Randomizer.getRandomDatesIntervalFromTomorrow(JSONLoader.testData.monthsCount);
+        const newInstance = new PolicyRequestFormMST(dates.startDate, dates.finishDate);
+        this.#calendarTowardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
+        newInstance.#startDateButton.clickElement();
+        this.#calendarBackwardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.finishMonthDifference);
+        newInstance.#finishDateButton.clickElement();
     }
 
     getSelectedDates() {

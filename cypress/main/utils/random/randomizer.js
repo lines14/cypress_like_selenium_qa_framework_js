@@ -85,7 +85,7 @@ class Randomizer {
         return Math.random() * (max - min) + min;
     }
 
-    static getRandomDatesIntervalFromTomorrow(months) {
+    static getRandomDatesIntervalFromTomorrow(months=1) {
         const nextDay = moment().add(1, 'days');
         const unixOne = nextDay.unix();
         const unixTwo = moment(moment().add(1, 'days')).add(months, 'months').unix();

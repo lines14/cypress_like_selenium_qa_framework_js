@@ -30,6 +30,10 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.randomClickPrivateHomeCheckbox();
             policyRequestFormShanyrak.inputInsuranceObjectAddressHouseNumber();
             policyRequestFormShanyrak.inputInsuranceObjectAddressApartmentNumber();
+            policyRequestFormShanyrak.clickConfirmationCheckbox();
+            policyRequestFormShanyrak.inputRandomStartDate();
+            policyRequestFormShanyrak.clickSaveButton();
+            policyRequestFormShanyrak.clickAcceptanceCheckbox();
         });
 
         payTest();
