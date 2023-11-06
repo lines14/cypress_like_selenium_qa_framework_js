@@ -7,11 +7,14 @@ const { userPathShanyrak } = require('./userPathShanyrak');
 userPathShanyrak(function payTest() {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
         policyRequestFormShanyrak.clickKaspiPayButton();
-        // policyRequestFormShanyrak.getPaymentNumber()
-        // .then((paymentNumber) => NodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
-        // .then((response) => cy.wrap(response)
-        // .should('contain', JSONLoader.testData.responsePaid));
-        // policyRequestFormShanyrak.clickMainPageButton();
-        // mainPage.pageIsDisplayed().should('be.true');
+        policyRequestFormShanyrak.getOrderPaymentElement().should('be.visible');
+        policyRequestFormShanyrak.getSumToPay().then((sumToPay) => {
+            policyRequestFormShanyrak.getPaymentNumber()
+            .then((paymentNumber) => NodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
+            .then((response) => cy.wrap(response)
+            .should('contain', JSONLoader.testData.responsePaid));
+        });
+        policyRequestFormShanyrak.clickMainPageButton();
+        mainPage.pageIsDisplayed().should('be.true');
     });
 });

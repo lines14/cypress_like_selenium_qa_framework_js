@@ -27,6 +27,10 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #saveButton;
     #acceptanceCheckbox;
     #kaspiPayButton;
+    #orderPayment;
+    #sumToPay;
+    #paymentNumber;
+    #mainPageButton;
 
     constructor(startDate) {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'shanyrak policy request page');
@@ -49,6 +53,10 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
         this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'acceptance checkbox');
         this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'kaspi pay button');
+        this.#orderPayment = new Label(new XPATH('//p[contains(text(), "Оплата заказа")]'), 'order payment');
+        this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
+        this.#paymentNumber = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//child::b'), 'payment number');
+        this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
     }
 
     clickNextButton() {
@@ -131,6 +139,23 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
     clickKaspiPayButton() {
         this.#kaspiPayButton.clickElement();
+    }
+
+    getOrderPaymentElement() {
+        return this.#orderPayment.getElement();
+    }
+
+    getSumToPay() {
+        return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
+    }
+
+    getPaymentNumber() {
+        this.#paymentNumber.getElement();
+        return this.#paymentNumber.getText();
+    }
+
+    clickMainPageButton() {
+        this.#mainPageButton.clickElement();
     }
 }
 
