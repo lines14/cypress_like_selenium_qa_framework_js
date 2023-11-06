@@ -34,6 +34,8 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.inputRandomStartDate();
             policyRequestFormShanyrak.clickSaveButton();
             policyRequestFormShanyrak.clickAcceptanceCheckbox();
+            policyRequestFormShanyrak.getSumToPay()
+            .then((sum) => cy.setLocalStorage('sumToPay', sum));
         });
 
         payTest();

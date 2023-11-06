@@ -30,6 +30,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #orderPayment;
     #sumToPay;
     #paymentNumber;
+    #epayButton;
     #mainPageButton;
 
     constructor(startDate) {
@@ -57,6 +58,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#paymentNumber = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//child::b'), 'payment number');
         this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
+        this.#epayButton = new Button(new XPATH('//button[contains(text(), "Картой")]'), 'epay button');
     }
 
     clickNextButton() {
@@ -152,6 +154,10 @@ class PolicyRequestFormShanyrak extends BaseForm {
     getPaymentNumber() {
         this.#paymentNumber.getElement();
         return this.#paymentNumber.getText();
+    }
+
+    clickEpayButton() {
+        this.#epayButton.clickElement();
     }
 
     clickMainPageButton() {
