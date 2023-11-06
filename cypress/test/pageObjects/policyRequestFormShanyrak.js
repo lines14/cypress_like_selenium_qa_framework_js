@@ -57,8 +57,8 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#orderPayment = new Label(new XPATH('//p[contains(text(), "Оплата заказа")]'), 'order payment');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#paymentNumber = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//child::b'), 'payment number');
+        this.#epayButton = new Button(new XPATH('//button[contains(text(), "картой")]'), 'epay button');
         this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
-        this.#epayButton = new Button(new XPATH('//button[contains(text(), "Картой")]'), 'epay button');
     }
 
     clickNextButton() {

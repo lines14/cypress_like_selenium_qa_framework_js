@@ -18,7 +18,7 @@ module.exports = defineConfig({
     },
     e2e: {
         baseUrl: '' || process.env.BASE_URL,
-        specPattern: "./cypress/test/specs/kaspiPayShanyrak.js",
+        specPattern: "./cypress/test/specs/kaspiPay*.js",
         supportFile: "./cypress/support/e2e.js",
         testIsolation: false,
         viewportHeight: 1080,
