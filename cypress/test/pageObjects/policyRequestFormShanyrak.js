@@ -61,12 +61,12 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
     }
 
-    clickNextButton() {
-        this.#nextButton.clickElement();
-    }
-
     inputPhone() {
         this.#phoneBox.inputData(JSONLoader.testData.clientPhone);
+    }
+
+    clickNextButton() {
+        this.#nextButton.clickElement();
     }
 
     getSMSCodeBoxElement() {
