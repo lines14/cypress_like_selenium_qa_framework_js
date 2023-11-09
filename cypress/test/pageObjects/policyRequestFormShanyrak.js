@@ -39,7 +39,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'Shanyrak policy request page');
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
-        this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code box');
+        this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code');
         this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'IIN');
         this.#displayedClientName = new Label(new XPATH('//span[@class="subtitle-16 -green"]'), 'displayed client name');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
@@ -82,7 +82,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     inputIIN() {
-        this.#IINBox.multipleClickElement(3);
         this.#IINBox.inputData(JSONLoader.testData.clientIIN);
     }
 
@@ -108,7 +107,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     inputInsuranceObjectAddressStreet() {
-        this.#insuranceObjectAddressStreetBox.multipleClickElement(3);
         this.#insuranceObjectAddressStreetBox.inputData(JSONLoader.testData.insuranceObjectAddressStreet);
     }
 
@@ -117,7 +115,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     inputInsuranceObjectAddressHouseNumber() {
-        this.#insuranceObjectAddressHouseNumberBox.multipleClickElement(3);
         this.#insuranceObjectAddressHouseNumberBox.inputData(JSONLoader.testData.insuranceObjectAddressHouseNumber);
     }
 
@@ -125,7 +122,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#privateHomeCheckboxWrapper.getAttributeValue('value').then((value) => {
             this.#insuranceObjectAddressApartmentNumberBox.elementIsDisplayed().then((isDisplayed) => {
                 if (!Boolean(value) && isDisplayed) {
-                    this.#insuranceObjectAddressApartmentNumberBox.multipleClickElement(3);
                     this.#insuranceObjectAddressApartmentNumberBox.inputData(JSONLoader.testData.insuranceObjectAddressApartmentNumber);
                 }
             });
