@@ -34,11 +34,11 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #mainPageButton;
 
     constructor(startDate) {
-        super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'shanyrak policy request page');
+        super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'Shanyrak policy request page');
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
-        this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'sms code box');
-        this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'iin');
+        this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code box');
+        this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'IIN');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#citiesDropdownButton = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]'), 'cities dropdown');
         this.#citiesDropdownElements = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span'), 'cities dropdown elements');
@@ -53,11 +53,11 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//parent::div[@class="form-item"]//following-sibling::div[@class="form-item__icon"]'), 'calendar button');
         this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
         this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'acceptance checkbox');
-        this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'kaspi pay button');
+        this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
         this.#orderPayment = new Label(new XPATH('//p[contains(text(), "Оплата заказа")]'), 'order payment');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#paymentNumber = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//child::b'), 'payment number');
-        this.#epayButton = new Button(new XPATH('//button[contains(text(), "картой")]'), 'epay button');
+        this.#epayButton = new Button(new XPATH('//button[contains(text(), "картой")]'), 'Epay button');
         this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
     }
 

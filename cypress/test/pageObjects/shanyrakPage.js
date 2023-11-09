@@ -6,7 +6,7 @@ class ShanyrakPage extends BaseForm {
     #purchaseButton;
 
     constructor() {
-        super(new XPATH('//h1[contains(text(), "Страхование квартиры или дома")]'), 'shanyrak page');
+        super(new XPATH('//h1[contains(text(), "Страхование квартиры или дома")]'), 'Shanyrak page');
         this.#purchaseButton = new Label(new XPATH('//a[contains(text(), "Купить онлайн")]'), 'purchase button');
     }
 

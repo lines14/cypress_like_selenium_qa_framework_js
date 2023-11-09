@@ -1,5 +1,5 @@
 const mainPage = require('../pageObjects/mainPage');
-const obligatoryTransportPage = require('../pageObjects/obligatoryTransportPage');
+const OGPOPage = require('../pageObjects/OGPOPage');
 const policyRequestFormOGPO = require('../pageObjects/policyRequestFormOGPO');
 // const NodeEvents = require('../../support/nodeEvents');
 
@@ -9,11 +9,11 @@ const userPathOGPO = (payTest) => {
             cy.open('/');
             mainPage.pageIsDisplayed().should('be.true');
             mainPage.clickGetInsuredButton();
-            mainPage.clickSummaryTransportButton();
-            mainPage.clickObligatoryTransportLink();
+            mainPage.clickTransportButton();
+            mainPage.clickOGPOLink();
 
-            obligatoryTransportPage.pageIsDisplayed().should('be.true');
-            obligatoryTransportPage.clickPurchaseButton();
+            OGPOPage.pageIsDisplayed().should('be.true');
+            OGPOPage.clickPurchaseButton();
 
             policyRequestFormOGPO.pageIsDisplayed().should('be.true');
             policyRequestFormOGPO.inputPhone();

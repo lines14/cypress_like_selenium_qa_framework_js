@@ -45,7 +45,7 @@ class PolicyRequestFormMST extends BaseForm {
     #mainPageButton;
 
     constructor(startDate, finishDate) {
-        super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'tourism policy request page');
+        super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'MST policy request page');
         this.#countriesDropdownButton = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]'), 'countries dropdown button');
         this.#countriesDropdownElements = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span'), 'countries dropdown element');
         this.#selectedCountries = new Label(new XPATH('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span'), 'selected countries');
@@ -57,7 +57,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#selectedDates = new Button(new XPATH('//input[@name="date"]'), 'selected dates');
         this.#displayedDates = new Label(new XPATH('//span[contains(text(), "Срок действия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span'), 'displayed dates');
-        this.#IINBox = new Textbox(new XPATH('//input[@id="iinInput"]'), 'iin');
+        this.#IINBox = new Textbox(new XPATH('//input[@id="iinInput"]'), 'IIN');
         this.#selectedClientName = new Label(new XPATH('//span[@class="subtitle-16"]'), 'selected client name');
         this.#displayedClientName = new Label(new XPATH('//span[contains(text(), "Туристы:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span'), 'displayed client name');
         this.#insuranceLimitDropdownButton = new Button(new XPATH('//span[contains(text(), "Лимит страхования")]//parent::div[@placeholder="Выберите из списка"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]'), 'insurance limit dropdown');
@@ -74,11 +74,11 @@ class PolicyRequestFormMST extends BaseForm {
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
-        this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'sms code box');
+        this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'SMS code box');
         this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check1"]'), 'acceptance checkbox');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
-        this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'kaspi pay button');
-        this.#epayButton = new Button(new XPATH('//button[contains(text(), "Картой")]'), 'epay button');
+        this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
+        this.#epayButton = new Button(new XPATH('//button[contains(text(), "Картой")]'), 'Epay button');
         this.#paymentNumber = new Label(new XPATH('//li[contains(@class, "mb-2")]//span'), 'payment number');
         this.#mainPageButton = new Button(new XPATH('//span[contains(text(), "На главную")]'), 'main page button');
     }

@@ -17,12 +17,12 @@ class EpayPage extends BaseForm {
     #closeButton;
 
     constructor() {
-        super(new XPATH('//td[contains(text(), "На проведение платежа выделяется")]'), 'epay page');
+        super(new XPATH('//td[contains(text(), "На проведение платежа выделяется")]'), 'Epay page');
         this.#amount = new Label(new XPATH('//div[@class="amount"]//span'), 'amount to pay');
         this.#cardNumberBox = new Textbox(new XPATH('//input[@name="cardnumber"]'), 'card number');
         this.#expireMonthBox = new Textbox(new XPATH('//input[@name="ccmonth"]'), 'expire month');
         this.#expireYearBox = new Textbox(new XPATH('//input[@name="ccyear"]'), 'expire year');
-        this.#CVCBox = new Textbox(new XPATH('//input[@name="cvc"]'), 'cvc');
+        this.#CVCBox = new Textbox(new XPATH('//input[@name="cvc"]'), 'CVC');
         this.#emailBox = new Textbox(new XPATH('//input[@name="email"]'), 'email');
         this.#payButton = new Button(new XPATH('//span[contains(text(), "Оплатить")]'), 'pay button');
         this.#status = new Label(new XPATH('//div[@class="status"]'), 'payment status');

@@ -4,18 +4,18 @@ const Label = require('../../main/elements/baseElementChildren/label');
 const Button = require('../../main/elements/baseElementChildren/button');
 
 class MainPage extends BaseForm {
-    #tourismLink;
+    #MSTLink;
     #shanyrakLink;
-    #summaryTransportButton;
-    #obligatoryTransportLink;
+    #transportButton;
+    #OGPOLink;
     #getInsuredButton;
 
     constructor() {
         super(new XPATH('//button[contains(text(), "Застраховаться")]'), 'main page');
-        this.#tourismLink = new Label(new XPATH('//a[contains(text(), "Подробнее") and @href="/mst"]'), 'tourism link');
-        this.#shanyrakLink = new Label(new XPATH('//a[contains(text(), "Подробнее") and @href="/home"]'), 'shanyrak link');
-        this.#summaryTransportButton = new Button(new XPATH('//button[contains(text(), "Подробнее")]'), 'summary transport button');
-        this.#obligatoryTransportLink = new Label(new XPATH('//a[contains(text(), "ОГПО ВТС")]'), 'obligatory transport link');
+        this.#MSTLink = new Label(new XPATH('//a[contains(text(), "Подробнее") and @href="/mst"]'), 'MST link');
+        this.#shanyrakLink = new Label(new XPATH('//a[contains(text(), "Подробнее") and @href="/home"]'), 'Shanyrak link');
+        this.#transportButton = new Button(new XPATH('//button[contains(text(), "Подробнее")]'), 'transport button');
+        this.#OGPOLink = new Label(new XPATH('//a[contains(text(), "ОГПО ВТС")]'), 'OGPO link');
         this.#getInsuredButton = new Button(new XPATH('//button[contains(text(), "Застраховаться")]'), 'get insured button');
     }
 
@@ -23,20 +23,20 @@ class MainPage extends BaseForm {
         this.#getInsuredButton.clickElement();
     }
 
-    clickTourismLink() {
-        this.#tourismLink.clickElement();
+    clickMSTLink() {
+        this.#MSTLink.clickElement();
     }
 
     clickShanyrakLink() {
         this.#shanyrakLink.clickElement();
     }
 
-    clickSummaryTransportButton() {
-        this.#summaryTransportButton.clickElement();
+    clickTransportButton() {
+        this.#transportButton.clickElement();
     }
 
-    clickObligatoryTransportLink() {
-        this.#obligatoryTransportLink.clickElement();
+    clickOGPOLink() {
+        this.#OGPOLink.clickElement();
     }
 }
 

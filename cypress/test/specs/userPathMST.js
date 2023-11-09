@@ -1,5 +1,5 @@
 const mainPage = require('../pageObjects/mainPage');
-const tourismPage = require('../pageObjects/tourismPage');
+const MSTPage = require('../pageObjects/MSTPage');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
@@ -10,10 +10,10 @@ const userPathMST = (payTest) => {
             cy.open('/');
             mainPage.pageIsDisplayed().should('be.true');
             mainPage.clickGetInsuredButton();
-            mainPage.clickTourismLink();
+            mainPage.clickMSTLink();
 
-            tourismPage.pageIsDisplayed().should('be.true');
-            tourismPage.clickPurchaseButton();
+            MSTPage.pageIsDisplayed().should('be.true');
+            MSTPage.clickPurchaseButton();
 
             policyRequestFormMST.pageIsDisplayed().should('be.true');
             policyRequestFormMST.selectThreeRandomCountries();

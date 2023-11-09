@@ -2,11 +2,11 @@ const BaseForm = require('../../main/baseForm');
 const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../main/elements/baseElementChildren/label');
 
-class TourismPage extends BaseForm {
+class MSTPage extends BaseForm {
     #purchaseButton;
 
     constructor() {
-        super(new XPATH('//h1[contains(text(), "Медицинское страхование туристов")]'), 'tourism page');
+        super(new XPATH('//h1[contains(text(), "Медицинское страхование туристов")]'), 'MST page');
         this.#purchaseButton = new Label(new XPATH('//a[contains(text(), "Купить")]'), 'purchase button');
     }
 
@@ -15,4 +15,4 @@ class TourismPage extends BaseForm {
     }
 }
 
-module.exports = new TourismPage();
+module.exports = new MSTPage();

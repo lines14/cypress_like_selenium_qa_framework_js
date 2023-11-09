@@ -4,7 +4,7 @@ const JSONLoader = require('../../main/utils/data/JSONLoader');
 const { userPathShanyrak } = require('./userPathShanyrak');
 
 userPathShanyrak(function payTest() {
-    it('Pay with epay:', { scrollBehavior: false }, () => {
+    it('Pay with Epay:', { scrollBehavior: false }, () => {
         policyRequestFormShanyrak.clickEpayButton();
         epayPage.pageIsDisplayed().should('be.true');
         cy.getLocalStorage('sumToPay')
