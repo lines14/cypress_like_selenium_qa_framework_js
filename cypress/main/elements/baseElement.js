@@ -26,7 +26,7 @@ class BaseElement {
 
     clickElement() {
         cy.logger(`[inf] ▶ click ${this.#elementName}`);
-        this.getElement().click('right');
+        this.getElement().click();
     }
 
     doubleClickElement() {

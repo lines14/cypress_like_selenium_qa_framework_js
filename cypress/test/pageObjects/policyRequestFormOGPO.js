@@ -42,7 +42,7 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
         this.#moreLink = new Button(new XPATH('//span[contains(text(), "Еще")]'), 'more link');
         this.#SMSNotifyCheckbox = new Checkbox(new XPATH('//label[contains(text(), "Получить уведомление через СМС")]'), 'SMS notify checkbox');
-        this.#calculateButton = new Button(new XPATH('//button[contains(normalize-space(.), "Рассчитать сумму")]'), 'calculate button');
+        this.#calculateButton = new Button(new XPATH('//button[@class="button -green right dt"]'), 'calculate button');
     }
 
     inputPhone() {
