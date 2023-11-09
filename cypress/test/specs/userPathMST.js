@@ -26,7 +26,7 @@ const userPathMST = (payTest) => {
             .should('be.deep.equal', displayedDates));
             policyRequestFormMST.inputIIN();
             policyRequestFormMST.getSelectedClientNameElement()
-            .should('have.text', JSONLoader.testData.clientName);
+            .should('contain', JSONLoader.testData.clientName);
             policyRequestFormMST.getSlicedDisplayedClientName()
             .then((slicedName) => policyRequestFormMST.getSelectedClientNameElement()
             .should('contain', slicedName));

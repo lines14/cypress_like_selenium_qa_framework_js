@@ -12,6 +12,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #phoneBox;
     #SMSCodeBox;
     #IINBox;
+    #displayedClientName;
     #emailBox;
     #citiesDropdownButton;
     #citiesDropdownElements;
@@ -28,6 +29,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #acceptanceCheckbox;
     #kaspiPayButton;
     #orderPayment;
+    #price;
     #sumToPay;
     #paymentNumber;
     #epayButton;
@@ -39,6 +41,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
         this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code box');
         this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'IIN');
+        this.#displayedClientName = new Label(new XPATH('//span[@class="subtitle-16 -green"]'), 'displayed client name');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#citiesDropdownButton = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]'), 'cities dropdown');
         this.#citiesDropdownElements = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span'), 'cities dropdown elements');
@@ -55,6 +58,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'acceptance checkbox');
         this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
         this.#orderPayment = new Label(new XPATH('//p[contains(text(), "Оплата заказа")]'), 'order payment');
+        this.#price = new Label(new XPATH('//div[@class="text" and contains(normalize-space(), "Фиксированная стоимость")]//preceding-sibling::div[@class="price"]'), 'price');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#paymentNumber = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//child::b'), 'payment number');
         this.#epayButton = new Button(new XPATH('//button[contains(text(), "картой")]'), 'Epay button');
@@ -80,6 +84,14 @@ class PolicyRequestFormShanyrak extends BaseForm {
     inputIIN() {
         this.#IINBox.multipleClickElement(3);
         this.#IINBox.inputData(JSONLoader.testData.clientIIN);
+    }
+
+    getSlicedDisplayedClientName() {
+        return this.#displayedClientName.getText().then((text) => {
+            const nameList = text.split(' ').reverse().slice(1);
+            nameList.push(nameList.pop().slice(0, 1));
+            return nameList.join(' ');
+        });
     }
 
     clearPreviousEmail() {
@@ -145,6 +157,10 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
     getOrderPaymentElement() {
         return this.#orderPayment.getElement();
+    }
+
+    getPrice() {
+        return this.#price.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
     }
 
     getSumToPay() {

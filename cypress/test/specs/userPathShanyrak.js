@@ -2,6 +2,7 @@ const mainPage = require('../pageObjects/mainPage');
 const shanyrakPage = require('../pageObjects/shanyrakPage');
 const policyRequestFormShanyrak = require('../pageObjects/policyRequestFormShanyrak');
 const NodeEvents = require('../../support/nodeEvents');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 
 const userPathShanyrak = (payTest) => {
     describe('Shanyrak smoke test:', () => {    
@@ -23,6 +24,8 @@ const userPathShanyrak = (payTest) => {
             .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
 
             policyRequestFormShanyrak.inputIIN();
+            policyRequestFormShanyrak.getSlicedDisplayedClientName()
+            .should('be.equal', JSONLoader.testData.clientName);
             policyRequestFormShanyrak.clearPreviousEmail();
             policyRequestFormShanyrak.inputEmail();
             policyRequestFormShanyrak.selectRandomCity();
@@ -34,6 +37,9 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.inputRandomStartDate();
             policyRequestFormShanyrak.clickSaveButton();
             policyRequestFormShanyrak.clickAcceptanceCheckbox();
+            policyRequestFormShanyrak.getPrice()
+            .then((price) => policyRequestFormShanyrak.getSumToPay()
+            .should('be.equal', price));
             policyRequestFormShanyrak.getSumToPay()
             .then((sum) => cy.setLocalStorage('sumToPay', sum));
         });
