@@ -37,11 +37,11 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.inputRandomStartDate();
             policyRequestFormShanyrak.clickSaveButton();
             policyRequestFormShanyrak.clickAcceptanceCheckbox();
-            policyRequestFormShanyrak.getPrice()
-            .then((price) => policyRequestFormShanyrak.getSumToPay()
-            .should('be.equal', price));
-            policyRequestFormShanyrak.getSumToPay()
-            .then((sum) => cy.setLocalStorage('sumToPay', sum));
+            policyRequestFormShanyrak.getSumToPay().then((sum) => {
+                policyRequestFormShanyrak.getPrice()
+                .should('be.equal', sum);
+                cy.setLocalStorage('sumToPay', sum);
+            });
         });
 
         payTest();
