@@ -22,8 +22,11 @@ class PolicyRequestFormOGPO extends BaseForm {
     #calendarRightArrowButton;
     #startDateButton;
     #moreLink;
-    #SMSNotifyCheckbox;
+    #SMSNotifyCheckboxLabel;
     #calculateButton;
+    #familiarizedCheckbox;
+    #mutualStateCheckboxLabel;
+    #mutualInfoAgreedCheckbox;
     
     constructor(startDate) {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'OGPO policy request page');
@@ -41,8 +44,11 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
         this.#moreLink = new Button(new XPATH('//span[contains(text(), "Еще")]'), 'more link');
-        this.#SMSNotifyCheckbox = new Checkbox(new XPATH('//label[contains(text(), "Получить уведомление через СМС")]'), 'SMS notify checkbox');
+        this.#SMSNotifyCheckboxLabel = new Label(new XPATH('//label[contains(text(), "Получить уведомление через СМС")]'), 'SMS notify checkbox');
         this.#calculateButton = new Button(new XPATH('//button[@class="button -green right dt"]'), 'calculate button');
+        this.#familiarizedCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'familiarized checkbox');
+        this.#mutualStateCheckboxLabel = new Label(new XPATH('//label[@for="mutual_state" and contains(text(), "Включить обоюдку в полис")]'), 'mutual state checkbox');
+        this.#mutualInfoAgreedCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="mutual_info_agreed"]'), 'mutual info agreed checkbox');
     }
 
     inputPhone() {
@@ -105,11 +111,22 @@ class PolicyRequestFormOGPO extends BaseForm {
     }
 
     randomClickSMSNotifyCheckbox() {
-        this.#SMSNotifyCheckbox.clickCheckboxesByText();
+        this.#SMSNotifyCheckboxLabel.clickCheckboxesByText();
     }
 
     clickCalculateButton() {
         this.#calculateButton.clickElement();
+    }
+
+    clickFamiliarizedCheckbox() {
+        this.#familiarizedCheckbox.clickElement();
+    }
+
+    randomClickMutualCheckbox() {
+        this.#mutualStateCheckboxLabel.clickCheckboxesByText();
+        this.#mutualInfoAgreedCheckbox.elementIsEnabled().then((isEnabled) => {
+            if (isEnabled) this.#mutualInfoAgreedCheckbox.clickElement();
+        });
     }
 }
 

@@ -18,7 +18,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #citiesDropdownElements;
     #insuranceObjectAddressStreetBox;
     #privateHomeCheckboxWrapper;
-    #privateHomeCheckbox;
+    #privateHomeCheckboxLabel;
     #insuranceObjectAddressHouseNumberBox;
     #insuranceObjectAddressApartmentNumberBox;
     #confirmationCheckbox;
@@ -47,7 +47,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#citiesDropdownElements = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span'), 'cities dropdown elements');
         this.#insuranceObjectAddressStreetBox = new Textbox(new XPATH('//label[contains(text(), "Улица / проспект / микрорайон")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address street');
         this.#privateHomeCheckboxWrapper = new Label(new XPATH('//label[contains(text(), "Частный дом")]//parent::div[contains(@class, "item")]'), 'private home checkbox wrapper');
-        this.#privateHomeCheckbox = new Checkbox(new XPATH('//label[contains(text(), "Частный дом")]'), 'private home checkbox');
+        this.#privateHomeCheckboxLabel = new Label(new XPATH('//label[contains(text(), "Частный дом")]'), 'private home checkbox');
         this.#insuranceObjectAddressHouseNumberBox = new Textbox(new XPATH('//label[contains(text(), "Дом")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address house number');
         this.#insuranceObjectAddressApartmentNumberBox = new Textbox(new XPATH('//label[contains(text(), "Квартира")]//parent::div[@class="form-item"]//following-sibling::input'), 'insurance object address apartment number');
         this.#confirmationCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check2"]'), 'confirmation checkbox');
@@ -111,7 +111,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     randomClickPrivateHomeCheckbox() {
-        this.#privateHomeCheckbox.clickCheckboxesByText();
+        this.#privateHomeCheckboxLabel.clickCheckboxesByText();
     }
 
     inputInsuranceObjectAddressHouseNumber() {

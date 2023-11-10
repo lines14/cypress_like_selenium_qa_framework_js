@@ -29,7 +29,7 @@ class PolicyRequestFormMST extends BaseForm {
     #displayedPurposeOfTheTrip;
     #purposeOfTheTripDropdownElements;
     #purposeOfTheTripEducation;
-    #additionalCheckboxes;
+    #additionalCheckboxLabel;
     #calculateButton;
     #displayedPolicyCost;
     #displayedPolicyDiscount;
@@ -67,7 +67,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.#displayedPurposeOfTheTrip = new Label(new XPATH('//span[contains(text(), "Цель путешествия:")]//parent::div[@class="item"]//following-sibling::div[@class="text-14"]//span'), 'displayed purpose of the trip');
         this.#purposeOfTheTripDropdownElements = new Button(new XPATH('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span'), 'purpose of the trip dropdown elements');
         this.#purposeOfTheTripEducation = new Button(new XPATH('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span[contains(text(), "Обучение")]'), 'purpose of the trip "education"');
-        this.#additionalCheckboxes = new Checkbox(new XPATH('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label'), 'additional checkboxes');
+        this.#additionalCheckboxLabel = new Label(new XPATH('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label'), 'additional checkbox');
         this.#calculateButton = new Button(new XPATH('//button[contains(text(), "Рассчитать")]'), 'calculate button');
         this.#displayedPolicyCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса")]//following-sibling::span'), 'displayed policy cost');
         this.#displayedPolicyDiscount = new Label(new XPATH('//span[contains(text(), "Ваша скидка")]//following-sibling::span'), 'displayed policy discount');
@@ -147,7 +147,7 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     clickRandomAdditionalCheckboxes() {
-        this.#additionalCheckboxes.clickCheckboxesByText();
+        this.#additionalCheckboxLabel.clickCheckboxesByText();
     }
 
     clickCalculateButton() {

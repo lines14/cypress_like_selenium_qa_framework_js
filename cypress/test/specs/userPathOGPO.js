@@ -45,6 +45,8 @@ const userPathOGPO = (payTest) => {
             policyRequestFormOGPO.clickMoreLink();
             policyRequestFormOGPO.randomClickSMSNotifyCheckbox();
             policyRequestFormOGPO.clickCalculateButton();
+            policyRequestFormOGPO.clickFamiliarizedCheckbox();
+            policyRequestFormOGPO.randomClickMutualCheckbox();
         });
 
         payTest();
