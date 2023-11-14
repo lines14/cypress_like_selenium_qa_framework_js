@@ -87,21 +87,21 @@ class BaseElement {
         this.getElement().type(`${data}{enter}`);
     }
 
-    elementIsDisplayed() {
-        cy.logger(`[inf] ▶ check ${this.#elementName} is present:`);
-        return this.getElement().isDisplayed().then((isDisplayed) => {
-            cy.logger(
-                isDisplayed 
-                ? `[inf]   ${this.#elementName} is present` 
-                : `[inf]   ${this.#elementName} is not present`
-            );
-            return cy.wrap(isDisplayed);
-        });
-    }
+    // elementIsDisplayed() {
+    //     cy.logger(`[inf] ▶ check ${this.#elementName} is present:`);
+    //     return this.getElement().isDisplayed().then((isDisplayed) => {
+    //         cy.logger(
+    //             isDisplayed 
+    //             ? `[inf]   ${this.#elementName} is present` 
+    //             : `[inf]   ${this.#elementName} is not present`
+    //         );
+    //         return cy.wrap(isDisplayed);
+    //     });
+    // }
 
     elementIsExisting() {
         cy.logger(`[inf] ▶ check ${this.#elementName} is exists:`);
-        return this.getElement().isExisting().then((isExisting) => {
+        return cy.isExisting(this.#elementLocator).then((isExisting) => {
             cy.logger(
                 isExisting 
                 ? `[inf]   ${this.#elementName} is exists` 

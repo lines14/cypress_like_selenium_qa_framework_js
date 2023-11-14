@@ -1,20 +1,20 @@
-// const mainPage = require('../pageObjects/mainPage');
-// const policyRequestFormOGPO = require('../pageObjects/policyRequestFormOGPO');
-// const NodeEvents = require('../../support/nodeEvents');
-// const JSONLoader = require('../../main/utils/data/JSONLoader');
+const mainPage = require('../pageObjects/mainPage');
+const policyRequestFormOGPO = require('../pageObjects/policyRequestFormOGPO');
+const NodeEvents = require('../../support/nodeEvents');
+const JSONLoader = require('../../main/utils/data/JSONLoader');
 const { userPathOGPO } = require('./userPathOGPO');
 
 userPathOGPO(function payTest() {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
         // let sumToPay;
         // cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
-        // policyRequestFormShanyrak.clickKaspiPayButton();
-        // policyRequestFormShanyrak.getOrderPaymentElement().should('be.visible');
-        // policyRequestFormShanyrak.getPaymentNumber()
+        // policyRequestFormOGPO.clickKaspiPayButton();
+        // policyRequestFormOGPO.getOrderPaymentElement().should('be.visible');
+        // policyRequestFormOGPO.getPaymentNumber()
         // .then((paymentNumber) => NodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
         // .then((response) => cy.wrap(response)
         // .should('contain', JSONLoader.testData.responsePaid));
-        // policyRequestFormShanyrak.clickMainPageButton();
+        // policyRequestFormOGPO.clickMainPageButton();
         // mainPage.pageIsDisplayed().should('be.true');
     });
 });

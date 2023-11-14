@@ -17,7 +17,7 @@ class PolicyRequestFormOGPO extends BaseForm {
     #carNumberBox;
     #carRegistrationBox;
     #searchButton;
-    #displayedCarModel;
+    #selectedCarModel;
     #calendarButton;
     #calendarRightArrowButton;
     #startDateButton;
@@ -27,6 +27,9 @@ class PolicyRequestFormOGPO extends BaseForm {
     #familiarizedCheckbox;
     #mutualStateCheckboxLabel;
     #mutualInfoAgreedCheckbox;
+    #selectedOGPOCost;
+    #selectedMutualCost;
+    #sumToPay;
     
     constructor(startDate) {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'OGPO policy request page');
@@ -39,7 +42,7 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#carNumberBox = new Textbox(new XPATH('//label[contains(text(), "Гос. номер")]//parent::div[@class="form-item"]//following-sibling::input'), 'car number');
         this.#carRegistrationBox = new Textbox(new XPATH('//label[contains(text(), "Номер техпаспорта")]//parent::div[@class="form-item"]//following-sibling::input'), 'car registration');
         this.#searchButton = new Button(new XPATH('//button[contains(text(), "Поиск")]'), 'search button');
-        this.#displayedCarModel = new Label(new XPATH('//span[@class="subtitle-16 -orange"]'), 'displayed car model');
+        this.#selectedCarModel = new Label(new XPATH('//span[@class="subtitle-16 -orange"]'), 'selected car model');
         this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//parent::div[@class="form-item"]//following-sibling::div[@class="mx-datepicker"]'), 'calendar button');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
@@ -49,6 +52,9 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#familiarizedCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'familiarized checkbox');
         this.#mutualStateCheckboxLabel = new Label(new XPATH('//label[@for="mutual_state" and contains(text(), "Включить обоюдку в полис")]'), 'mutual state checkbox');
         this.#mutualInfoAgreedCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="mutual_info_agreed"]'), 'mutual info agreed checkbox');
+        this.#selectedOGPOCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса ОС ГПО ВТС")]//following-sibling::span'), 'selected OGPO cost');
+        this.#selectedMutualCost = new Label(new XPATH('//span[contains(text(), "Стоимость Обоюдки")]//following-sibling::span'), 'selected Mutual cost');
+        this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
     }
 
     inputPhone() {
@@ -96,7 +102,7 @@ class PolicyRequestFormOGPO extends BaseForm {
     }
 
     getDisplayedCarModelElement() {
-        return this.#displayedCarModel.getElement();
+        return this.#selectedCarModel.getElement();
     }
 
     inputRandomStartDate() {
@@ -127,6 +133,27 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#mutualInfoAgreedCheckbox.elementIsEnabled().then((isEnabled) => {
             if (isEnabled) this.#mutualInfoAgreedCheckbox.clickElement();
         });
+    }
+
+    getTotalCostFromDisplayedValues() {
+        this.#selectedMutualCost.elementIsDisplayed()
+        // .then((isExisting) => {
+            // cy.logger(isExisting);
+            // if (isDisplayed) {
+            //     let OGPOCost;
+            //     return this.#selectedOGPOCost.getText()
+            //     .then((cost) => OGPOCost = cost)
+            //     .then(() => this.#selectedMutualCost.getText())
+            //     .then((mutualCost) => {
+            //         return Number(OGPOCost.slice(0, -1).replace(/₸| /g, '')) 
+            //         + Number(mutualCost.slice(0, -1).replace(/₸| /g, ''));
+            //     });
+            // }
+        // });
+    }
+
+    getSumToPay() {
+        return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
     }
 }
 

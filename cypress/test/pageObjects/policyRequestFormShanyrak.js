@@ -12,7 +12,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #phoneBox;
     #SMSCodeBox;
     #IINBox;
-    #displayedClientName;
+    #selectedClientName;
     #emailBox;
     #citiesDropdownButton;
     #citiesDropdownElements;
@@ -41,7 +41,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
         this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code');
         this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'IIN');
-        this.#displayedClientName = new Label(new XPATH('//span[@class="subtitle-16 -green"]'), 'displayed client name');
+        this.#selectedClientName = new Label(new XPATH('//span[@class="subtitle-16 -green"]'), 'selected client name');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#citiesDropdownButton = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]'), 'cities dropdown');
         this.#citiesDropdownElements = new Button(new XPATH('//span[contains(text(), "Город")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span'), 'cities dropdown elements');
@@ -86,7 +86,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     getSlicedDisplayedClientName() {
-        return this.#displayedClientName.getText().then((text) => {
+        return this.#selectedClientName.getText().then((text) => {
             const nameList = text.split(' ').reverse().slice(1);
             nameList.push(nameList.pop().slice(0, 1));
             return nameList.join(' ');

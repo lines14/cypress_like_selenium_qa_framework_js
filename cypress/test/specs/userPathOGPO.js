@@ -47,6 +47,11 @@ const userPathOGPO = (payTest) => {
             policyRequestFormOGPO.clickCalculateButton();
             policyRequestFormOGPO.clickFamiliarizedCheckbox();
             policyRequestFormOGPO.randomClickMutualCheckbox();
+            policyRequestFormOGPO.getSumToPay().then((sum) => {
+                cy.setLocalStorage('sumToPay', sum);
+                policyRequestFormOGPO.getTotalCostFromDisplayedValues()
+                .should('be.equal', Number(sum));
+            });
         });
 
         payTest();

@@ -54,7 +54,7 @@ const userPathMST = (payTest) => {
             policyRequestFormMST.clickAcceptanceCheckbox();
             policyRequestFormMST.getSumToPay().then((sum) => {
                 cy.setLocalStorage('sumToPay', sum);
-                policyRequestFormMST.getPolicyCostDiscountDelta()
+                policyRequestFormMST.getTotalCostFromDisplayedValues()
                 .should('be.equal', Number(sum));
             });
         });
