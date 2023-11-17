@@ -24,13 +24,7 @@ Cypress.Commands.add('isExisting', { prevSubject: false }, (locator) => {
 
         return new Cypress.Promise((resolve) => {
             Cypress.$(function () {
-                const elementExists = Cypress.$(document).find(convertLocator(locator)).length > 0;
-                console.log({
-                    parent: Cypress.$(document).find('.bannerTop').html()
-                });
-                console.log('isExisting');
-                console.log({elementExists});
-                resolve(elementExists);
+                resolve(Cypress.$(document).find(convertLocator(locator)).length > 0);
             });
         });
     });

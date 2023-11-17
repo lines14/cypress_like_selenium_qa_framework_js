@@ -26,20 +26,13 @@ class BaseForm {
 
     pageIsDisplayed() {
         cy.logger(`[inf] ▶ check ${this.#pageName} is displayed:`);
-        return this.pageIsExisting().then((isExisting) => {
-            if (isExisting) {
-                return this.pageIsVisible().then((isVisible) => {
-                    cy.logger(
-                        isVisible 
-                        ? `[inf]   ${this.#pageName} is displayed` 
-                        : `[inf]   ${this.#pageName} is not displayed`
-                    );
-                    return cy.wrap(isVisible);
-                });
-            } else {
-                cy.logger(`[inf]   ${this.#pageName} is not displayed`);
-                return cy.wrap(isExisting);
-            }
+        return this.pageIsVisible().then((isVisible) => {
+            cy.logger(
+                isVisible 
+                ? `[inf]   ${this.#pageName} is displayed` 
+                : `[inf]   ${this.#pageName} is not displayed`
+            );
+            return cy.wrap(isVisible);
         });
     }
 

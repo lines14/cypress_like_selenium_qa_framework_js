@@ -98,17 +98,14 @@ class BaseElement {
     elementIsDisplayed() {
         cy.logger(`[inf] ▶ check ${this.#elementName} is displayed:`);
         return this.elementIsExisting().then((isExisting) => {
+            const notDisplayedLog = `[inf]   ${this.#elementName} is not displayed`;
             if (isExisting) {
                 return this.elementIsVisible().then((isVisible) => {
-                    cy.logger(
-                        isVisible 
-                        ? `[inf]   ${this.#elementName} is displayed` 
-                        : `[inf]   ${this.#elementName} is not displayed`
-                    );
+                    cy.logger(isVisible ? `[inf]   ${this.#elementName} is displayed` : notDisplayedLog);
                     return cy.wrap(isVisible);
                 });
             } else {
-                cy.logger(`[inf]   ${this.#elementName} is not displayed`);
+                cy.logger(notDisplayedLog);
                 return cy.wrap(isExisting);
             }
         });
