@@ -36,7 +36,7 @@ class MainPage extends BaseForm {
     }
 
     clickOGPOLink() {
-        this.#OGPOLink.clickElement();
+        return this.#OGPOLink.clickElement();
     }
 }
 

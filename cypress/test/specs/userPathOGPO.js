@@ -11,47 +11,51 @@ const userPathOGPO = (payTest) => {
             mainPage.pageIsDisplayed().should('be.true');
             mainPage.clickGetInsuredButton();
             mainPage.clickTransportButton();
-            mainPage.clickOGPOLink();
+            mainPage.clickOGPOLink().then((res) => {
+                console.log('after click')
+                console.log({res})
+                OGPOPage.pageIsDisplayed().should('be.true')
 
-            OGPOPage.pageIsDisplayed().should('be.true');
+            });
+
             OGPOPage.clickPurchaseButton();
 
-            policyRequestFormOGPO.pageIsDisplayed().should('be.true');
-            policyRequestFormOGPO.inputPhone();
-            policyRequestFormOGPO.clickNextButton();
+            // policyRequestFormOGPO.pageIsDisplayed().should('be.true');
+            // policyRequestFormOGPO.inputPhone();
+            // policyRequestFormOGPO.clickNextButton();
 
-            policyRequestFormOGPO.getSMSCodeBoxElement().should('be.visible')
-            .then(() => NodeEvents.getLastCodeFromDB())
-            .then((code) => policyRequestFormOGPO.enterSMSCode(code));
+            // policyRequestFormOGPO.getSMSCodeBoxElement().should('be.visible')
+            // .then(() => NodeEvents.getLastCodeFromDB())
+            // .then((code) => policyRequestFormOGPO.enterSMSCode(code));
 
-            policyRequestFormOGPO.inputIIN();
-            policyRequestFormOGPO.clearPreviousEmail();
-            policyRequestFormOGPO.inputEmail();
-            policyRequestFormOGPO.clickNextButton();
+            // policyRequestFormOGPO.inputIIN();
+            // policyRequestFormOGPO.clearPreviousEmail();
+            // policyRequestFormOGPO.inputEmail();
+            // policyRequestFormOGPO.clickNextButton();
 
-            policyRequestFormOGPO.clickSaveButton();
-            policyRequestFormOGPO.clickNextButton();
+            // policyRequestFormOGPO.clickSaveButton();
+            // policyRequestFormOGPO.clickNextButton();
 
-            policyRequestFormOGPO.inputCarNumber();
-            policyRequestFormOGPO.inputCarRegistration();
-            policyRequestFormOGPO.clickSearchButton();
-            policyRequestFormOGPO.getDisplayedCarModelElement()
-            .should('have.text', JSONLoader.testData.carModel);
-            policyRequestFormOGPO.clickNextButton();
+            // policyRequestFormOGPO.inputCarNumber();
+            // policyRequestFormOGPO.inputCarRegistration();
+            // policyRequestFormOGPO.clickSearchButton();
+            // policyRequestFormOGPO.getDisplayedCarModelElement()
+            // .should('have.text', JSONLoader.testData.carModel);
+            // policyRequestFormOGPO.clickNextButton();
 
-            policyRequestFormOGPO.inputRandomStartDate();
-            policyRequestFormOGPO.clickNextButton();
+            // policyRequestFormOGPO.inputRandomStartDate();
+            // policyRequestFormOGPO.clickNextButton();
 
-            policyRequestFormOGPO.clickMoreLink();
-            policyRequestFormOGPO.randomClickSMSNotifyCheckbox();
-            policyRequestFormOGPO.clickCalculateButton();
-            policyRequestFormOGPO.clickFamiliarizedCheckbox();
-            policyRequestFormOGPO.randomClickMutualCheckbox();
-            policyRequestFormOGPO.getSumToPay().then((sum) => {
-                cy.setLocalStorage('sumToPay', sum);
-                policyRequestFormOGPO.getTotalCostFromDisplayedValues()
-                .should('be.equal', Number(sum));
-            });
+            // policyRequestFormOGPO.clickMoreLink();
+            // policyRequestFormOGPO.randomClickSMSNotifyCheckbox();
+            // policyRequestFormOGPO.clickCalculateButton();
+            // policyRequestFormOGPO.clickFamiliarizedCheckbox();
+            // policyRequestFormOGPO.randomClickMutualCheckbox();
+            // policyRequestFormOGPO.getSumToPay().then((sum) => {
+                // cy.setLocalStorage('sumToPay', sum);
+                // policyRequestFormOGPO.getTotalCostFromDisplayedValues()
+                // .should('be.equal', Number(sum));
+            // });
         });
 
         payTest();

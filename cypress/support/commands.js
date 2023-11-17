@@ -5,28 +5,34 @@ Cypress.Commands.add('open', (url, options) => {
     cy.visit(url, options);
 });
 
-Cypress.Commands.add('isDisplayed', { prevSubject: true }, (subject) => {
-    return Cypress.dom.isVisible(subject);
-});
-
 Cypress.Commands.add('isVisible', { prevSubject: true }, (subject) => {
     return Cypress.dom.isVisible(subject);
 });
 
-Cypress.Commands.add('isExisting', { prevSubject: false }, (elementLocator) => {
+Cypress.Commands.add('isExisting', { prevSubject: false }, (locator) => {
     return cy.document().then((document) => {
         const convertLocator = (locator) => {
-            const nodesList = [];
+            const nodeList = [];
             const result = document.evaluate(locator, document, null, XPathResult.ANY_TYPE, null);
             let node;
-            while ((node = result.iterateNext())) {
-                nodesList.push(node);
+            while (node = result.iterateNext()) {
+                nodeList.push(node);
             }
 
-            return nodesList;
+            return nodeList;
         }
 
-        return Cypress.$(document).find(convertLocator(elementLocator.locator)).length > 0;
+        return new Cypress.Promise((resolve) => {
+            Cypress.$(function () {
+                const elementExists = Cypress.$(document).find(convertLocator(locator)).length > 0;
+                console.log({
+                    parent: Cypress.$(document).find('.bannerTop').html()
+                });
+                console.log('isExisting');
+                console.log({elementExists});
+                resolve(elementExists);
+            });
+        });
     });
 });
 

@@ -26,7 +26,7 @@ class BaseElement {
 
     clickElement() {
         cy.logger(`[inf] ▶ click ${this.#elementName}`);
-        this.getElement().click();
+        return this.getElement().click();
     }
 
     doubleClickElement() {
@@ -87,37 +87,40 @@ class BaseElement {
         this.getElement().type(`${data}{enter}`);
     }
 
-    // elementIsDisplayed() {
-    //     cy.logger(`[inf] ▶ check ${this.#elementName} is present:`);
-    //     return this.getElement().isDisplayed().then((isDisplayed) => {
-    //         cy.logger(
-    //             isDisplayed 
-    //             ? `[inf]   ${this.#elementName} is present` 
-    //             : `[inf]   ${this.#elementName} is not present`
-    //         );
-    //         return cy.wrap(isDisplayed);
-    //     });
-    // }
+    elementIsVisible() {
+        return this.getElement().isVisible();
+    }
 
     elementIsExisting() {
-        cy.logger(`[inf] ▶ check ${this.#elementName} is exists:`);
-        return cy.isExisting(this.#elementLocator).then((isExisting) => {
-            cy.logger(
-                isExisting 
-                ? `[inf]   ${this.#elementName} is exists` 
-                : `[inf]   ${this.#elementName} is not exists`
-            );
-            return cy.wrap(isExisting);
+        return cy.isExisting(this.#elementLocator.locator);
+    }
+
+    elementIsDisplayed() {
+        cy.logger(`[inf] ▶ check ${this.#elementName} is displayed:`);
+        return this.elementIsExisting().then((isExisting) => {
+            if (isExisting) {
+                return this.elementIsVisible().then((isVisible) => {
+                    cy.logger(
+                        isVisible 
+                        ? `[inf]   ${this.#elementName} is displayed` 
+                        : `[inf]   ${this.#elementName} is not displayed`
+                    );
+                    return cy.wrap(isVisible);
+                });
+            } else {
+                cy.logger(`[inf]   ${this.#elementName} is not displayed`);
+                return cy.wrap(isExisting);
+            }
         });
     }
 
     elementIsEnabled() {
-        cy.logger(`[inf] ▶ check ${this.#elementName} is enable:`);
+        cy.logger(`[inf] ▶ check ${this.#elementName} is enabled:`);
         return this.getElement().isEnabled().then((isEnabled) => {
             cy.logger(
                 isEnabled 
-                ? `[inf]   ${this.#elementName} is enable` 
-                : `[inf]   ${this.#elementName} is not enable`
+                ? `[inf]   ${this.#elementName} is enabled` 
+                : `[inf]   ${this.#elementName} is not enabled`
             );
             return cy.wrap(isEnabled);
         });

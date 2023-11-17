@@ -16,20 +16,43 @@ class BaseForm {
         : cy.get(this.#pageLocator.locator).first();
     }
 
+    pageIsVisible() {
+        return this.getUniqueElement().isVisible();
+    }
+
+    pageIsExisting() {
+        return cy.isExisting(this.#pageLocator.locator);
+    }
+
     pageIsDisplayed() {
-        cy.logger(`[inf] ▶ check ${this.#pageName} is open:`);
-        cy.logger(this.getUniqueElement().isDisplayed() 
-        ? `[inf] ▶ ${this.#pageName} is open` 
-        : `[inf] ▶ ${this.#pageName} is not open`);
-        return this.getUniqueElement().isDisplayed();
+        cy.logger(`[inf] ▶ check ${this.#pageName} is displayed:`);
+        return this.pageIsExisting().then((isExisting) => {
+            if (isExisting) {
+                return this.pageIsVisible().then((isVisible) => {
+                    cy.logger(
+                        isVisible 
+                        ? `[inf]   ${this.#pageName} is displayed` 
+                        : `[inf]   ${this.#pageName} is not displayed`
+                    );
+                    return cy.wrap(isVisible);
+                });
+            } else {
+                cy.logger(`[inf]   ${this.#pageName} is not displayed`);
+                return cy.wrap(isExisting);
+            }
+        });
     }
 
     pageIsEnabled() {
-        cy.logger(`[inf] ▶ check ${this.#pageName} is enable:`);
-        cy.logger(this.getUniqueElement().isEnabled() 
-        ? `[inf] ▶ ${this.#pageName} is enable` 
-        : `[inf] ▶ ${this.#pageName} is not enable`);
-        return this.getUniqueElement().isEnabled();
+        cy.logger(`[inf] ▶ check ${this.#pageName} is enabled:`);
+        return this.getUniqueElement().isEnabled().then((isEnabled) => {
+            cy.logger(
+                isEnabled 
+                ? `[inf]   ${this.#pageName} is enabled` 
+                : `[inf]   ${this.#pageName} is not enabled`
+            );
+            return cy.wrap(isEnabled);
+        });
     }
 }
 

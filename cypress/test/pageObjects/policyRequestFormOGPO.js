@@ -136,7 +136,7 @@ class PolicyRequestFormOGPO extends BaseForm {
     }
 
     getTotalCostFromDisplayedValues() {
-        this.#selectedMutualCost.elementIsDisplayed()
+       this.#selectedMutualCost.elementIsDisplayed();
         // .then((isExisting) => {
             // cy.logger(isExisting);
             // if (isDisplayed) {
