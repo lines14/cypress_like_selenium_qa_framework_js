@@ -25,7 +25,7 @@ class PolicyRequestFormOGPO extends BaseForm {
     #SMSNotifyCheckboxLabel;
     #calculateButton;
     #familiarizedCheckbox;
-    #mutualStateCheckboxLabel;
+    #mutualStateCheckbox;
     #mutualInfoAgreedCheckbox;
     #selectedOGPOCost;
     #selectedMutualCost;
@@ -50,7 +50,7 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#SMSNotifyCheckboxLabel = new Label(new XPATH('//label[contains(text(), "Получить уведомление через СМС")]'), 'SMS notify checkbox');
         this.#calculateButton = new Button(new XPATH('//button[@class="button -green right dt"]'), 'calculate button');
         this.#familiarizedCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'familiarized checkbox');
-        this.#mutualStateCheckboxLabel = new Label(new XPATH('//label[@for="mutual_state" and contains(text(), "Включить обоюдку в полис")]'), 'mutual state checkbox');
+        this.#mutualStateCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="mutual_state"]'), 'mutual state checkbox');
         this.#mutualInfoAgreedCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="mutual_info_agreed"]'), 'mutual info agreed checkbox');
         this.#selectedOGPOCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса ОС ГПО ВТС")]//following-sibling::span'), 'selected OGPO cost');
         this.#selectedMutualCost = new Label(new XPATH('//span[contains(text(), "Стоимость Обоюдки")]//following-sibling::span'), 'selected Mutual cost');
@@ -128,28 +128,20 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#familiarizedCheckbox.clickElement();
     }
 
-    randomClickMutualCheckbox() {
-        this.#mutualStateCheckboxLabel.clickCheckboxesByText();
-        this.#mutualInfoAgreedCheckbox.elementIsEnabled().then((isEnabled) => {
-            if (isEnabled) this.#mutualInfoAgreedCheckbox.clickElement();
-        });
+    clickMutualCheckboxes() {
+        this.#mutualStateCheckbox.clickElement();
+        this.#mutualInfoAgreedCheckbox.clickElement();
     }
 
-    getTotalCostFromDisplayedValues() {
-       this.#selectedMutualCost.elementIsDisplayed();
-        // .then((isExisting) => {
-            // cy.logger(isExisting);
-            // if (isDisplayed) {
-            //     let OGPOCost;
-            //     return this.#selectedOGPOCost.getText()
-            //     .then((cost) => OGPOCost = cost)
-            //     .then(() => this.#selectedMutualCost.getText())
-            //     .then((mutualCost) => {
-            //         return Number(OGPOCost.slice(0, -1).replace(/₸| /g, '')) 
-            //         + Number(mutualCost.slice(0, -1).replace(/₸| /g, ''));
-            //     });
-            // }
-        // });
+    getTotalCostWithMutual() {
+        let OGPOCost;
+        return this.#selectedOGPOCost.getText()
+        .then((cost) => OGPOCost = cost)
+        .then(() => this.#selectedMutualCost.getText())
+        .then((mutualCost) => {
+            return Number(OGPOCost.slice(0, -1).replace(/₸| /g, '')) 
+            + Number(mutualCost.slice(0, -1).replace(/₸| /g, ''));
+        });
     }
 
     getSumToPay() {
