@@ -20,10 +20,6 @@ class BaseForm {
         return this.getUniqueElement().isVisible();
     }
 
-    pageIsExisting() {
-        return cy.isExisting(this.#pageLocator.locator);
-    }
-
     pageIsDisplayed() {
         cy.logger(`[inf] ▶ check ${this.#pageName} is displayed:`);
         return this.pageIsVisible().then((isVisible) => {
