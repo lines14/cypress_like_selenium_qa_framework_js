@@ -16,13 +16,9 @@ class BaseForm {
         : cy.get(this.#pageLocator.locator).first();
     }
 
-    pageIsVisible() {
-        return this.getUniqueElement().isVisible();
-    }
-
     pageIsDisplayed() {
         cy.logger(`[inf] ▶ check ${this.#pageName} is displayed:`);
-        return this.pageIsVisible().then((isVisible) => {
+        return this.getUniqueElement().isVisible().then((isVisible) => {
             cy.logger(
                 isVisible 
                 ? `[inf]   ${this.#pageName} is displayed` 
