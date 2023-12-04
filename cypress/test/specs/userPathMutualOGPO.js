@@ -25,8 +25,8 @@ const userPathMutualOGPO = (payTest) => {
             .then((code) => policyRequestFormMutualOGPO.enterSMSCode(code));
 
             policyRequestFormMutualOGPO.inputIIN();
-            policyRequestFormMutualOGPO.clearPreviousEmail();
             policyRequestFormMutualOGPO.inputEmail();
+            policyRequestFormMutualOGPO.inputAddress();
             policyRequestFormMutualOGPO.clickNextButton();
 
             policyRequestFormMutualOGPO.clickSaveButton();

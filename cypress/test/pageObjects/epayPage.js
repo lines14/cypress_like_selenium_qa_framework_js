@@ -11,6 +11,7 @@ class EpayPage extends BaseForm {
     #expireMonthBox;
     #expireYearBox;
     #CVCBox;
+    #cardNameBox;
     #emailBox;
     #payButton;
     #status;
@@ -23,6 +24,7 @@ class EpayPage extends BaseForm {
         this.#expireMonthBox = new Textbox(new XPATH('//input[@name="ccmonth"]'), 'expire month');
         this.#expireYearBox = new Textbox(new XPATH('//input[@name="ccyear"]'), 'expire year');
         this.#CVCBox = new Textbox(new XPATH('//input[@name="cvc"]'), 'CVC');
+        this.#cardNameBox = new Textbox(new XPATH('//input[@name="ccname"]'), 'card name');
         this.#emailBox = new Textbox(new XPATH('//input[@name="email"]'), 'email');
         this.#payButton = new Button(new XPATH('//span[contains(text(), "Оплатить")]'), 'pay button');
         this.#status = new Label(new XPATH('//div[@class="status"]'), 'payment status');
@@ -38,6 +40,7 @@ class EpayPage extends BaseForm {
         this.#expireMonthBox.forceInputData(JSONLoader.testData.clientCardExpMonth);
         this.#expireYearBox.forceInputData(JSONLoader.testData.clientCardExpYear);
         this.#CVCBox.inputData(JSONLoader.testData.clientCardCVC);
+        this.#cardNameBox.inputData(`${JSONLoader.testData.clientFirstNameLatin} ${JSONLoader.testData.clientSecondNameLatin}`);
         this.#emailBox.inputData(JSONLoader.testData.clientEmail);
     }
 

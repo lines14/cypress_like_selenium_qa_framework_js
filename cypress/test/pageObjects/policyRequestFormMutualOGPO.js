@@ -13,6 +13,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
     #SMSCodeBox;
     #IINBox;
     #emailBox;
+    #addressBox;
     #saveButton;
     #carNumberBox;
     #carRegistrationBox;
@@ -31,6 +32,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
     #selectedMutualCost;
     #sumToPay;
     #kaspiPayButton;
+    #epayButton;
     #paymentNumber;
     #OGPOPageButton;
     
@@ -41,6 +43,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code');
         this.#IINBox = new Textbox(new XPATH('//input[@id="iinOgpo"]'), 'IIN');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
+        this.#addressBox = new Textbox(new XPATH('//label[contains(text(), "Адрес")]//parent::div[contains(@class, "form-item")]//following-sibling::input[@type="text"]'), 'address');
         this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
         this.#carNumberBox = new Textbox(new XPATH('//label[contains(text(), "Гос. номер")]//parent::div[@class="form-item"]//following-sibling::input'), 'car number');
         this.#carRegistrationBox = new Textbox(new XPATH('//label[contains(text(), "Номер техпаспорта")]//parent::div[@class="form-item"]//following-sibling::input'), 'car registration');
@@ -59,6 +62,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#selectedMutualCost = new Label(new XPATH('//span[contains(text(), "Стоимость Обоюдки")]//following-sibling::span'), 'selected Mutual cost');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
+        this.#epayButton = new Button(new XPATH('//button[contains(text(), "Оплатить картой")]'), 'Epay button');
         this.#paymentNumber = new Label(new XPATH('//div[contains(@class, "success__subtitle")]//span'), 'payment number');
         this.#OGPOPageButton = new Button(new XPATH('//span[contains(text(), "Вернуться в магазин")]'), 'OGPO page button');
     }
@@ -83,12 +87,14 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#IINBox.inputData(JSONLoader.testData.clientIIN);
     }
 
-    clearPreviousEmail() {
+    inputEmail() {
         this.#emailBox.clearData();
+        this.#emailBox.inputData(JSONLoader.testData.clientEmail);
     }
 
-    inputEmail() {
-        this.#emailBox.inputData(JSONLoader.testData.clientEmail);
+    inputAddress() {
+        this.#addressBox.clearData();
+        this.#addressBox.inputData(JSONLoader.testData.clientAddress);
     }
 
     clickSaveButton() {
@@ -156,6 +162,10 @@ class policyRequestFormMutualOGPO extends BaseForm {
 
     clickKaspiPayButton() {
         this.#kaspiPayButton.clickElement();
+    }
+
+    clickEpayButton() {
+        this.#epayButton.clickElement();
     }
 
     getPaymentNumber() {

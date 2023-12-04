@@ -39,8 +39,6 @@ const userPathMST = (payTest) => {
             policyRequestFormMST.clickCalculateButton();
             policyRequestFormMST.clickNextButton();
 
-            policyRequestFormMST.inputPassportGivenDate();
-            policyRequestFormMST.inputPassportData();
             policyRequestFormMST.inputAddress();
             policyRequestFormMST.clickNextButton();
 
