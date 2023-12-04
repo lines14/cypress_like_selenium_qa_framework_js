@@ -93,11 +93,8 @@ class PolicyRequestFormShanyrak extends BaseForm {
         });
     }
 
-    clearPreviousEmail() {
-        this.#emailBox.clearData();
-    }
-
     inputEmail() {
+        this.#emailBox.clearData();
         this.#emailBox.inputData(JSONLoader.testData.clientEmail);
     }
 

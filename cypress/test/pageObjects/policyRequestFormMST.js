@@ -34,6 +34,11 @@ class PolicyRequestFormMST extends BaseForm {
     #displayedPolicyCost;
     #displayedPolicyDiscount;
     #nextButton;
+    #passportNumberBox;
+    #passportGivenDateBox;
+    #secondNameBox;
+    #firstNameBox;
+    #addressBox;
     #emailBox;
     #phoneBox;
     #SMSCodeBox;
@@ -72,6 +77,11 @@ class PolicyRequestFormMST extends BaseForm {
         this.#displayedPolicyCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса")]//following-sibling::span'), 'displayed policy cost');
         this.#displayedPolicyDiscount = new Label(new XPATH('//span[contains(text(), "Ваша скидка")]//following-sibling::span'), 'displayed policy discount');
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
+        this.#passportNumberBox = new Textbox(new XPATH('//label[contains(text(), "Номер паспорта")]//parent::div[contains(@class, "form-item")]//following-sibling::input[@type="text"]'), 'passport number');
+        this.#passportGivenDateBox = new Textbox(new XPATH('//input[@placeholder="дд.мм.гггг"]'), 'passport given date');
+        this.#secondNameBox = new Textbox(new XPATH('//label[contains(text(), "Фамилия на латинице")]//parent::div[contains(@class, "form-item")]//following-sibling::input[@type="text"]'), 'second name in latin');
+        this.#firstNameBox = new Textbox(new XPATH('//label[contains(text(), "Имя на латинице")]//parent::div[contains(@class, "form-item")]//following-sibling::input[@type="text"]'), 'first name in latin');
+        this.#addressBox = new Textbox(new XPATH('//label[contains(text(), "Адрес проживания")]//parent::div[contains(@class, "form-item")]//following-sibling::input[@type="text"]'), 'address');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//parent::div[@class="form-item"]//following-sibling::input[@type="tel"]'), 'phone');
         this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'SMS code');
@@ -169,6 +179,25 @@ class PolicyRequestFormMST extends BaseForm {
         this.#nextButton.clickElement();
     }
 
+    inputPassportGivenDate() {
+        this.#passportGivenDateBox.clearData();
+        this.#passportGivenDateBox.inputData(JSONLoader.testData.clientPassportGivenDate);
+    }
+
+    inputPassportData() {
+        this.#secondNameBox.clearData();
+        this.#secondNameBox.inputData(JSONLoader.testData.clientSecondNameLatin);
+        this.#firstNameBox.clearData();
+        this.#firstNameBox.inputData(JSONLoader.testData.clientFirstNameLatin);
+        this.#passportNumberBox.clearData();
+        this.#passportNumberBox.inputData(JSONLoader.testData.clientPassportNumber);
+    }
+
+    inputAddress() {
+        this.#addressBox.clearData();
+        this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+    }
+    
     inputEmail() {
         this.#emailBox.inputData(JSONLoader.testData.clientEmail);
     }

@@ -26,7 +26,6 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.inputIIN();
             policyRequestFormShanyrak.getSlicedDisplayedClientName()
             .should('be.equal', JSONLoader.testData.clientName);
-            policyRequestFormShanyrak.clearPreviousEmail();
             policyRequestFormShanyrak.inputEmail();
             policyRequestFormShanyrak.selectRandomCity();
             policyRequestFormShanyrak.inputInsuranceObjectAddressStreet();
