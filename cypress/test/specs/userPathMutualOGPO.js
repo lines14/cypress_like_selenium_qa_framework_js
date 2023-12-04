@@ -29,17 +29,27 @@ const userPathMutualOGPO = (payTest) => {
             policyRequestFormMutualOGPO.inputAddress();
             policyRequestFormMutualOGPO.clickNextButton();
 
+            policyRequestFormMutualOGPO.getSelectedClientName()
+            .then((selectedName) => policyRequestFormMutualOGPO.getTrimmedDisplayedClientName()
+            .should('be.equal', selectedName));
             policyRequestFormMutualOGPO.clickSaveButton();
             policyRequestFormMutualOGPO.clickNextButton();
 
             policyRequestFormMutualOGPO.inputCarNumber();
             policyRequestFormMutualOGPO.inputCarRegistration();
             policyRequestFormMutualOGPO.clickSearchButton();
-            policyRequestFormMutualOGPO.getDisplayedCarModelElement()
-            .should('have.text', JSONLoader.testData.carModel);
+            policyRequestFormMutualOGPO.getTrimmedDisplayedCarNumber()
+            .should('be.equal', JSONLoader.testData.carNumber);
+            policyRequestFormMutualOGPO.getSelectedCarModel()
+            .should('be.equal', JSONLoader.testData.carModel);
+            policyRequestFormMutualOGPO.getSelectedCarManufacturedYearElement()
+            .should('contain', JSONLoader.testData.carManufacturedYear);
             policyRequestFormMutualOGPO.clickNextButton();
 
             policyRequestFormMutualOGPO.inputRandomStartDate();
+            policyRequestFormMutualOGPO.getDisplayedDate()
+            .then((displayedDate) => policyRequestFormMutualOGPO.getSelectedDate()
+            .should('be.equal', displayedDate));
             policyRequestFormMutualOGPO.clickNextButton();
 
             policyRequestFormMutualOGPO.clickMoreLink();

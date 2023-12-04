@@ -24,7 +24,7 @@ const userPathShanyrak = (payTest) => {
             .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
 
             policyRequestFormShanyrak.inputIIN();
-            policyRequestFormShanyrak.getSlicedDisplayedClientName()
+            policyRequestFormShanyrak.getSlicedSelectedClientName()
             .should('be.equal', JSONLoader.testData.clientName);
             policyRequestFormShanyrak.inputEmail();
             policyRequestFormShanyrak.selectRandomCity();

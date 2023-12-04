@@ -85,7 +85,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#IINBox.inputData(JSONLoader.testData.clientIIN);
     }
 
-    getSlicedDisplayedClientName() {
+    getSlicedSelectedClientName() {
         return this.#selectedClientName.getText().then((text) => {
             const nameList = text.split(' ').reverse().slice(1);
             nameList.push(nameList.pop().slice(0, 1));

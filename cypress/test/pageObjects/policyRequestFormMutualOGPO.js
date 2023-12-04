@@ -12,16 +12,22 @@ class policyRequestFormMutualOGPO extends BaseForm {
     #nextButton;
     #SMSCodeBox;
     #IINBox;
+    #selectedClientName;
+    #displayedClientName;
     #emailBox;
     #addressBox;
     #saveButton;
     #carNumberBox;
     #carRegistrationBox;
     #searchButton;
+    #displayedCarNumber;
     #selectedCarModel;
+    #selectedCarManufacturedYear;
     #calendarButton;
     #calendarRightArrowButton;
     #startDateButton;
+    #selectedDate;
+    #displayedDate;
     #moreLink;
     #SMSNotifyCheckboxLabel;
     #calculateButton;
@@ -42,16 +48,22 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
         this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//parent::div[@class="form-item"]//following-sibling::input[@type="number"]'), 'SMS code');
         this.#IINBox = new Textbox(new XPATH('//input[@id="iinOgpo"]'), 'IIN');
+        this.#selectedClientName = new Label(new XPATH('//span[@class="form-fio"]'), 'selected client name');
+        this.#displayedClientName = new Label(new XPATH('//span[contains(text(), "Водители:")]//following-sibling::div[@class="text-14"]//child::span'), 'displayed client name');
         this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//parent::div[@class="form-item"]//following-sibling::input[@type="text"]'), 'email');
         this.#addressBox = new Textbox(new XPATH('//label[contains(text(), "Адрес")]//parent::div[contains(@class, "form-item")]//following-sibling::input[@type="text"]'), 'address');
         this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
         this.#carNumberBox = new Textbox(new XPATH('//label[contains(text(), "Гос. номер")]//parent::div[@class="form-item"]//following-sibling::input'), 'car number');
         this.#carRegistrationBox = new Textbox(new XPATH('//label[contains(text(), "Номер техпаспорта")]//parent::div[@class="form-item"]//following-sibling::input'), 'car registration');
         this.#searchButton = new Button(new XPATH('//button[contains(text(), "Поиск")]'), 'search button');
+        this.#displayedCarNumber = new Label(new XPATH('//span[contains(text(), "Транспорт:")]//following-sibling::div[@class="text-14"]//child::span'), 'displayed car number');
         this.#selectedCarModel = new Label(new XPATH('//span[@class="subtitle-16 -orange"]'), 'selected car model');
+        this.#selectedCarManufacturedYear = new Label(new XPATH('//span[@class="subtitle-16 -grey"]'), 'selected car manufactured year');
         this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//parent::div[@class="form-item"]//following-sibling::div[@class="mx-datepicker"]'), 'calendar button');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
+        this.#selectedDate = new Button(new XPATH('//input[@name="date"]'), 'selected date');
+        this.#displayedDate = new Label(new XPATH('//span[contains(text(), "Дата начала:")]//following-sibling::div[@class="text-14"]//child::span'), 'displayed date');
         this.#moreLink = new Button(new XPATH('//span[contains(text(), "Еще")]'), 'more link');
         this.#SMSNotifyCheckboxLabel = new Label(new XPATH('//label[contains(text(), "Получить уведомление через СМС")]'), 'SMS notify checkbox');
         this.#calculateButton = new Button(new XPATH('//button[@class="button -green right dt"]'), 'calculate button');
@@ -87,6 +99,14 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#IINBox.inputData(JSONLoader.testData.clientIIN);
     }
 
+    getTrimmedDisplayedClientName() {
+        return this.#displayedClientName.getText().then((text) => text.trim());
+    }
+
+    getSelectedClientName() {
+        return this.#selectedClientName.getText();
+    }
+
     inputEmail() {
         this.#emailBox.clearData();
         this.#emailBox.inputData(JSONLoader.testData.clientEmail);
@@ -113,8 +133,16 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#searchButton.clickElement();
     }
 
-    getDisplayedCarModelElement() {
-        return this.#selectedCarModel.getElement();
+    getTrimmedDisplayedCarNumber() {
+        return this.#displayedCarNumber.getText().then((text) => text.trim());
+    }
+
+    getSelectedCarModel() {
+        return this.#selectedCarModel.getText();
+    }
+
+    getSelectedCarManufacturedYearElement() {
+        return this.#selectedCarManufacturedYear.getElement();
     }
 
     inputRandomStartDate() {
@@ -122,6 +150,14 @@ class policyRequestFormMutualOGPO extends BaseForm {
         const newInstance = new policyRequestFormMutualOGPO(dates.startDate);
         this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
         newInstance.#startDateButton.clickElement();
+    }
+
+    getDisplayedDate() {
+        return this.#displayedDate.getText();
+    }
+
+    getSelectedDate() {
+        return this.#selectedDate.getElementsListText('value').then((list) => list.pop());
     }
 
     clickMoreLink() {
