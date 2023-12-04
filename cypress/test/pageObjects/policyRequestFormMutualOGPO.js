@@ -7,7 +7,7 @@ const Button = require('../../main/elements/baseElementChildren/button');
 const Textbox = require('../../main/elements/baseElementChildren/textbox');
 const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
 
-class PolicyRequestFormOGPO extends BaseForm {
+class policyRequestFormMutualOGPO extends BaseForm {
     #phoneBox;
     #nextButton;
     #SMSCodeBox;
@@ -30,6 +30,9 @@ class PolicyRequestFormOGPO extends BaseForm {
     #selectedOGPOCost;
     #selectedMutualCost;
     #sumToPay;
+    #kaspiPayButton;
+    #paymentNumber;
+    #OGPOPageButton;
     
     constructor(startDate) {
         super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'OGPO policy request page');
@@ -55,6 +58,9 @@ class PolicyRequestFormOGPO extends BaseForm {
         this.#selectedOGPOCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса ОС ГПО ВТС")]//following-sibling::span'), 'selected OGPO cost');
         this.#selectedMutualCost = new Label(new XPATH('//span[contains(text(), "Стоимость Обоюдки")]//following-sibling::span'), 'selected Mutual cost');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
+        this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
+        this.#paymentNumber = new Label(new XPATH('//div[contains(@class, "success__subtitle")]//span'), 'payment number');
+        this.#OGPOPageButton = new Button(new XPATH('//span[contains(text(), "Вернуться в магазин")]'), 'OGPO page button');
     }
 
     inputPhone() {
@@ -107,7 +113,7 @@ class PolicyRequestFormOGPO extends BaseForm {
 
     inputRandomStartDate() {
         const dates = Randomizer.getRandomDatesIntervalFromTomorrow();
-        const newInstance = new PolicyRequestFormOGPO(dates.startDate);
+        const newInstance = new policyRequestFormMutualOGPO(dates.startDate);
         this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
         newInstance.#startDateButton.clickElement();
     }
@@ -147,6 +153,19 @@ class PolicyRequestFormOGPO extends BaseForm {
     getSumToPay() {
         return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
     }
+
+    clickKaspiPayButton() {
+        this.#kaspiPayButton.clickElement();
+    }
+
+    getPaymentNumber() {
+        this.#paymentNumber.getElement();
+        return this.#paymentNumber.getText();
+    }
+
+    clickOGPOPageButton() {
+        this.#OGPOPageButton.clickElement();
+    }
 }
 
-module.exports = new PolicyRequestFormOGPO();
+module.exports = new policyRequestFormMutualOGPO();
