@@ -32,11 +32,11 @@ class BaseAPI {
         try {
             const response = await this.#axiosInstance.get(`/${endpoint}`, { params });
             logs.push(`[res]   status code: ${response.status}`);
-            return { responseBody: response.data, responseStatus: response.status, logs };
+            return { data: response.data, status: response.status, logs };
         } catch (error) {
             logs.push(`[res]   status code: ${error.response.status}`);
             logs.push(`[res]   body: ${JSON.stringify(error.response.data)}`);
-            return { responseBody: error.response.data, responseStatus: error.response.status, logs };
+            return { data: error.response.data, status: error.response.status, logs };
         }
     }
 
@@ -46,11 +46,11 @@ class BaseAPI {
         try {
             const response = await this.#axiosInstance.post(`/${endpoint}`, qs.stringify(params));
             logs.push(`[res]   status code: ${response.status}`);
-            return { responseBody: response.data, responseStatus: response.status, logs };
+            return { data: response.data, status: response.status, logs };
         } catch (error) {
             logs.push(`[res]   status code: ${error.response.status}`);
             logs.push(`[res]   body: ${JSON.stringify(error.response.data)}`);
-            return { responseBody: error.response.data, responseStatus: error.response.status, logs };
+            return { data: error.response.data, status: error.response.status, logs };
         }
     }
 
@@ -60,11 +60,11 @@ class BaseAPI {
         try {
             const response = await this.#axiosInstance.patch(`/${endpoint}`, qs.stringify(params));
             logs.push(`[res]   status code: ${response.status}`);
-            return { responseBody: response.data, responseStatus: response.status, logs };
+            return { data: response.data, status: response.status, logs };
         } catch (error) {
             logs.push(`[res]   status code: ${error.response.status}`);
             logs.push(`[res]   body: ${JSON.stringify(error.response.data)}`);
-            return { responseBody: error.response.data, responseStatus: error.response.status, logs };
+            return { data: error.response.data, status: error.response.status, logs };
         }
     }
 }
