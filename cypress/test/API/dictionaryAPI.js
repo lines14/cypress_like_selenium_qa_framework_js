@@ -1,6 +1,5 @@
 const path = require('path');
 const authAPI = require('./authAPI');
-const jsonStringifySafe = require('json-stringify-safe');
 const BaseAPI = require('../../main/utils/API/baseAPI');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
@@ -19,8 +18,8 @@ class DictionaryAPI extends BaseAPI {
 
     async setToken() {
         const response = await authAPI.auth({ APIName: 'Dictionary API' });
-        this.#API = new DictionaryAPI({ headers: { Authorization: `Bearer ${response.response.data.data.access_token}` } });
-        return JSON.parse(jsonStringifySafe(response));
+        this.#API = new DictionaryAPI({ headers: { Authorization: `Bearer ${response.response.data.access_token}` } });
+        return response;
     }
 
     async toggleServer() {
@@ -28,7 +27,7 @@ class DictionaryAPI extends BaseAPI {
             setting: JSONLoader.configData.servers
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.post(JSONLoader.APIEndpoints.dictionary.servers, params)));
+        return await this.#API.post(JSONLoader.APIEndpoints.dictionary.servers, params);
     }
 
     async toggleVerification() {
@@ -36,7 +35,7 @@ class DictionaryAPI extends BaseAPI {
             value: Number(JSONLoader.configData.verification)
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params)));
+        return await this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params);
     }
 }
 

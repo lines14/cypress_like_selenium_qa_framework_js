@@ -1,7 +1,6 @@
 const path = require('path');
 const authAPI = require('./authAPI');
 const moment = require('moment');
-const jsonStringifySafe = require('json-stringify-safe');
 const BaseAPI = require('../../main/utils/API/baseAPI');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 const Randomizer = require('../../main/utils/random/randomizer');
@@ -21,8 +20,8 @@ class KaspiAPI extends BaseAPI {
 
     async setToken() {
         const response = await authAPI.auth({ APIName: 'Kaspi API' });
-        this.#API = new KaspiAPI({ headers: { Authorization: `Bearer ${response.response.data.data.access_token}` } });
-        return JSON.parse(jsonStringifySafe(response));
+        this.#API = new KaspiAPI({ headers: { Authorization: `Bearer ${response.response.data.access_token}` } });
+        return response;
     }
 
     async pay(paymentInfo) {
@@ -34,7 +33,7 @@ class KaspiAPI extends BaseAPI {
             sum: paymentInfo.sumToPay,
         }
 
-        return JSON.parse(jsonStringifySafe(await this.#API.get(JSONLoader.APIEndpoints.kaspi.pay, params)));
+        return await this.#API.get(JSONLoader.APIEndpoints.kaspi.pay, params);
     }
 }
 
