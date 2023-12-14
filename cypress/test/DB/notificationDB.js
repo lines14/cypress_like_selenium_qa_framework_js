@@ -1,5 +1,4 @@
 const path = require('path');
-const jsonStringifySafe = require('json-stringify-safe');
 const BaseDB = require('../../main/utils/DB/baseDB');
 require('dotenv').config({ path: path.join(__dirname, '../../../', '.env.test'), override: true });
 
@@ -18,7 +17,7 @@ class NotificationDB extends BaseDB {
         const target = 'code';
         const response = await this.sqlSelect('phone_verification', target, 'ORDER BY `created_at` DESC LIMIT 1');
         response.logs.push(`[inf]   ${target} contains: "${response.rows[0][target]}"`)
-        return JSON.parse(jsonStringifySafe(response));
+        return response;
     }
 }
 
