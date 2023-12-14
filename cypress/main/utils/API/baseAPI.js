@@ -32,11 +32,11 @@ class BaseAPI {
         try {
             const response = await this.#axiosInstance.get(`/${endpoint}`, { params });
             logs.push(`[res]   status code: ${response.status}`);
-            return { response: response.data, logs };
+            return { responseBody: response.data, logs };
         } catch (error) {
             logs.push(`[res]   status code: ${error.response.status}`);
             logs.push(`[res]   body: ${JSON.stringify(error.response.data)}`);
-            return { response: error.response, logs };
+            return { responseBody: error.response.data, logs };
         }
     }
 
@@ -46,11 +46,11 @@ class BaseAPI {
         try {
             const response = await this.#axiosInstance.post(`/${endpoint}`, qs.stringify(params));
             logs.push(`[res]   status code: ${response.status}`);
-            return { response: response.data, logs };
+            return { responseBody: response.data, logs };
         } catch (error) {
             logs.push(`[res]   status code: ${error.response.status}`);
             logs.push(`[res]   body: ${JSON.stringify(error.response.data)}`);
-            return { response: error.response, logs };
+            return { responseBody: error.response.data, logs };
         }
     }
 
@@ -60,11 +60,11 @@ class BaseAPI {
         try {
             const response = await this.#axiosInstance.patch(`/${endpoint}`, qs.stringify(params));
             logs.push(`[res]   status code: ${response.status}`);
-            return { response: response.data, logs };
+            return { responseBody: response.data, logs };
         } catch (error) {
             logs.push(`[res]   status code: ${error.response.status}`);
             logs.push(`[res]   body: ${JSON.stringify(error.response.data)}`);
-            return { response: error.response, logs };
+            return { responseBody: error.response.data, logs };
         }
     }
 }

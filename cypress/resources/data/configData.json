@@ -26,10 +26,16 @@
         "find", 
         "xpath", 
         "first", 
-        "isDisplayed", 
+        "isVisible",
+        "isExisting",
+        "isEnabled", 
         "click", 
         "request", 
         "contains",
-        "scrollTo"
+        "scrollTo",
+        "document",
+        "clear",
+        "request",
+        "invoke"
     ]
 }
