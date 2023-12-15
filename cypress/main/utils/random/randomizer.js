@@ -86,9 +86,9 @@ class Randomizer {
     }
 
     static getRandomDatesIntervalFromTomorrow(months=1) {
-        const nextDay = moment().add(1, 'days');
-        const unixOne = nextDay.unix();
-        const unixTwo = moment(moment().add(1, 'days')).add(months, 'months').unix();
+        const nextDayObject = moment().add(1, 'days').startOf('day');
+        const unixOne = nextDayObject.unix();
+        const unixTwo = moment(moment().add(1, 'days').startOf('day')).add(months, 'months').unix();
 
         const startDateUnix = moment.unix(this.getRandomFloat(unixOne, unixTwo)).unix();
         let finishDateUnix;
@@ -96,8 +96,12 @@ class Randomizer {
             finishDateUnix = moment.unix(this.getRandomFloat(startDateUnix, unixTwo)).unix();
         } while ((finishDateUnix - startDateUnix) < 86400 * 2);
         
-        const startDate = moment.unix(startDateUnix).format(JSONLoader.testData.datesFormat);
-        const finishDate = moment.unix(finishDateUnix).format(JSONLoader.testData.datesFormat);
+        const startDateObject = moment.unix(startDateUnix).startOf('day');
+        const finishDateObject = moment.unix(finishDateUnix).startOf('day');
+        const startDate = startDateObject.format(JSONLoader.testData.datesFormat);
+        const finishDate = finishDateObject.format(JSONLoader.testData.datesFormat);
+
+        const daysDifferenceIncluded = finishDateObject.diff(startDateObject, 'days') + 1;
 
         const getAbsoluteMonth = (date) => {
             const months = Number(moment(date, JSONLoader.testData.datesFormat).format("MM"));
@@ -112,13 +116,14 @@ class Randomizer {
         const startMonthDifference = startMonth - currentMonth;
         let finishMonthDifference = finishMonth - currentMonth;
 
-        if (nextDay.date() === 1) finishMonthDifference++;
+        if (nextDayObject.date() === 1) finishMonthDifference++;
 
         return { 
-            startDate: startDate, 
-            finishDate: finishDate, 
-            startMonthDifference: startMonthDifference, 
-            finishMonthDifference: finishMonthDifference 
+            startDate, 
+            finishDate, 
+            startMonthDifference, 
+            finishMonthDifference,
+            daysDifferenceIncluded
         }
     }
 }
