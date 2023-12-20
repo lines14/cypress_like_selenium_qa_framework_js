@@ -16,7 +16,7 @@ class NotificationDB extends BaseDB {
     async getLastCode() {
         const target = 'code';
         const response = await this.sqlSelect('phone_verification', target, 'ORDER BY `created_at` DESC LIMIT 1');
-        response.logs.push(`[inf]   ${target} contains: "${response.rows[0][target]}"`)
+        response.logs.push(`[inf]   ${target} contains: "${response.rows[0][target]}"`);
         return response;
     }
 }
