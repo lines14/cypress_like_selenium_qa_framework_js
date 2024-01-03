@@ -113,8 +113,12 @@ class policyRequestFormMutualOGPO extends BaseForm {
     }
 
     inputAddress() {
-        this.#addressBox.clearData();
-        this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+        this.#addressBox.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                this.#addressBox.clearData();
+                this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+            }
+        });
     }
 
     clickSaveButton() {
@@ -146,7 +150,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
     }
 
     inputRandomStartDate() {
-        const dates = Randomizer.getRandomDatesIntervalFromTomorrow();
+        const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
         const newInstance = new policyRequestFormMutualOGPO(dates.startDate);
         this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
         newInstance.#startDateButton.clickElement();

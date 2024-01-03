@@ -10,6 +10,7 @@ class Randomizer {
                 element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
                 if (!exceptionsList.includes(element) && (element !== '')) break;
             }
+            
         } else {
             while (true) {
                 element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
@@ -85,10 +86,10 @@ class Randomizer {
         return Math.random() * (max - min) + min;
     }
 
-    static getRandomDatesIntervalFromTomorrow(months=1) {
+    static getRandomDatesIntervalFromTomorrow(count, unitOfTime) {
         const nextDayObject = moment().add(1, 'days').startOf('day');
         const unixOne = nextDayObject.unix();
-        const unixTwo = moment(moment().add(1, 'days').startOf('day')).add(months, 'months').unix();
+        const unixTwo = moment(moment().add(1, 'days').startOf('day')).add(count, unitOfTime).unix();
 
         const startDateUnix = moment.unix(this.getRandomFloat(unixOne, unixTwo)).unix();
         let finishDateUnix;

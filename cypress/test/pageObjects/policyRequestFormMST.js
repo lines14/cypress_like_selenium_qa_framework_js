@@ -98,7 +98,7 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputRandomDates() {
-        const dates = Randomizer.getRandomDatesIntervalFromTomorrow(JSONLoader.testData.monthsCount);
+        const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
         const newInstance = new PolicyRequestFormMST(dates.startDate, dates.finishDate);
         this.#calendarTowardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
         newInstance.#startDateButton.clickElement();
@@ -172,8 +172,12 @@ class PolicyRequestFormMST extends BaseForm {
     }
 
     inputAddress() {
-        this.#addressBox.clearData();
-        this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+        this.#addressBox.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                this.#addressBox.clearData();
+                this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+            }
+        });
     }
     
     inputEmail() {

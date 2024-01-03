@@ -130,7 +130,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     inputRandomStartDate() {
-        const dates = Randomizer.getRandomDatesIntervalFromTomorrow();
+        const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
         const newInstance = new PolicyRequestFormShanyrak(dates.startDate);
         this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
         newInstance.#startDateButton.clickElement();
