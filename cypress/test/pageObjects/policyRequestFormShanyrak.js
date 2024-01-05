@@ -66,7 +66,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     }
 
     inputPhone() {
-        this.#phoneBox.inputData(JSONLoader.testData.clientPhone);
+        this.#phoneBox.inputData('+7' + Randomizer.getRandomString(false, false, true, false, false, 10));
     }
 
     clickNextButton() {

@@ -39,4 +39,17 @@ function generateJSONLoader(filePath, JSONDir) {
     fs.writeFileSync(filePath, requires + classInit + classExport);
 }
 
+function setConfigData() {
+    const JSONFiles = getJSONFiles(JSONDir);
+    JSONFiles.forEach((file) => {
+        if (file.includes('configData')) {
+            const filePath = `${JSONDir}/${file}`;
+            const configData = JSON.parse(JSON.stringify(require(filePath)));
+            configData.parallel = process.argv.includes('--parallel') ? true : false;
+            fs.writeFileSync(filePath, JSON.stringify(configData, null, 4), 'utf8');
+        }
+    });
+}
+
+setConfigData();
 generateJSONLoader(filePath, JSONDir);

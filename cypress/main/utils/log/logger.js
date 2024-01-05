@@ -8,27 +8,37 @@ const logList = [];
 
 class Logger {
     static log(step) {
-        logList.push(` ${step}\n`);
+        logList.push(` ${step}`);
         const timeStamp = moment().format().slice(0, 19).replace('T', ' ');
         timeList.push(`${timeStamp}`);
         if (JSONLoader.configData.hiddenLogBodies && step.includes('[req]')) {
             const words = step.split(' ');
             const firstPart = words.slice(0, 3).join(' ');
             const secondPart = words.slice(words.length - 2).join(' ');
-            console.log(`${firstPart} ${secondPart}`);
+            if (!JSONLoader.configData.parallel) console.log(` ${firstPart} ${secondPart}`);
         } else {
-            console.log(step);
+            if (!JSONLoader.configData.parallel) console.log(` ${step}`);
         }
-
+        
         return timeStamp;
+    }
+
+    static outputAccumulatedLog() {
+        logList.forEach((step) => console.log(step));
     }
 
     static logToFile() {
         const zip = (a, b) => a.map((k, i) => [k, b[i]]);
         const summaryList = zip(timeList, logList);
-        const stream = createWriteStream(filePath);
+        const specName = summaryList.shift().pop().split(' ')[1];
+        const fileName = filePath.split('/')
+        .map((part, index, array) => index === array.length - 1 ? specName + '.' + part : part)
+        .join('/');
+        const stream = createWriteStream(fileName);
         stream.once('open', () => {
-            summaryList.forEach((element) => element.forEach((elem) => stream.write(elem)));
+            summaryList.forEach((logString) => logString.forEach((logSubString, index) => {
+                index % 2 !== 0 ? stream.write(`${logSubString}\n`) : stream.write(`${logSubString}`);
+            }));
             stream.end();
         });
     }
