@@ -35,7 +35,7 @@ class BaseDB {
     }
 
     async sqlQuery(query, values) {
-        const [rows] = await this.#connection.query(query, [values]);
+        const [rows] = await this.#connection.query(query, values);
         return rows;
     }
 

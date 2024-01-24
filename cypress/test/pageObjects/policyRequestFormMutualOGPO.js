@@ -80,7 +80,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
     }
 
     inputPhone() {
-        this.#phoneBox.inputData(JSONLoader.testData.clientPhoneOGPO);
+        this.#phoneBox.inputData(JSONLoader.testData.clientPhoneOGPO.slice(1));
     }
 
     clickNextButton() {

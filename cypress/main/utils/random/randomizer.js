@@ -119,6 +119,11 @@ class Randomizer {
 
         if (nextDayObject.date() === 1) finishMonthDifference++;
 
+        console.log(startDate); 
+        console.log(finishDate); 
+        console.log(startMonthDifference); 
+        console.log(finishMonthDifference);
+
         return { 
             startDate, 
             finishDate, 

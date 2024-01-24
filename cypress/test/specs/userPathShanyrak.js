@@ -20,7 +20,7 @@ const userPathShanyrak = (payTest) => {
             policyRequestFormShanyrak.clickNextButton()
 
             policyRequestFormShanyrak.getSMSCodeBoxElement().should('be.visible')
-            .then(() => NodeEvents.getLastCodeFromDB())
+            .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneShanyrak))
             .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
 
             policyRequestFormShanyrak.inputIIN();

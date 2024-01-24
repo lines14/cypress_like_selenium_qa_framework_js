@@ -13,10 +13,10 @@ exports.setupNodeEvents = {
             log(step) {
                 return Logger.log(step);
             },
-            async getLastCodeFromDB() {
+            async getLastCodeFromDB(phoneNumber) {
                 return [
                     await notificationDB.createConnection(), 
-                    await notificationDB.getLastCode(), 
+                    await notificationDB.getLastCode(phoneNumber), 
                     await notificationDB.closeConnection()
                 ];
             },

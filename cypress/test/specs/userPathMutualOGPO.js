@@ -21,7 +21,7 @@ const userPathMutualOGPO = (payTest) => {
             policyRequestFormMutualOGPO.clickNextButton();
 
             policyRequestFormMutualOGPO.getSMSCodeBoxElement().should('be.visible')
-            .then(() => NodeEvents.getLastCodeFromDB())
+            .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneOGPO))
             .then((code) => policyRequestFormMutualOGPO.enterSMSCode(code));
 
             policyRequestFormMutualOGPO.inputIIN();
