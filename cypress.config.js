@@ -7,8 +7,8 @@ require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: tr
 module.exports = defineConfig({
     chromeWebSecurity: false,
     morgan: false, 
-    screenshotOnRunFailure: false,
-    video: false,
+    screenshotOnRunFailure: true,
+    video: true,
     env: {
         allure: true,
         allureResultsPath: "./cypress/artifacts/allure-results",
