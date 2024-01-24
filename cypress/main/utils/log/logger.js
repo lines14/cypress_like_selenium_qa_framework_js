@@ -11,13 +11,15 @@ class Logger {
         logList.push(` ${step}`);
         const timeStamp = moment().format().slice(0, 19).replace('T', ' ');
         timeList.push(`${timeStamp}`);
-        if (JSONLoader.configData.hiddenLogBodies && step.includes('[req]')) {
-            const words = step.split(' ');
-            const firstPart = words.slice(0, 3).join(' ');
-            const secondPart = words.slice(words.length - 2).join(' ');
-            if (!JSONLoader.configData.parallel) console.log(` ${firstPart} ${secondPart}`);
-        } else {
-            if (!JSONLoader.configData.parallel) console.log(` ${step}`);
+        if (!JSONLoader.configData.parallel) {
+            if (JSONLoader.configData.hiddenLogBodies && step.includes('[req]')) {
+                const words = step.split(' ');
+                const firstPart = words.slice(0, 3).join(' ');
+                const secondPart = words.slice(words.length - 2).join(' ');
+                console.log(` ${firstPart} ${secondPart}`);
+            } else {
+                console.log(` ${step}`);
+            }
         }
         
         return timeStamp;
@@ -34,7 +36,9 @@ class Logger {
         const fileName = filePath.split('/')
         .map((part, index, array) => index === array.length - 1 ? specName + '.' + part : part)
         .join('/');
-        const stream = createWriteStream(fileName);
+        const stream = JSONLoader.configData.parallel 
+        ? createWriteStream(fileName) 
+        : createWriteStream(filePath);
         stream.once('open', () => {
             summaryList.forEach((logString) => logString.forEach((logSubString, index) => {
                 index % 2 !== 0 ? stream.write(`${logSubString}\n`) : stream.write(`${logSubString}`);

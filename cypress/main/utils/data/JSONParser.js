@@ -46,6 +46,7 @@ function setConfigData() {
             const filePath = `${JSONDir}/${file}`;
             const configData = JSON.parse(JSON.stringify(require(filePath)));
             configData.parallel = process.argv.includes('--parallel') ? true : false;
+            configData.hasVideo = process.argv.includes('--parallel') ? false : true;
             fs.writeFileSync(filePath, JSON.stringify(configData, null, 4), 'utf8');
         }
     });

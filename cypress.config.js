@@ -8,7 +8,7 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     morgan: false, 
     screenshotOnRunFailure: true,
-    video: true,
+    video: JSONLoader.configData.hasVideo,
     env: {
         allure: true,
         allureResultsPath: "./cypress/artifacts/allure-results",

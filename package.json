@@ -8,7 +8,7 @@
     "config:parallel": "node ./cypress/main/utils/data/JSONParser.js --parallel",
     "load:parallel": "npm run config:parallel && cypress run --headed --browser chrome",
     "test": "npm run config && cypress run --headed --browser chrome",
-    "test:parallel": "cypress-parallel -s load:parallel -w './cypress/artifacts/parallel-weights.json' -t 3 -d './cypress/test/specs/kaspiPay*.js'",
+    "test:parallel": "cypress-parallel -s load:parallel -w './cypress/artifacts/parallel-weights.json' -t 3 -d './cypress/test/specs/kaspiPay*.js' -b",
     "start:ci": "npm run build && npm run start",
     "test:ci": "WAIT_ON_TIMEOUT=900000 start-server-and-test start:ci http://localhost:3001 test"
   },

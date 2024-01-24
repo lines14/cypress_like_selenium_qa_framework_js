@@ -1,5 +1,6 @@
 {
     "parallel": true,
+    "hasVideo": false,
     "hiddenLogBodies": true,
     "verification": true,
     "allureCommandlineArgs": [
@@ -38,5 +39,7 @@
         "clear",
         "request",
         "invoke"
-    ]
+    ],
+    "passed": "-----------------------------PASSED-----------------------------",
+    "failed": "-----------------------------FAILED-----------------------------"
 }
