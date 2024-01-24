@@ -13,7 +13,7 @@ UI tests:
   #   - k8s
   script:
     - npm ci
-    - npm run test:ci:split
+    - npm run test:split
   when: always
   artifacts:
     when: always
