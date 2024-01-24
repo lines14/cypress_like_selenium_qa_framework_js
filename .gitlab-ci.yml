@@ -11,6 +11,7 @@ UI tests:
   #   - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
   # tags:
   #   - k8s
+  parallel: 3
   script:
     - npm ci
     - npm run test:split
