@@ -3,6 +3,7 @@ const notificationDB = require('../test/DB/notificationDB');
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 const BaseTest = require('../main/baseTest');
 const Logger = require('../main/utils/log/logger');
+const cypressSplit = require('cypress-split')
 const localStorage = require("cypress-localstorage-commands/plugin");
 
 exports.setupNodeEvents = {
@@ -28,6 +29,7 @@ exports.setupNodeEvents = {
             }
         });
 
+        cypressSplit(on, config);
         allureWriter(on, config);
         localStorage(on, config);
         return config;

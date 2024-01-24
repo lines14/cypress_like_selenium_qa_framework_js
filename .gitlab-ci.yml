@@ -1,25 +1,24 @@
-# UI tests:
-#   image: swtracker/cypress-java:latest
-#   stage: test
-#   except:
-#     - staging
-#     - prod
-#   cache:
-#     paths:
-#       - node_modules/
-#   before_script:
-#     - cp .env.dev .env
-#     - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
-#   tags:
-#     - k8s
-#   script:
-#     - npm ci
-#     - npm run test:ci
-#   when: always
-#   artifacts:
-#     when: always
-#     paths:
-#       - cypress/artifacts
-#       - cypress/screenshots
-#       - cypress/videos
-#     expire_in: 1 month
+UI tests:
+  image: swtracker/cypress-java:latest
+  stage: test
+  # only:
+  #   - dev
+  cache:
+    paths:
+      - node_modules/
+  # before_script:
+  #   - cp .env.dev .env
+  #   - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
+  # tags:
+  #   - k8s
+  script:
+    - npm ci
+    - npm run test:ci:split
+  when: always
+  artifacts:
+    when: always
+    paths:
+      - cypress/artifacts
+      - cypress/screenshots
+      - cypress/videos
+    expire_in: 1 month

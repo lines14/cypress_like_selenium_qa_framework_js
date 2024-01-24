@@ -8,10 +8,12 @@
     "config:parallel": "node ./cypress/main/utils/data/JSONParser.js --parallel",
     "load:parallel": "npm run config:parallel && cypress run --headed --browser chrome",
     "test": "npm run config && cypress run --headed --browser chrome",
+    "test:split": "npm run config && cypress run --headed --browser chrome --env split=true",
     "test:parallel": "cypress-parallel -s load:parallel -w './cypress/artifacts/parallel-weights.json' -t 3 -d './cypress/test/specs/kaspiPay*.js' -b",
     "start:ci": "npm run build && npm run start",
     "test:ci": "WAIT_ON_TIMEOUT=900000 start-server-and-test start:ci http://localhost:3001 test",
-    "test:ci:parallel": "WAIT_ON_TIMEOUT=900000 start-server-and-test start:ci http://localhost:3001 test:parallel"
+    "test:ci:parallel": "WAIT_ON_TIMEOUT=900000 start-server-and-test start:ci http://localhost:3001 test:parallel",
+    "test:ci:split": "WAIT_ON_TIMEOUT=900000 start-server-and-test start:ci http://localhost:3001 test:split"
   },
   "devDependencies": {
     "@shelex/cypress-allure-plugin": "^2.40.0",
@@ -23,6 +25,7 @@
     "cypress-log-filter": "^1.0.4",
     "cypress-parallel": "^0.14.0",
     "cypress-plugin-multiple-click": "^1.0.0",
+    "cypress-split": "^1.18.5",
     "cypress-xpath": "^2.0.1",
     "dotenv": "^16.3.1",
     "moment": "^2.29.4",
