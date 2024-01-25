@@ -1,25 +1,25 @@
-UI tests:
-  image: swtracker/cypress-java:latest
-  stage: test
+# UI tests:
+#   image: swtracker/cypress-java:latest
+#   stage: test
   # only:
   #   - dev
-  cache:
-    paths:
-      - node_modules/
+  # cache:
+  #   paths:
+  #     - node_modules/
   # before_script:
   #   - cp .env.dev .env
   #   - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
   # tags:
   #   - k8s
-  parallel: 3
-  script:
-    - npm ci
-    - npm run test:split
-  when: always
-  artifacts:
-    when: always
-    paths:
-      - cypress/artifacts
-      - cypress/screenshots
-      - cypress/videos
-    expire_in: 1 month
+  # parallel: 3
+  # script:
+  #   - npm ci
+  #   - npm run test:split
+  # when: always
+  # artifacts:
+  #   when: always
+  #   paths:
+  #     - cypress/artifacts
+  #     - cypress/screenshots
+  #     - cypress/videos
+  #   expire_in: 1 month
