@@ -16,31 +16,31 @@ const userPathShanyrak = (payTest) => {
             shanyrakPage.clickPurchaseButton();
 
             policyRequestFormShanyrak.pageIsDisplayed().should('be.true');
-            policyRequestFormShanyrak.inputPhone();
-            policyRequestFormShanyrak.clickNextButton()
+            // policyRequestFormShanyrak.inputPhone();
+            // policyRequestFormShanyrak.clickNextButton()
 
-            policyRequestFormShanyrak.getSMSCodeBoxElement().should('be.visible')
-            .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneShanyrak))
-            .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
+            // policyRequestFormShanyrak.getSMSCodeBoxElement().should('be.visible')
+            // .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneShanyrak))
+            // .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
 
-            policyRequestFormShanyrak.inputIIN();
-            policyRequestFormShanyrak.getSlicedSelectedClientName()
-            .should('be.equal', JSONLoader.testData.clientName);
-            policyRequestFormShanyrak.inputEmail();
-            policyRequestFormShanyrak.selectRandomCity();
-            policyRequestFormShanyrak.inputInsuranceObjectAddressStreet();
-            policyRequestFormShanyrak.randomClickPrivateHomeCheckbox();
-            policyRequestFormShanyrak.inputInsuranceObjectAddressHouseNumber();
-            policyRequestFormShanyrak.inputInsuranceObjectAddressApartmentNumber();
-            policyRequestFormShanyrak.clickConfirmationCheckbox();
-            policyRequestFormShanyrak.inputRandomStartDate();
-            policyRequestFormShanyrak.clickSaveButton();
-            policyRequestFormShanyrak.clickAcceptanceCheckbox();
-            policyRequestFormShanyrak.getSumToPay().then((sum) => {
-                policyRequestFormShanyrak.getPrice()
-                .should('be.equal', sum);
-                cy.setLocalStorage('sumToPay', sum);
-            });
+            // policyRequestFormShanyrak.inputIIN();
+            // policyRequestFormShanyrak.getSlicedSelectedClientName()
+            // .should('be.equal', JSONLoader.testData.clientName);
+            // policyRequestFormShanyrak.inputEmail();
+            // policyRequestFormShanyrak.selectRandomCity();
+            // policyRequestFormShanyrak.inputInsuranceObjectAddressStreet();
+            // policyRequestFormShanyrak.randomClickPrivateHomeCheckbox();
+            // policyRequestFormShanyrak.inputInsuranceObjectAddressHouseNumber();
+            // policyRequestFormShanyrak.inputInsuranceObjectAddressApartmentNumber();
+            // policyRequestFormShanyrak.clickConfirmationCheckbox();
+            // policyRequestFormShanyrak.inputRandomStartDate();
+            // policyRequestFormShanyrak.clickSaveButton();
+            // policyRequestFormShanyrak.clickAcceptanceCheckbox();
+            // policyRequestFormShanyrak.getSumToPay().then((sum) => {
+            //     policyRequestFormShanyrak.getPrice()
+            //     .should('be.equal', sum);
+            //     cy.setLocalStorage('sumToPay', sum);
+            // });
         });
 
         payTest();

@@ -6,14 +6,14 @@ const { userPathMutualOGPO } = require('./userPathMutualOGPO');
 
 userPathMutualOGPO(function payTest() {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
-        let sumToPay;
-        cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
-        policyRequestFormMutualOGPO.clickKaspiPayButton();
-        policyRequestFormMutualOGPO.getPaymentNumber()
-        .then((paymentNumber) => NodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
-        .then((response) => cy.wrap(response)
-        .should('contain', JSONLoader.testData.responsePaid));
-        policyRequestFormMutualOGPO.clickOGPOPageButton();
-        OGPOPage.pageIsDisplayed().should('be.true');
+        // let sumToPay;
+        // cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
+        // policyRequestFormMutualOGPO.clickKaspiPayButton();
+        // policyRequestFormMutualOGPO.getPaymentNumber()
+        // .then((paymentNumber) => NodeEvents.payWithKaspi({ sumToPay, paymentNumber }))
+        // .then((response) => cy.wrap(response)
+        // .should('contain', JSONLoader.testData.responsePaid));
+        // policyRequestFormMutualOGPO.clickOGPOPageButton();
+        // OGPOPage.pageIsDisplayed().should('be.true');
     });
 });

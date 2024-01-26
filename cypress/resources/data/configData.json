@@ -1,6 +1,6 @@
 {
-    "parallel": true,
-    "hasVideo": false,
+    "parallel": false,
+    "hasVideo": true,
     "hiddenLogBodies": true,
     "verification": true,
     "allureCommandlineArgs": [

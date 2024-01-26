@@ -1,25 +1,32 @@
-# UI tests:
-#   image: swtracker/cypress-java:latest
-#   stage: test
-  # only:
-  #   - dev
-  # cache:
-  #   paths:
-  #     - node_modules/
-  # before_script:
-  #   - cp .env.dev .env
-  #   - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
-  # tags:
-  #   - k8s
+UI tests:
+  image: swtracker/cypress-java:latest
+  stage: test
+  only:
+    - dev
+  cache:
+    paths:
+      - node_modules/
+  before_script:
+    - cp .env.dev .env
+    - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
+    - apt-get update -qy
+    - apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    - echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    - apt-get update -qy
+    - apt-get install -y docker-ce docker-ce-cli containerd.io
+    - docker info
+  tags:
+    - k8s
   # parallel: 3
-  # script:
-  #   - npm ci
-  #   - npm run test:split
-  # when: always
-  # artifacts:
-  #   when: always
-  #   paths:
-  #     - cypress/artifacts
-  #     - cypress/screenshots
-  #     - cypress/videos
-  #   expire_in: 1 month
+  script:
+    - npm ci
+    - npm run test:ci
+  when: always
+  artifacts:
+    when: always
+    paths:
+      - cypress/artifacts
+      - cypress/screenshots
+      - cypress/videos
+    expire_in: 1 month
