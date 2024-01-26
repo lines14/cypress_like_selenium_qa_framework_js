@@ -6,16 +6,22 @@ UI tests:
   cache:
     paths:
       - node_modules/
+  services:
+  - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
   before_script:
     # - cp .env.dev .env
     # - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
-    - docker info
+    # - docker info
   # tags:
   #   - k8s
   # parallel: 3
   script:
     - npm ci
-    - npm run test:ci
+    - npm run test
   when: always
   artifacts:
     when: always
