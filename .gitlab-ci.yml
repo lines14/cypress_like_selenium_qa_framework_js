@@ -1,8 +1,6 @@
 UI tests:
   image: lines14/cypress-java-dind:latest
   stage: test
-  tags:
-    - privileged
   # only:
   #   - dev
   cache:
