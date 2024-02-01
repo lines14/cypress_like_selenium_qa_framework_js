@@ -3,9 +3,9 @@ UI tests:
   stage: test
   # only:
   #   - dev
-  cache:
-    paths:
-      - node_modules/
+  # cache:
+  #   paths:
+  #     - node_modules/
   services:
   - docker:dind
   variables:
@@ -16,12 +16,13 @@ UI tests:
     # - cp .env.dev .env
     # - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
     # - docker info
+    # - docker compose version
   # tags:
   #   - k8s
-  # parallel: 3
   script:
-    - npm ci
-    - npm run test
+    # - npm ci
+    - npm run test:split
+  parallel: 3
   when: always
   artifacts:
     when: always
