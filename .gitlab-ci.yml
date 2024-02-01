@@ -20,7 +20,7 @@ UI tests:
   # tags:
   #   - k8s
   script:
-    # - npm ci
+    - npm ci
     - npm run test:split
   parallel: 3
   when: always
