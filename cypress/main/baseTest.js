@@ -10,7 +10,8 @@ class BaseTest {
     //     await dictionaryAPI.toggleVerification();
     // }
 
-    static async afterEach(results) {
+    static async afterEach(spec, results) {
+        console.log('KEK');
         results.totalFailed 
         ? Logger.log(JSONLoader.configData.failed) 
         : Logger.log(JSONLoader.configData.passed);
@@ -23,8 +24,9 @@ class BaseTest {
         
         Logger.logToFile();
     }
-    
+
     static async afterAll(results) {
+        console.log('KOK');
         results.totalFailed 
         ? Logger.log(JSONLoader.configData.failed) 
         : Logger.log(JSONLoader.configData.passed);
