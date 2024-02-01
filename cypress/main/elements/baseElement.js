@@ -175,7 +175,7 @@ class BaseElement {
         });
     }
 
-    flipCalendarIfNotContainsDate(rightArrowElement, monthIncrement) {        
+    flipCalendarMonth(rightArrowElement, monthIncrement) {        
         cy.logger(`[inf] ▶ click ${this.#elementName}`);
         this.getElement().clicks(3);
         for (let i = 0; i < monthIncrement; i++) {

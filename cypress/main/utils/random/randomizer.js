@@ -114,9 +114,10 @@ class Randomizer {
         .format(JSONLoader.testData.datesFormat));
         const startMonth = getAbsoluteMonth(startDate);
         const finishMonth = getAbsoluteMonth(finishDate);
-        const startMonthDifference = startMonth - currentMonth;
+        let startMonthDifference = startMonth - currentMonth;
         let finishMonthDifference = finishMonth - currentMonth;
 
+        if (nextDayObject.date() === 1) startMonthDifference++;
         if (nextDayObject.date() === 1) finishMonthDifference++;
 
         return { 

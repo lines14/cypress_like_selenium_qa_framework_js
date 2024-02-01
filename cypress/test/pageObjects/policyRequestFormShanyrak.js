@@ -24,6 +24,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #confirmationCheckbox;
     #calendarButton;
     #startDateButton;
+    #calendarLeftArrowButton;
     #calendarRightArrowButton;
     #saveButton;
     #acceptanceCheckbox;
@@ -31,7 +32,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     #orderPayment;
     #price;
     #sumToPay;
-    #paymentNumber;
+    #paymentCode;
     #epayButton;
     #mainPageButton;
 
@@ -52,6 +53,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#insuranceObjectAddressApartmentNumberBox = new Textbox(new XPATH('//label[contains(text(), "Квартира")]//following-sibling::input'), 'insurance object address apartment number');
         this.#confirmationCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check2"]'), 'confirmation checkbox');
         this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
+        this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//following-sibling::div[@class="form-item__icon"]'), 'calendar button');
         this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
@@ -60,7 +62,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
         this.#orderPayment = new Label(new XPATH('//p[contains(text(), "Оплата заказа")]'), 'order payment');
         this.#price = new Label(new XPATH('//div[@class="text" and contains(normalize-space(), "Фиксированная стоимость")]//preceding-sibling::div[@class="price"]'), 'price');
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
-        this.#paymentNumber = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//b'), 'payment number');
+        this.#paymentCode = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//b'), 'payment code');
         this.#epayButton = new Button(new XPATH('//button[contains(text(), "картой")]'), 'Epay button');
         this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
     }
@@ -132,8 +134,15 @@ class PolicyRequestFormShanyrak extends BaseForm {
     inputRandomStartDate() {
         const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
         const newInstance = new PolicyRequestFormShanyrak(dates.startDate);
-        this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
-        newInstance.#startDateButton.clickElement();
+        this.#calendarButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.startMonthDifference);
+        newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                newInstance.#startDateButton.clickElement();
+            } else {
+                newInstance.#calendarLeftArrowButton.clickElement();
+                newInstance.#startDateButton.clickElement();
+            }
+        });
     }
 
     clickSaveButton() {
@@ -160,9 +169,9 @@ class PolicyRequestFormShanyrak extends BaseForm {
         return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
     }
 
-    getPaymentNumber() {
-        this.#paymentNumber.getElement();
-        return this.#paymentNumber.getText();
+    getPaymentCode() {
+        this.#paymentCode.getElement();
+        return this.#paymentCode.getText();
     }
 
     clickEpayButton() {

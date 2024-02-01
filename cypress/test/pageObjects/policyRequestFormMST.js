@@ -16,6 +16,7 @@ class PolicyRequestFormMST extends BaseForm {
     #finishDateButton;
     #calendarTowardsButton;
     #calendarBackwardsButton;
+    #calendarLeftArrowButton;
     #calendarRightArrowButton;
     #selectedDates;
     #displayedDates;
@@ -42,7 +43,7 @@ class PolicyRequestFormMST extends BaseForm {
     #sumToPay;
     #kaspiPayButton;
     #epayButton;
-    #paymentNumber;
+    #paymentCode;
     #mainPageButton;
 
     constructor(startDate, finishDate) {
@@ -55,6 +56,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.#finishDateButton = new Button(new XPATH(`//td[@title="${finishDate}"]`), 'finish date');
         this.#calendarTowardsButton = new Button(new XPATH('//span[contains(text(), "Туда")]//following-sibling::div[@class="form-item__icon"]'), 'calendar towards button');
         this.#calendarBackwardsButton = new Button(new XPATH('//span[contains(text(), "Обратно")]//following-sibling::div[@class="form-item__icon"]'), 'calendar backwards button');
+        this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#selectedDates = new Button(new XPATH('//input[@name="date"]'), 'selected dates');
         this.#displayedDates = new Label(new XPATH('//span[contains(text(), "Срок действия:")]//following-sibling::div[@class="text-14"]//span'), 'displayed dates');
@@ -81,7 +83,7 @@ class PolicyRequestFormMST extends BaseForm {
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
         this.#epayButton = new Button(new XPATH('//button[contains(text(), "Картой")]'), 'Epay button');
-        this.#paymentNumber = new Label(new XPATH('//li[contains(@class, "mb-2")]//span'), 'payment number');
+        this.#paymentCode = new Label(new XPATH('//li[contains(@class, "mb-2")]//span'), 'payment code');
         this.#mainPageButton = new Button(new XPATH('//span[contains(text(), "На главную")]'), 'main page button');
     }
 
@@ -100,10 +102,25 @@ class PolicyRequestFormMST extends BaseForm {
     inputRandomDates() {
         const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
         const newInstance = new PolicyRequestFormMST(dates.startDate, dates.finishDate);
-        this.#calendarTowardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
-        newInstance.#startDateButton.clickElement();
-        this.#calendarBackwardsButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.finishMonthDifference);
-        newInstance.#finishDateButton.clickElement();
+        this.#calendarTowardsButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.startMonthDifference);
+        newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                newInstance.#startDateButton.clickElement();
+            } else {
+                newInstance.#calendarLeftArrowButton.clickElement();
+                newInstance.#startDateButton.clickElement();
+            }
+        });
+
+        this.#calendarBackwardsButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.finishMonthDifference);
+        newInstance.#finishDateButton.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                newInstance.#finishDateButton.clickElement();
+            } else {
+                newInstance.#calendarLeftArrowButton.clickElement();
+                newInstance.#finishDateButton.clickElement();
+            }
+        });
     }
 
     getSelectedDates() {
@@ -212,8 +229,8 @@ class PolicyRequestFormMST extends BaseForm {
         this.#epayButton.clickElement();
     }
 
-    getPaymentNumber() {
-        return this.#paymentNumber.getText();
+    getPaymentCode() {
+        return this.#paymentCode.getText();
     }
 
     clickMainPageButton() {

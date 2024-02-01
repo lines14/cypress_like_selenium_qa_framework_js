@@ -24,6 +24,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
     #selectedCarModel;
     #selectedCarManufacturedYear;
     #calendarButton;
+    #calendarLeftArrowButton;
     #calendarRightArrowButton;
     #startDateButton;
     #selectedDate;
@@ -39,7 +40,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
     #sumToPay;
     #kaspiPayButton;
     #epayButton;
-    #paymentNumber;
+    #paymentCode;
     #OGPOPageButton;
     
     constructor(startDate) {
@@ -60,6 +61,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#selectedCarModel = new Label(new XPATH('//span[@class="subtitle-16 -orange"]'), 'selected car model');
         this.#selectedCarManufacturedYear = new Label(new XPATH('//span[@class="subtitle-16 -grey"]'), 'selected car manufactured year');
         this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//following-sibling::div[@class="mx-datepicker"]'), 'calendar button');
+        this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
         this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
         this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
         this.#selectedDate = new Button(new XPATH('//input[@name="date"]'), 'selected date');
@@ -75,7 +77,7 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
         this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
         this.#epayButton = new Button(new XPATH('//button[contains(text(), "Оплатить картой")]'), 'Epay button');
-        this.#paymentNumber = new Label(new XPATH('//div[contains(@class, "success__subtitle")]//span'), 'payment number');
+        this.#paymentCode = new Label(new XPATH('//div[contains(@class, "success__subtitle")]//span'), 'payment code');
         this.#OGPOPageButton = new Button(new XPATH('//span[contains(text(), "Вернуться в магазин")]'), 'OGPO page button');
     }
 
@@ -152,8 +154,15 @@ class policyRequestFormMutualOGPO extends BaseForm {
     inputRandomStartDate() {
         const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
         const newInstance = new policyRequestFormMutualOGPO(dates.startDate);
-        this.#calendarButton.flipCalendarIfNotContainsDate(this.#calendarRightArrowButton, dates.startMonthDifference);
-        newInstance.#startDateButton.clickElement();
+        this.#calendarButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.startMonthDifference);
+        newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
+            if (isDisplayed) {
+                newInstance.#startDateButton.clickElement();
+            } else {
+                newInstance.#calendarLeftArrowButton.clickElement();
+                newInstance.#startDateButton.clickElement();
+            }
+        });
     }
 
     getDisplayedDate() {
@@ -208,9 +217,9 @@ class policyRequestFormMutualOGPO extends BaseForm {
         this.#epayButton.clickElement();
     }
 
-    getPaymentNumber() {
-        this.#paymentNumber.getElement();
-        return this.#paymentNumber.getText();
+    getPaymentCode() {
+        this.#paymentCode.getElement();
+        return this.#paymentCode.getText();
     }
 
     clickOGPOPageButton() {

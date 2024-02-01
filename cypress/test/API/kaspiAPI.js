@@ -33,7 +33,7 @@ class KaspiAPI extends BaseAPI {
             command: 'pay', 
             txn_id: Randomizer.getRandomString(false, false, true, false, false, 18, 18),
             txn_date: moment().format().slice(0, 19).replace(/-|T|:/g, ''),
-            account: paymentInfo.paymentNumber,
+            account: paymentInfo.paymentCode,
             sum: paymentInfo.sumToPay,
         }
 
