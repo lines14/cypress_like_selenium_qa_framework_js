@@ -10,6 +10,20 @@ class BaseTest {
     //     await dictionaryAPI.toggleVerification();
     // }
 
+    static async afterEach(results) {
+        results.totalFailed 
+        ? Logger.log(JSONLoader.configData.failed) 
+        : Logger.log(JSONLoader.configData.passed);
+        if (JSONLoader.configData.parallel) Logger.outputAccumulatedLog();
+        try {
+            await BaseTest.generateAllureReport();
+        } catch (error) {
+            Logger.log(error.message);
+        }
+        
+        Logger.logToFile();
+    }
+    
     static async afterAll(results) {
         results.totalFailed 
         ? Logger.log(JSONLoader.configData.failed) 
