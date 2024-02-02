@@ -9,11 +9,10 @@ const localStorage = require("cypress-localstorage-commands/plugin");
 exports.setupNodeEvents = {
     setupNodeEvents(on, config) {
         // on('before:run', BaseTest.beforeAll);
-        on('after:spec', (spec, results) => { console.log('KEK') });
         on('after:run', BaseTest.afterAll);
         on('task', {
-            log(step) {
-                return Logger.log(step);
+            log({ step, notTitle }) {
+                return Logger.log(step, notTitle);
             },
             // async getLastCodeFromDB(phoneNumber) {
             //     return [

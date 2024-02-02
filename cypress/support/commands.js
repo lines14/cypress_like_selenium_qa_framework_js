@@ -38,7 +38,7 @@ Cypress.Commands.add('isEnabled', { prevSubject: true }, (subject) => {
 });
 
 Cypress.Commands.add('logger', (step, notTitle) => {
-    cy.task('log', step).then((timeStamp) => notTitle ?? cy.log(`${timeStamp} ${step}`));
+    cy.task('log', { step, notTitle }).then((timeStamp) => notTitle ?? cy.log(`${timeStamp} ${step}`));
 });
 
 Cypress.on('uncaught:exception', (err) => {

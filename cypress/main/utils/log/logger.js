@@ -1,17 +1,18 @@
 const path = require('path');
 const moment = require('moment');
-const { createWriteStream } = require('fs');
+const { createWriteStream, appendFile } = require('fs');
 const JSONLoader = require('../data/JSONLoader');
 const filePath = path.join(path.resolve(), 'cypress', 'artifacts', 'log.txt');
 const timeList = [];
 const logList = [];
 
 class Logger {
-    static log(step) {
+    static log(step, notTitle) {
         logList.push(` ${step}`);
         const timeStamp = moment().format().slice(0, 19).replace('T', ' ');
         timeList.push(`${timeStamp}`);
         if (!JSONLoader.configData.parallel) {
+            notTitle ?? appendFile(filePath, `${timeStamp} ${step}\n`, 'utf8');
             if (JSONLoader.configData.hiddenLogBodies && step.includes('[req]')) {
                 const words = step.split(' ');
                 const firstPart = words.slice(0, 3).join(' ');
@@ -21,15 +22,33 @@ class Logger {
                 console.log(` ${step}`);
             }
         }
-        
+
         return timeStamp;
     }
 
-    static outputAccumulatedLog() {
+    // static log(step) {
+    //     logList.push(` ${step}`);
+    //     const timeStamp = moment().format().slice(0, 19).replace('T', ' ');
+    //     timeList.push(`${timeStamp}`);
+    //     if (!JSONLoader.configData.parallel) {
+    //         if (JSONLoader.configData.hiddenLogBodies && step.includes('[req]')) {
+    //             const words = step.split(' ');
+    //             const firstPart = words.slice(0, 3).join(' ');
+    //             const secondPart = words.slice(words.length - 2).join(' ');
+    //             console.log(` ${firstPart} ${secondPart}`);
+    //         } else {
+    //             console.log(` ${step}`);
+    //         }
+    //     }
+        
+    //     return timeStamp;
+    // }
+
+    static logParallel() {
         logList.forEach((step) => console.log(step));
     }
 
-    static logToFile() {
+    static logToFileParallel() {
         const zip = (a, b) => a.map((k, i) => [k, b[i]]);
         const summaryList = zip(timeList, logList);
         const specName = summaryList.shift().pop().split(' ')[1];

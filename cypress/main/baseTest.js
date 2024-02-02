@@ -10,34 +10,21 @@ class BaseTest {
     //     await dictionaryAPI.toggleVerification();
     // }
 
-    static async afterEach(spec, results) {
-        console.log('KEK');
-        results.totalFailed 
-        ? Logger.log(JSONLoader.configData.failed) 
-        : Logger.log(JSONLoader.configData.passed);
-        if (JSONLoader.configData.parallel) Logger.outputAccumulatedLog();
-        try {
-            await BaseTest.generateAllureReport();
-        } catch (error) {
-            Logger.log(error.message);
-        }
-        
-        Logger.logToFile();
-    }
-
     static async afterAll(results) {
-        console.log('KOK');
         results.totalFailed 
         ? Logger.log(JSONLoader.configData.failed) 
         : Logger.log(JSONLoader.configData.passed);
-        if (JSONLoader.configData.parallel) Logger.outputAccumulatedLog();
+        
         try {
             await BaseTest.generateAllureReport();
         } catch (error) {
             Logger.log(error.message);
         }
         
-        Logger.logToFile();
+        if (JSONLoader.configData.parallel) { 
+            Logger.logParallel();
+            Logger.logToFileParallel();
+        }
     }
 
     static async generateAllureReport() {
