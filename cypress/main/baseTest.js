@@ -4,26 +4,26 @@ const allureCommandline = require('allure-commandline');
 const dictionaryAPI = require('../test/API/dictionaryAPI');
 
 class BaseTest {
-    // static async beforeAll() {
-    //     await dictionaryAPI.setToken();
-    //     await dictionaryAPI.toggleServer();
-    //     await dictionaryAPI.toggleVerification();
-    // }
+    static async beforeAll() {
+        await dictionaryAPI.setToken();
+        await dictionaryAPI.toggleServer();
+        await dictionaryAPI.toggleVerification();
+    }
 
     static async afterAll(results) {
         results.totalFailed 
         ? Logger.log(JSONLoader.configData.failed) 
         : Logger.log(JSONLoader.configData.passed);
         
+        if (JSONLoader.configData.parallel) { 
+            Logger.logParallel();
+            Logger.logToFileParallel();
+        }
+        
         try {
             await BaseTest.generateAllureReport();
         } catch (error) {
             Logger.log(error.message);
-        }
-        
-        if (JSONLoader.configData.parallel) { 
-            Logger.logParallel();
-            Logger.logToFileParallel();
         }
     }
 
