@@ -8,6 +8,7 @@ const localStorage = require("cypress-localstorage-commands/plugin");
 
 exports.setupNodeEvents = {
     setupNodeEvents(on, config) {
+        cypressSplit(on, config);
         on('before:run', BaseTest.beforeAll);
         on('after:run', BaseTest.afterAll);
         on('task', {
@@ -29,7 +30,6 @@ exports.setupNodeEvents = {
             }
         });
 
-        cypressSplit(on, config);
         allureWriter(on, config);
         localStorage(on, config);
         return config;
