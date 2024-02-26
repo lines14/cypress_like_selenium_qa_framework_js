@@ -1,11 +1,8 @@
-UI tests:
+e2e-tests:
   image: lines14/cypress-java-dind:latest
-  stage: test
-  # only:
-  #   - dev
-  # cache:
-  #   paths:
-  #     - node_modules/
+  stage: e2e-tests
+  only:
+    - dev
   services:
   - docker:dind
   variables:
@@ -13,14 +10,15 @@ UI tests:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
   before_script:
-    # - cp .env.dev .env
-    # - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
-    # - docker info
-    # - docker compose version
-  # tags:
-  #   - k8s
+    - cp .env.dev .env
+    - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
+    - docker login --username $USER --password $PASS registry.gitlab.com
+    - service docker start
+  tags:
+    - k8s
   script:
     - npm ci
+    - npm run start:ci
     - npm run test:split
   parallel: 3
   when: always
