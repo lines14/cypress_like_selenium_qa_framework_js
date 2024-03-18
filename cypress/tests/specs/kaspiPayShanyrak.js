@@ -6,12 +6,11 @@ const JSONLoader = require('../../main/utils/data/JSONLoader');
 
 describe('Shanyrak payment', () => {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
-        let sumToPay;
-        cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
         policyRequestFormShanyrak.clickKaspiPayButton();
         policyRequestFormShanyrak.getOrderPaymentElement().should('be.visible');
         policyRequestFormShanyrak.getPaymentCode()
-        .then((paymentCode) => NodeEvents.payWithKaspi({ sumToPay, paymentCode }))
+        .then((paymentCode) => cy.getLocalStorage('sumToPay')
+        .then((sumToPay) => NodeEvents.payWithKaspi({ sumToPay, paymentCode })))
         .then((responses) => {
             responses.forEach((response) => cy.wrap(response.status).should('be.equal', 200));
             DataUtils.XMLToJSON(responses.pop().data).then((convertedResponse) => {

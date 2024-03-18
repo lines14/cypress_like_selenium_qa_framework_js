@@ -23,7 +23,7 @@ describe('Shanyrak smoke test:', () => {
         .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
 
         policyRequestFormShanyrak.inputIIN();
-        policyRequestFormShanyrak.getSlicedSelectedClientName()
+        policyRequestFormShanyrak.getSelectedClientName()
         .should('be.equal', JSONLoader.testData.clientName);
         policyRequestFormShanyrak.inputEmail();
         policyRequestFormShanyrak.selectRandomCity();
