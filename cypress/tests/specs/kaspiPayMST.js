@@ -10,13 +10,13 @@ describe('MST payment', () => {
         cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
         policyRequestFormMST.clickKaspiPayButton();
         policyRequestFormMST.getPaymentCode()
-        .then((paymentCode) => NodeEvents.payWithKaspi({ sumToPay, paymentCode }))
-        .then((responses) => {
+        .then((paymentCode) => cy.getLocalStorage('sumToPay')
+        .then((sumToPay) => NodeEvents.payWithKaspi({ sumToPay, paymentCode })))
+        .then(async (responses) => {
             responses.forEach((response) => cy.wrap(response.status).should('be.equal', 200));
-            DataUtils.XMLToJSON(responses.pop().data).then((convertedResponse) => {
-                cy.wrap(convertedResponse.comment.pop())
-                .should('contain', JSONLoader.testData.responsePaid);
-            });
+            const convertedResponse = await DataUtils.XMLToJSON(responses.pop().data);
+            cy.wrap(convertedResponse.comment.pop())
+            .should('contain', JSONLoader.testData.responsePaid);
         });
         policyRequestFormMST.clickMainPageButton();
         mainPage.pageIsDisplayed().should('be.true');
