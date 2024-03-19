@@ -138,8 +138,8 @@ class PolicyRequestFormMST extends BaseForm {
         this.#IINBox.inputData(JSONLoader.testData.clientIIN);
     }
 
-    getSelectedClientName() {
-        return this.#selectedClientName.getText();
+    getSelectedClientNameElement() {
+        return this.#selectedClientName.getElement();
     }
 
     getSlicedDisplayedClientName() {

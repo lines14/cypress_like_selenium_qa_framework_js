@@ -25,7 +25,7 @@ describe('MST smoke test:', () => {
         .should('be.deep.equal', displayedDates));
         policyRequestFormMST.inputIIN();
         policyRequestFormMST.getSelectedClientNameElement()
-        .should('be.equal', JSONLoader.testData.clientName);
+        .should('contain', JSONLoader.testData.clientName);
         policyRequestFormMST.getSlicedDisplayedClientName()
         .then((slicedName) => policyRequestFormMST.getSelectedClientNameElement()
         .should('contain', slicedName));
