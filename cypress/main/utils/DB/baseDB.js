@@ -39,9 +39,9 @@ class BaseDB {
         return rows;
     }
 
-    async sqlSelect(tableName, target='*', conditions='', values=[], logger=true) {
+    async sqlSelect(tableName, target='*', conditions='', values=[], hasLogger=true) {
         const logs = [];
-        if (logger) logs.push(`[inf] ▶ select ${target} from ${tableName} table`);
+        if (hasLogger) logs.push(`[inf] ▶ select ${target} from ${tableName} table`);
         const query =`SELECT ${target} FROM ${tableName} ${conditions};`;
         const rows = await this.sqlQuery(query, values);
         return { rows, logs }
