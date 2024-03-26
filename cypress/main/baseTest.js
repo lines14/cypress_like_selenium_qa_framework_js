@@ -1,7 +1,7 @@
 const Logger = require('../main/utils/log/logger');
 const JSONLoader = require('../main/utils/data/JSONLoader');
 const allureCommandline = require('allure-commandline');
-const dictionaryAPI = require('../test/API/dictionaryAPI');
+const dictionaryAPI = require('../tests/API/dictionaryAPI');
 
 class BaseTest {
     static async beforeAll() {
@@ -21,7 +21,7 @@ class BaseTest {
         }
         
         try {
-            await BaseTest.generateAllureReport();
+            await this.generateAllureReport();
         } catch (error) {
             Logger.log(error.message);
         }
