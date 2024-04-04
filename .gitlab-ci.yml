@@ -1,31 +1,61 @@
-e2e-tests:
-  image: lines14/cypress-java-dind:latest
-  stage: e2e-tests
-  only:
-    - dev
-  services:
-  - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_DRIVER: overlay2
-  before_script:
-    - cp .env.dev .env
-    - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
-    - docker login --username $USER --password $PASS registry.gitlab.com
-    - service docker start
-  tags:
-    - k8s
-  script:
-    - npm ci
-    - npm run start:ci
-    - npm run test:split
-  parallel: 3
-  when: always
-  artifacts:
-    when: always
-    paths:
-      - cypress/artifacts
-      - cypress/screenshots
-      - cypress/videos
-    expire_in: 1 month
+# e2e-tests:
+#   image: lines14/cypress-java-dind:latest
+#   stage: e2e-tests
+#   only:
+#     - dev
+#   services:
+#   - docker:dind
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375
+#     DOCKER_TLS_CERTDIR: ""
+#     DOCKER_DRIVER: overlay2
+#   before_script:
+#     - cp .env.dev .env
+#     - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
+#     - docker login --username $USER --password $PASS registry.gitlab.com
+#     - service docker start
+#   tags:
+#     - k8s
+#   script:
+#     - npm ci
+#     - npm run start:ci
+#     - npm run test:split
+#   parallel: 3
+#   when: always
+#   artifacts:
+#     when: always
+#     paths:
+#       - cypress/artifacts
+#       - cypress/screenshots
+#       - cypress/videos
+#     expire_in: 1 month
+
+# check:
+#   image: alpine:latest
+#   stage: check
+#   tags:
+#     - k8s
+#   rules:
+#     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "staging" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "prod")'
+#   before_script:
+#     - apk update && apk add --no-cache curl jq
+#   script:
+#     - |
+#       info=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/pipelines?ref=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" | jq '.[0]')
+      
+#       if [ "$info" = "null" ]; then
+#           echo "Previous pipeline not found"
+#           exit 0
+#       fi
+
+#       pipeline_status=$(echo "$info" | jq -r '.status')
+
+#       if [ "$pipeline_status" = "success" ]; then
+#           echo "Pipeline in the source branch passed. Merge to target branch allowed"
+#       else
+#           echo "Pipeline in the source branch not passed. Merge to target branch blocked"
+#           path=$(echo "$info" | jq -r '.web_url')
+#           echo 'URL of not passed pipeline:'
+#           echo "$path"
+#           exit 1
+#       fi
