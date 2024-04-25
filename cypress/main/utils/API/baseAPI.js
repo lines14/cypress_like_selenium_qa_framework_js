@@ -1,4 +1,3 @@
-const qs = require('qs');
 const axios = require('axios');
 
 class BaseAPI {
@@ -44,7 +43,7 @@ class BaseAPI {
         const logs = [`[req] ▶ post ${JSON.stringify(params ? params : {})} to ${endpoint}:`];
         if (this.#logBaseURL) logs.unshift(this.#logBaseURL);
         try {
-            const response = await this.#axiosInstance.post(`/${endpoint}`, qs.stringify(params));
+            const response = await this.#axiosInstance.post(`/${endpoint}`, params);
             logs.push(`[res]   status code: ${response.status}`);
             return { data: response.data, status: response.status, logs };
         } catch (error) {
@@ -58,7 +57,7 @@ class BaseAPI {
         const logs = [`[req] ▶ patch ${JSON.stringify(params ? params : {})} to ${endpoint}:`];
         if (this.#logBaseURL) logs.unshift(this.#logBaseURL);
         try {
-            const response = await this.#axiosInstance.patch(`/${endpoint}`, qs.stringify(params));
+            const response = await this.#axiosInstance.patch(`/${endpoint}`, params);
             logs.push(`[res]   status code: ${response.status}`);
             return { data: response.data, status: response.status, logs };
         } catch (error) {
