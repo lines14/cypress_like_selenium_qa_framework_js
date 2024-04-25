@@ -2,7 +2,7 @@ const path = require('path');
 const moment = require('moment');
 const { createWriteStream, appendFile } = require('fs');
 const JSONLoader = require('../data/JSONLoader');
-const filePath = path.join(path.resolve(), 'cypress', 'artifacts', 'log.txt');
+const filePath = path.join(path.resolve(), 'artifacts', 'log.txt');
 const timeList = [];
 const logList = [];
 

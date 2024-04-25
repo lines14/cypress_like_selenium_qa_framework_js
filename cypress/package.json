@@ -1,16 +1,12 @@
 {
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "config": "node ./cypress/main/utils/data/filesParser.js",
-    "config:parallel": "node ./cypress/main/utils/data/filesParser.js --parallel",
+    "config": "node ./main/utils/data/filesParser.js",
+    "config:parallel": "node ./main/utils/data/filesParser.js --parallel",
     "load:parallel": "npm run config:parallel && cypress run --headed --browser chrome",
     "start:ci": "docker run -d -p 80:80 --name amanat24_front $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA & npx wait-on http://172.17.0.2",
     "test": "npm run config && cypress run --headed --browser chrome",
     "test:split": "npm run config && cypress run --browser chrome --env split=true",
-    "test:parallel": "cypress-parallel -s load:parallel -w './cypress/artifacts/parallel-weights.json' -t 2 -d './cypress/tests/specs/*Suite.js' -b"
+    "test:parallel": "cypress-parallel -s load:parallel -w './artifacts/parallel-weights.json' -t 2 -d './tests/specs/*Suite.js' -b"
   },
   "devDependencies": {
     "@shelex/cypress-allure-plugin": "^2.40.0",
