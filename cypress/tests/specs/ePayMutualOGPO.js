@@ -2,7 +2,7 @@ const epayPage = require('../pageObjects/epayPage');
 const policyRequestFormMutualOGPO = require('../pageObjects/policyRequestFormMutualOGPO');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('OGPO + Mutual payment', () => {
+describe('OGPO + Mutual payment:', () => {
     it('Pay with Epay:', { scrollBehavior: false }, () => {
         policyRequestFormMutualOGPO.clickEpayButton();
         epayPage.pageIsDisplayed().should('be.true');

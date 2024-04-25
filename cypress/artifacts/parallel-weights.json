@@ -1,1 +1,1 @@
-{"cypress/test/specs/kaspiPayMST.js":{"time":33314,"weight":11},"cypress/test/specs/kaspiPayMutualOGPO.js":{"time":28264,"weight":9},"cypress/test/specs/kaspiPayShanyrak.js":{"time":26595,"weight":9}}
+{"cypress/tests/specs/kaspiPayMSTSuite.js":{"time":41021,"weight":9},"cypress/tests/specs/kaspiPayMutualOGPOSuite.js":{"time":45162,"weight":10}}

@@ -4,7 +4,7 @@ const NodeEvents = require('../../support/nodeEvents');
 const DataUtils = require('../../main/utils/data/dataUtils');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('Shanyrak payment', () => {
+describe('Shanyrak payment:', () => {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
         policyRequestFormShanyrak.clickKaspiPayButton();
         policyRequestFormShanyrak.getOrderPaymentElement().should('be.visible');

@@ -2,7 +2,7 @@ const epayPage = require('../pageObjects/epayPage');
 const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('MST payment', () => {
+describe('MST payment:', () => {
     it('Pay with Epay:', { scrollBehavior: false }, () => {
         policyRequestFormMST.clickEpayButton();
         epayPage.pageIsDisplayed().should('be.true');

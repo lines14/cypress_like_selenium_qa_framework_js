@@ -4,7 +4,7 @@ const NodeEvents = require('../../support/nodeEvents');
 const DataUtils = require('../../main/utils/data/dataUtils');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('OGPO + Mutual payment', () => {
+describe('OGPO + Mutual payment:', () => {
     it('Pay with Kaspi:', { scrollBehavior: false }, () => {
         let sumToPay;
         cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);

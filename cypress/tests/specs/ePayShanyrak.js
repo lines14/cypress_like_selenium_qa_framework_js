@@ -2,7 +2,7 @@ const epayPage = require('../pageObjects/epayPage');
 const policyRequestFormShanyrak = require('../pageObjects/policyRequestFormShanyrak');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('Shanyrak payment', () => {
+describe('Shanyrak payment:', () => {
     it('Pay with Epay:', { scrollBehavior: false }, () => {
         policyRequestFormShanyrak.clickEpayButton();
         epayPage.pageIsDisplayed().should('be.true');

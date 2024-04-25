@@ -1,4 +1,4 @@
-describe('OGPO + Mutual test suite', () => {
+describe('OGPO + Mutual test suite:', () => {
     require('./userPathMutualOGPO');
     require('./kaspiPayMutualOGPO');
 });

@@ -21,7 +21,7 @@ class BaseTest {
         }
         
         try {
-            await this.generateAllureReport();
+            await BaseTest.generateAllureReport();
         } catch (error) {
             Logger.log(error.message);
         }

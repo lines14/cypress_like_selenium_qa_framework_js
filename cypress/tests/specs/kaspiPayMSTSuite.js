@@ -1,4 +1,4 @@
-describe('MST test suite', () => {
+describe('MST test suite:', () => {
     require('./userPathMST');
     require('./kaspiPayMST');
 });
