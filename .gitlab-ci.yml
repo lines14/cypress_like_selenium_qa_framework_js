@@ -10,24 +10,23 @@
 #     DOCKER_TLS_CERTDIR: ""
 #     DOCKER_DRIVER: overlay2
 #   before_script:
-#     - cp .env.dev .env
 #     - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
 #     - docker login --username $USER --password $PASS registry.gitlab.com
 #     - service docker start
+#     - npm ci --prefix ./cypress
+#     - npm run start:ci --prefix ./cypress
 #   tags:
 #     - k8s
 #   script:
-#     - npm ci
-#     - npm run start:ci
-#     - npm run test:split
-#   parallel: 3
-#   when: always
+#     - npm run test:split --prefix ./cypress
+#   parallel: 2
 #   artifacts:
 #     when: always
 #     paths:
 #       - cypress/artifacts
 #       - cypress/screenshots
 #       - cypress/videos
+#       - cypress/resources/data/configData.json
 #     expire_in: 1 month
 
 # check:
