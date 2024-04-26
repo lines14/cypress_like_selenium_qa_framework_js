@@ -1,10 +1,8 @@
 const epayPage = require('../pageObjects/epayPage');
-const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('MST payment:', () => {
+exports.ePay = () => {
   it('Pay with Epay:', { scrollBehavior: false }, () => {
-    policyRequestFormMST.clickEpayButton();
     epayPage.pageIsDisplayed().should('be.true');
     cy.getLocalStorage('sumToPay')
       .then((sum) => epayPage.getAmountToPay().should('be.equal', sum));
@@ -15,4 +13,4 @@ describe('MST payment:', () => {
     epayPage.clickCloseButton();
     cy.url().should('be.equal', JSONLoader.testData.link);
   });
-});
+}

@@ -4,7 +4,7 @@ const policyRequestFormMutualOGPO = require('../pageObjects/policyRequestFormMut
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-exports.userPathMutualOGPO = () => {
+exports.userPathMutualOGPO = (options = { kaspiPay: true }) => {
   it('User path:', { scrollBehavior: false }, () => {
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
@@ -61,8 +61,13 @@ exports.userPathMutualOGPO = () => {
       policyRequestFormMutualOGPO.getTotalCostWithMutual()
         .should('be.equal', Number(sum));
     });
-    policyRequestFormMutualOGPO.clickKaspiPayButton();
-    policyRequestFormMutualOGPO.getPaymentCode()
-    .then((code) => cy.setLocalStorage('paymentCode', code));
+
+    if (options.kaspiPay) {
+      policyRequestFormMutualOGPO.clickKaspiPayButton();
+      policyRequestFormMutualOGPO.getPaymentCode()
+      .then((code) => cy.setLocalStorage('paymentCode', code));
+    } else {
+      policyRequestFormMutualOGPO.clickEpayButton();
+    }
   });
 }

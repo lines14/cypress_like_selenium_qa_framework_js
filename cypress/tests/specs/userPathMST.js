@@ -4,7 +4,7 @@ const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-exports.userPathMST = () => {
+exports.userPathMST = (options = { kaspiPay: true }) => {
   it('User path:', { scrollBehavior: false }, () => {
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
@@ -57,8 +57,13 @@ exports.userPathMST = () => {
       policyRequestFormMST.getTotalCostFromDisplayedValues()
         .should('be.equal', Number(sum));
     });
-    policyRequestFormMST.clickKaspiPayButton();
-    policyRequestFormMST.getPaymentCode()
-    .then((code) => cy.setLocalStorage('paymentCode', code));
+
+    if (options.kaspiPay) {
+      policyRequestFormMST.clickKaspiPayButton();
+      policyRequestFormMST.getPaymentCode()
+      .then((code) => cy.setLocalStorage('paymentCode', code));
+    } else {
+      policyRequestFormMST.clickEpayButton();
+    }
   });
 }
