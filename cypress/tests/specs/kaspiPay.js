@@ -1,15 +1,10 @@
-const mainPage = require('../pageObjects/mainPage');
-const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const NodeEvents = require('../../support/nodeEvents');
 const DataUtils = require('../../main/utils/data/dataUtils');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('MST payment:', () => {
+exports.kaspiPay = () => {
   it('Pay with Kaspi:', { scrollBehavior: false }, () => {
-    let sumToPay;
-    cy.getLocalStorage('sumToPay').then((sum) => sumToPay = sum);
-    policyRequestFormMST.clickKaspiPayButton();
-    policyRequestFormMST.getPaymentCode()
+    cy.getLocalStorage('paymentCode')
       .then((paymentCode) => cy.getLocalStorage('sumToPay')
         .then((sumToPay) => NodeEvents.payWithKaspi({ sumToPay, paymentCode })))
       .then(async (responses) => {
@@ -18,7 +13,5 @@ describe('MST payment:', () => {
         cy.wrap(convertedResponse.comment.pop())
           .should('contain', JSONLoader.testData.responsePaid);
       });
-    policyRequestFormMST.clickMainPageButton();
-    mainPage.pageIsDisplayed().should('be.true');
   });
-});
+}

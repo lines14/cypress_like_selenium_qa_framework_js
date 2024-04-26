@@ -1,7 +1,7 @@
 const { userPathMutualOGPO } = require('./userPathMutualOGPO');
-const { kaspiPayMutualOGPO } = require('./kaspiPayMutualOGPO');
+const { kaspiPay } = require('./kaspiPay');
 
 describe('OGPO + Mutual test suite:', () => {
   userPathMutualOGPO();
-  kaspiPayMutualOGPO();
+  kaspiPay();
 });

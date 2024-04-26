@@ -4,8 +4,8 @@ const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('MST smoke test:', () => {
-  it('MST client path:', { scrollBehavior: false }, () => {
+exports.userPathMST = () => {
+  it('User path:', { scrollBehavior: false }, () => {
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
     mainPage.clickGetInsuredButton();
@@ -57,5 +57,8 @@ describe('MST smoke test:', () => {
       policyRequestFormMST.getTotalCostFromDisplayedValues()
         .should('be.equal', Number(sum));
     });
+    policyRequestFormMST.clickKaspiPayButton();
+    policyRequestFormMST.getPaymentCode()
+    .then((code) => cy.setLocalStorage('paymentCode', code));
   });
-});
+}

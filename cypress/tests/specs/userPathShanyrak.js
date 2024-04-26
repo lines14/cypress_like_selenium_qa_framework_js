@@ -4,8 +4,8 @@ const policyRequestFormShanyrak = require('../pageObjects/policyRequestFormShany
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-describe('Shanyrak smoke test:', () => {
-  it('Shanyrak client path:', { scrollBehavior: false }, () => {
+exports.userPathShanyrak = () => {
+  it('User path:', { scrollBehavior: false }, () => {
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
     mainPage.clickGetInsuredButton();
@@ -40,5 +40,8 @@ describe('Shanyrak smoke test:', () => {
         .should('be.equal', sum);
       cy.setLocalStorage('sumToPay', sum);
     });
+    policyRequestFormShanyrak.clickKaspiPayButton();
+    policyRequestFormShanyrak.getPaymentCode()
+    .then((code) => cy.setLocalStorage('paymentCode', code));
   });
-});
+}

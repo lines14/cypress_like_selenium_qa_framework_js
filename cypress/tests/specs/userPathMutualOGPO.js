@@ -61,5 +61,8 @@ exports.userPathMutualOGPO = () => {
       policyRequestFormMutualOGPO.getTotalCostWithMutual()
         .should('be.equal', Number(sum));
     });
+    policyRequestFormMutualOGPO.clickKaspiPayButton();
+    policyRequestFormMutualOGPO.getPaymentCode()
+    .then((code) => cy.setLocalStorage('paymentCode', code));
   });
 }
