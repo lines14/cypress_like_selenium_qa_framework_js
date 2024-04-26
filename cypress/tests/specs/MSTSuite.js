@@ -6,5 +6,5 @@ const Randomizer = require('../../main/utils/random/randomizer');
 describe('MST test suite:', () => {
   const paymentVariants = [kaspiPay, ePay];
   userPathMST();
-  paymentVariants[Randomizer.getRandomInteger(paymentVariants.length)]();
+  paymentVariants[Randomizer.getRandomInteger(paymentVariants.length - 1)]();
 });

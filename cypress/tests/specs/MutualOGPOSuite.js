@@ -6,5 +6,5 @@ const Randomizer = require('../../main/utils/random/randomizer');
 describe('OGPO & Mutual test suite:', () => {
   const paymentVariants = [kaspiPay, ePay];
   userPathMutualOGPO();
-  paymentVariants[Randomizer.getRandomInteger(paymentVariants.length)]();
+  paymentVariants[Randomizer.getRandomInteger(paymentVariants.length - 1)]();
 });

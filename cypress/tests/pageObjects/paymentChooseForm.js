@@ -17,7 +17,7 @@ class PaymentChooseForm extends BaseForm {
     this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
     this.#paymentCode = new Label(new XPATH('//div[contains(@class, "success__subtitle")]//descendant-or-self::node()[span]//span'), 'payment code');
     this.#mainPageButton = new Button(new XPATH('//a[contains(@class, "-green")]'), 'main page button');
-    this.#epayButton = new Button(new XPATH('//button[contains(@class, "-green")]'), 'Epay button');
+    this.#epayButton = new Button(new XPATH('//button[contains(@class, "-green") and contains(text(), "картой")]'), 'Epay button');
   }
 
   clickKaspiPayButton() {
