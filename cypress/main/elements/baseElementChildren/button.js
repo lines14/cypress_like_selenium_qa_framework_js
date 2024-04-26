@@ -1,9 +1,5 @@
 const BaseElement = require('../baseElement');
 
-class Button extends BaseElement {
-  constructor(locator, name) {
-    super(locator, name);
-  }
-}
+class Button extends BaseElement {}
 
 module.exports = Button;

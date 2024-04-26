@@ -1,9 +1,5 @@
 const BaseLocator = require('../baseLocator');
 
-class ID extends BaseLocator {
-  constructor(locator) {
-    super(locator);
-  }
-}
+class ID extends BaseLocator {}
 
 module.exports = ID;

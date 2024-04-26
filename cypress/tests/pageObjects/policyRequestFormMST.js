@@ -230,12 +230,9 @@ class PolicyRequestFormMST extends BaseForm {
   }
 
   getTotalCostFromDisplayedValues() {
-    let policyCost;
     return this.#displayedPolicyCost.getText()
-      .then((cost) => policyCost = cost)
-      .then(() => this.#displayedPolicyDiscount.getText())
-      .then((discount) => Number(policyCost.slice(0, -1).replace(/₸| /g, ''))
-            + Number(discount.slice(0, -1).replace(/₸| /g, '')));
+      .then((cost) => this.#displayedPolicyDiscount.getText()
+        .then((discount) => Number(cost.slice(0, -1).replace(/₸| /g, '')) + Number(discount.slice(0, -1).replace(/₸| /g, ''))));
   }
 
   clickNextButton() {

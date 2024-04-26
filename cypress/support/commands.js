@@ -17,7 +17,7 @@ Cypress.Commands.add('isExisting', { prevSubject: false }, (locator) => cy.docum
   const convertLocator = (locator) => {
     const nodeList = [];
     const result = document.evaluate(locator, document, null, XPathResult.ANY_TYPE, null);
-    let node;
+    let node; // eslint-disable-next-line no-cond-assign
     while (node = result.iterateNext()) {
       nodeList.push(node);
     }
@@ -42,4 +42,5 @@ Cypress.Commands.add('logger', (step, title) => {
 
 Cypress.on('uncaught:exception', (err) => {
   if (err.message.includes("Cannot read properties of null (reading 'focus')")) return false;
+  return true;
 });

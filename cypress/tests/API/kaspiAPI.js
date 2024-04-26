@@ -35,7 +35,7 @@ class KaspiAPI extends BaseAPI {
       sum: paymentInfo.sumToPay,
     };
 
-    return await this.#API.get(JSONLoader.APIEndpoints.kaspi.pay, params);
+    return this.#API.get(JSONLoader.APIEndpoints.kaspi.pay, params);
   }
 }
 

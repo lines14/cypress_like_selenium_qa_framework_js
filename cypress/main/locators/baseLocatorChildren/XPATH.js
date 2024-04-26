@@ -1,9 +1,5 @@
 const BaseLocator = require('../baseLocator');
 
-class XPATH extends BaseLocator {
-  constructor(locator) {
-    super(locator);
-  }
-}
+class XPATH extends BaseLocator {}
 
 module.exports = XPATH;

@@ -28,7 +28,7 @@ class DictionaryAPI extends BaseAPI {
       setting: JSONLoader.configData.servers,
     };
 
-    return await this.#API.post(JSONLoader.APIEndpoints.dictionary.servers, params);
+    return this.#API.post(JSONLoader.APIEndpoints.dictionary.servers, params);
   }
 
   async toggleVerification() {
@@ -36,7 +36,7 @@ class DictionaryAPI extends BaseAPI {
       value: Number(JSONLoader.configData.verification),
     };
 
-    return await this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params);
+    return this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params);
   }
 }
 

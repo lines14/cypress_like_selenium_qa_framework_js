@@ -1,9 +1,5 @@
 const BaseElement = require('../baseElement');
 
-class Label extends BaseElement {
-  constructor(locator, name) {
-    super(locator, name);
-  }
-}
+class Label extends BaseElement {}
 
 module.exports = Label;

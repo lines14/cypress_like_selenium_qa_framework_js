@@ -233,12 +233,9 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
   }
 
   getTotalCostWithMutual() {
-    let OGPOCost;
     return this.#selectedOGPOCost.getText()
-      .then((cost) => OGPOCost = cost)
-      .then(() => this.#selectedMutualCost.getText())
-      .then((mutualCost) => Number(OGPOCost.slice(0, -1).replace(/₸| /g, ''))
-            + Number(mutualCost.slice(0, -1).replace(/₸| /g, '')));
+      .then((OGPOCost) => this.#selectedMutualCost.getText()
+        .then((mutualCost) => Number(OGPOCost.slice(0, -1).replace(/₸| /g, '')) + Number(mutualCost.slice(0, -1).replace(/₸| /g, ''))));
   }
 
   getSumToPay() {
