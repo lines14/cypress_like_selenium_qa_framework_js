@@ -68,14 +68,6 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
 
   #sumToPay;
 
-  #kaspiPayButton;
-
-  #epayButton;
-
-  #paymentCode;
-
-  #OGPOPageButton;
-
   constructor(startDate) {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'OGPO policy request page');
     this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//following-sibling::input[@type="tel"]'), 'phone');
@@ -108,10 +100,6 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
     this.#selectedOGPOCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса ОС ГПО ВТС")]//following-sibling::span'), 'selected OGPO cost');
     this.#selectedMutualCost = new Label(new XPATH('//span[contains(text(), "Стоимость Обоюдки")]//following-sibling::span'), 'selected Mutual cost');
     this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
-    this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
-    this.#epayButton = new Button(new XPATH('//button[contains(text(), "Оплатить картой")]'), 'Epay button');
-    this.#paymentCode = new Label(new XPATH('//div[contains(@class, "success__subtitle")]//span'), 'payment code');
-    this.#OGPOPageButton = new Button(new XPATH('//span[contains(text(), "Вернуться в магазин")]'), 'OGPO page button');
   }
 
   inputPhone() {
@@ -240,23 +228,6 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
 
   getSumToPay() {
     return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
-  }
-
-  clickKaspiPayButton() {
-    this.#kaspiPayButton.clickElement();
-  }
-
-  clickEpayButton() {
-    this.#epayButton.clickElement();
-  }
-
-  getPaymentCode() {
-    this.#paymentCode.getElement();
-    return this.#paymentCode.getText();
-  }
-
-  clickOGPOPageButton() {
-    this.#OGPOPageButton.clickElement();
   }
 }
 

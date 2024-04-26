@@ -13,7 +13,7 @@ Cypress.Commands.add('open', (url, options) => {
 
 Cypress.Commands.add('isVisible', { prevSubject: true }, (subject) => Cypress.dom.isVisible(subject));
 
-Cypress.Commands.add('isExisting', { prevSubject: false }, (locator) => cy.document().then((document) => {
+Cypress.Commands.add('isExisting', { prevSubject: false }, (subject) => cy.document().then((document) => {
   const convertLocator = (locator) => {
     const nodeList = [];
     const result = document.evaluate(locator, document, null, XPathResult.ANY_TYPE, null);
@@ -27,7 +27,7 @@ Cypress.Commands.add('isExisting', { prevSubject: false }, (locator) => cy.docum
 
   return new Cypress.Promise((resolve) => {
     Cypress.$(() => {
-      resolve(Cypress.$(document).find(convertLocator(locator)).length > 0);
+      resolve(Cypress.$(document).find(convertLocator(subject)).length > 0);
     });
   });
 }));

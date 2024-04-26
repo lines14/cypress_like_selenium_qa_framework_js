@@ -76,14 +76,6 @@ class PolicyRequestFormMST extends BaseForm {
 
   #sumToPay;
 
-  #kaspiPayButton;
-
-  #epayButton;
-
-  #paymentCode;
-
-  #mainPageButton;
-
   constructor(startDate, finishDate) {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'MST policy request page');
     this.#countriesDropdownButton = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]'), 'countries dropdown button');
@@ -120,10 +112,6 @@ class PolicyRequestFormMST extends BaseForm {
     this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//following-sibling::input[@type="text"]'), 'SMS code');
     this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check1"]'), 'acceptance checkbox');
     this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
-    this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
-    this.#epayButton = new Button(new XPATH('//button[contains(text(), "Картой")]'), 'Epay button');
-    this.#paymentCode = new Label(new XPATH('//li[contains(@class, "mb-2")]//span'), 'payment code');
-    this.#mainPageButton = new Button(new XPATH('//span[contains(text(), "На главную")]'), 'main page button');
   }
 
   selectThreeRandomCountries() {
@@ -270,22 +258,6 @@ class PolicyRequestFormMST extends BaseForm {
 
   getSumToPay() {
     return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
-  }
-
-  clickKaspiPayButton() {
-    this.#kaspiPayButton.clickElement();
-  }
-
-  clickEpayButton() {
-    this.#epayButton.clickElement();
-  }
-
-  getPaymentCode() {
-    return this.#paymentCode.getText();
-  }
-
-  clickMainPageButton() {
-    this.#mainPageButton.clickElement();
   }
 }
 

@@ -1,6 +1,6 @@
 const path = require('path');
 const moment = require('moment');
-const { createWriteStream, appendFile } = require('fs');
+const { createWriteStream } = require('fs');
 const JSONLoader = require('../data/JSONLoader');
 
 const filePath = path.join(path.resolve(), 'artifacts', 'log.txt');
@@ -16,7 +16,8 @@ class Logger {
     timeList.push(`${timeStamp}`);
     if (title) this.#title = title;
     if (!JSONLoader.configData.parallel) {
-      if (!title) appendFile(filePath, `${timeStamp} ${step}\n`, 'utf8');
+      const stream = createWriteStream(filePath, { flags: 'a', autoClose: true });
+      if (!title) stream.write(`${timeStamp} ${step}\n`);
       this.hideLogBodies(step);
     }
 
@@ -28,9 +29,9 @@ class Logger {
       const words = step.split(' ');
       const firstPart = words.slice(0, 3).join(' ');
       const secondPart = words.slice(words.length - 2).join(' ');
-      console.log(`    ${firstPart} ${secondPart}`);
+      console.log(`  ${firstPart} ${secondPart}`); // eslint-disable-line no-console
     } else {
-      console.log(`    ${step}`);
+      console.log(`  ${step}`); // eslint-disable-line no-console
     }
   }
 
@@ -45,13 +46,11 @@ class Logger {
     const fileName = filePath.split('/')
       .map((part, index, array) => (index === array.length - 1 ? `${this.#title}.${part}` : part))
       .join('/');
-    const stream = createWriteStream(fileName);
-    stream.once('open', () => {
-      summaryList.forEach((logString) => logString.forEach((logSubString, index) => {
-        index % 2 !== 0 ? stream.write(`${logSubString}\n`) : stream.write(`${logSubString}`);
-      }));
-      stream.end();
-    });
+    const stream = createWriteStream(fileName, { flags: 'a', autoClose: true });
+    summaryList.forEach((logString) => logString.forEach((logSubString, index) => {
+      /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
+      index % 2 !== 0 ? stream.write(`${logSubString}\n`) : stream.write(`${logSubString}`);
+    }));
   }
 }
 

@@ -48,19 +48,11 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
   #acceptanceCheckbox;
 
-  #kaspiPayButton;
-
   #orderPayment;
 
   #price;
 
   #sumToPay;
-
-  #paymentCode;
-
-  #epayButton;
-
-  #mainPageButton;
 
   constructor(startDate) {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'Shanyrak policy request page');
@@ -84,13 +76,9 @@ class PolicyRequestFormShanyrak extends BaseForm {
     this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//following-sibling::div[@class="form-item__icon"]'), 'calendar button');
     this.#saveButton = new Button(new XPATH('//button[contains(text(), "Сохранить")]'), 'save button');
     this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="familiarized"]'), 'acceptance checkbox');
-    this.#kaspiPayButton = new Button(new XPATH('//button[contains(@class, "-red")]'), 'Kaspi pay button');
     this.#orderPayment = new Label(new XPATH('//p[contains(text(), "Оплата заказа")]'), 'order payment');
     this.#price = new Label(new XPATH('//div[@class="text" and contains(normalize-space(), "Фиксированная стоимость")]//preceding-sibling::div[@class="price"]'), 'price');
     this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
-    this.#paymentCode = new Label(new XPATH('//div[contains(text(), "номер оплаты на Kaspi")]//b'), 'payment code');
-    this.#epayButton = new Button(new XPATH('//button[contains(text(), "картой")]'), 'Epay button');
-    this.#mainPageButton = new Button(new XPATH('//a[contains(text(), "На главную")]'), 'main page button');
   }
 
   inputPhone() {
@@ -187,10 +175,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
     this.#acceptanceCheckbox.clickElement();
   }
 
-  clickKaspiPayButton() {
-    this.#kaspiPayButton.clickElement();
-  }
-
   getOrderPaymentElement() {
     return this.#orderPayment.getElement();
   }
@@ -201,19 +185,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
   getSumToPay() {
     return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
-  }
-
-  getPaymentCode() {
-    this.#paymentCode.getElement();
-    return this.#paymentCode.getText();
-  }
-
-  clickEpayButton() {
-    this.#epayButton.clickElement();
-  }
-
-  clickMainPageButton() {
-    this.#mainPageButton.clickElement();
   }
 }
 

@@ -1,5 +1,5 @@
 {
-    "parallel": false,
+    "parallel": true,
     "getPolicyTWB": false,
     "setPolicyWaitingTWB": false,
     "hiddenLogBodies": true,
@@ -44,6 +44,6 @@
         "clearAllCookies"
     ],
     "servers": "[{\"url\":\"https://testesbd.mkb.kz:8077/IICwebservice.asmx\",\"active\":1},{\"url\":\"https://testesbd-beta.mkb.kz:8078/IICWebservice.asmx\",\"active\":0}]",
-    "passed": "----------------------PASSED----------------------",
-    "failed": "----------------------FAILED----------------------"
+    "passed": "------------------------PASSED------------------------",
+    "failed": "------------------------FAILED------------------------"
 }

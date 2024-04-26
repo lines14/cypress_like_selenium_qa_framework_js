@@ -4,8 +4,8 @@ const policyRequestFormShanyrak = require('../pageObjects/policyRequestFormShany
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-exports.userPathShanyrak = (options = { kaspiPay: true }) => {
-  it('User path:', { scrollBehavior: false }, () => {
+exports.userPathShanyrak = () => {
+  it('Shanyrak user path:', { scrollBehavior: false }, () => {
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
     mainPage.clickGetInsuredButton();
@@ -40,13 +40,5 @@ exports.userPathShanyrak = (options = { kaspiPay: true }) => {
         .should('be.equal', sum);
       cy.setLocalStorage('sumToPay', sum);
     });
-
-    if (options.kaspiPay) {
-      policyRequestFormShanyrak.clickKaspiPayButton();
-      policyRequestFormShanyrak.getPaymentCode()
-        .then((code) => cy.setLocalStorage('paymentCode', code));
-    } else {
-      policyRequestFormShanyrak.clickEpayButton();
-    }
   });
 };

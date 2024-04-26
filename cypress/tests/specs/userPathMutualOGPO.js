@@ -4,8 +4,8 @@ const policyRequestFormMutualOGPO = require('../pageObjects/policyRequestFormMut
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-exports.userPathMutualOGPO = (options = { kaspiPay: true }) => {
-  it('User path:', { scrollBehavior: false }, () => {
+exports.userPathMutualOGPO = () => {
+  it('OGPO & Mutual user path:', { scrollBehavior: false }, () => {
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
     mainPage.clickGetInsuredButton();
@@ -61,13 +61,5 @@ exports.userPathMutualOGPO = (options = { kaspiPay: true }) => {
       policyRequestFormMutualOGPO.getTotalCostWithMutual()
         .should('be.equal', Number(sum));
     });
-
-    if (options.kaspiPay) {
-      policyRequestFormMutualOGPO.clickKaspiPayButton();
-      policyRequestFormMutualOGPO.getPaymentCode()
-        .then((code) => cy.setLocalStorage('paymentCode', code));
-    } else {
-      policyRequestFormMutualOGPO.clickEpayButton();
-    }
   });
 };
