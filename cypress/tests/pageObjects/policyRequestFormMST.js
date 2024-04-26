@@ -127,7 +127,11 @@ class PolicyRequestFormMST extends BaseForm {
   }
 
   selectThreeRandomCountries() {
-    this.#countriesDropdownElements.clickRandomElementsFromDropdownByText(this.#countriesDropdownButton, JSONLoader.testData.countriesCount, this.#countriesDropdownElementSchengen);
+    this.#countriesDropdownElements.clickRandomElementsFromDropdownByText(
+      this.#countriesDropdownButton,
+      JSONLoader.testData.countriesCount,
+      this.#countriesDropdownElementSchengen,
+    );
   }
 
   getSelectedCountries() {
@@ -139,9 +143,14 @@ class PolicyRequestFormMST extends BaseForm {
   }
 
   inputRandomDates() {
-    const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
+    const dates = Randomizer
+      .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
     const newInstance = new PolicyRequestFormMST(dates.startDate, dates.finishDate);
-    this.#calendarTowardsButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.startMonthDifference);
+    this.#calendarTowardsButton.flipCalendarMonth(
+      this.#calendarRightArrowButton,
+      dates.startMonthDifference,
+    );
+
     newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#startDateButton.clickElement();
@@ -151,7 +160,11 @@ class PolicyRequestFormMST extends BaseForm {
       }
     });
 
-    this.#calendarBackwardsButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.finishMonthDifference);
+    this.#calendarBackwardsButton.flipCalendarMonth(
+      this.#calendarRightArrowButton,
+      dates.finishMonthDifference,
+    );
+
     newInstance.#finishDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#finishDateButton.clickElement();
@@ -189,11 +202,15 @@ class PolicyRequestFormMST extends BaseForm {
 
   selectRandomInsuranceLimit() {
     cy.scrollTo('center');
-    this.#insuranceLimitDropdownElements.clickRandomElementsFromDropdownByText(this.#insuranceLimitDropdownButton);
+    this.#insuranceLimitDropdownElements
+      .clickRandomElementsFromDropdownByText(this.#insuranceLimitDropdownButton);
   }
 
   selectRandomPurposeOfTheTrip() {
-    this.#purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(this.#purposeOfTheTripDropdownButton, this.#purposeOfTheTripEducation);
+    this.#purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(
+      this.#purposeOfTheTripDropdownButton,
+      this.#purposeOfTheTripEducation,
+    );
   }
 
   getSelectedPurposeOfTheTrip() {

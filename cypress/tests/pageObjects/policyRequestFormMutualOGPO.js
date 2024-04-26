@@ -7,7 +7,7 @@ const Button = require('../../main/elements/baseElementChildren/button');
 const Textbox = require('../../main/elements/baseElementChildren/textbox');
 const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
 
-class policyRequestFormMutualOGPO extends BaseForm {
+class PolicyRequestFormMutualOGPO extends BaseForm {
   #phoneBox;
 
   #nextButton;
@@ -185,9 +185,14 @@ class policyRequestFormMutualOGPO extends BaseForm {
   }
 
   inputRandomStartDate() {
-    const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
-    const newInstance = new policyRequestFormMutualOGPO(dates.startDate);
-    this.#calendarButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.startMonthDifference);
+    const dates = Randomizer
+      .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
+    const newInstance = new PolicyRequestFormMutualOGPO(dates.startDate);
+    this.#calendarButton.flipCalendarMonth(
+      this.#calendarRightArrowButton,
+      dates.startMonthDifference,
+    );
+
     newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#startDateButton.clickElement();
@@ -258,4 +263,4 @@ class policyRequestFormMutualOGPO extends BaseForm {
   }
 }
 
-module.exports = new policyRequestFormMutualOGPO();
+module.exports = new PolicyRequestFormMutualOGPO();

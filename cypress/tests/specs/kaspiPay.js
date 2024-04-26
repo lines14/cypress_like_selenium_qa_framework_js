@@ -14,4 +14,4 @@ exports.kaspiPay = () => {
           .should('contain', JSONLoader.testData.responsePaid);
       });
   });
-}
+};

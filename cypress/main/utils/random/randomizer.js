@@ -33,8 +33,8 @@ class Randomizer {
     let startMonthDifference = startMonth - currentMonth;
     let finishMonthDifference = finishMonth - currentMonth;
 
-    if (nextDayObject.date() === 1) startMonthDifference++;
-    if (nextDayObject.date() === 1) finishMonthDifference++;
+    if (nextDayObject.date() === 1) startMonthDifference += 1;
+    if (nextDayObject.date() === 1) finishMonthDifference += 1;
 
     return {
       startDate,
@@ -43,24 +43,6 @@ class Randomizer {
       finishMonthDifference,
       daysDifferenceIncluded,
     };
-  }
-
-  static getRandomElementByText(baseElements, exceptionsList) {
-    const baseElementsList = baseElements.slice(0, baseElements.length);
-    let element;
-    if (exceptionsList.length > 0) {
-      while (true) {
-        element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
-        if (!exceptionsList.includes(element) && (element !== '')) break;
-      }
-    } else {
-      while (true) {
-        element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
-        if (element !== '') break;
-      }
-    }
-
-    return element;
   }
 
   static getRandomString(
@@ -83,21 +65,36 @@ class Randomizer {
     if (chosenLetter) randomString += chosenLetter;
 
     let requiredCharacters = '';
-    if (hasLowerCase) requiredCharacters += lowerCaseLetters.charAt(Math.floor(Math.random() * lowerCaseLetters.length));
-    if (hasUpperCase) requiredCharacters += upperCaseLetters.charAt(Math.floor(Math.random() * upperCaseLetters.length));
-    if (hasNumber) requiredCharacters += numbers.charAt(Math.floor(Math.random() * numbers.length));
-    if (hasCyrillic) requiredCharacters += cyrillicLetters.charAt(Math.floor(Math.random() * cyrillicLetters.length));
+    if (hasLowerCase) {
+      requiredCharacters
+                += lowerCaseLetters.charAt(Math.floor(Math.random() * lowerCaseLetters.length));
+    }
+
+    if (hasUpperCase) {
+      requiredCharacters
+                += upperCaseLetters.charAt(Math.floor(Math.random() * upperCaseLetters.length));
+    }
+
+    if (hasNumber) {
+      requiredCharacters
+                += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    }
+
+    if (hasCyrillic) {
+      requiredCharacters
+                += cyrillicLetters.charAt(Math.floor(Math.random() * cyrillicLetters.length));
+    }
 
     randomString += requiredCharacters;
 
     const characters = (hasLowerCase ? lowerCaseLetters : '')
-        + (hasUpperCase ? upperCaseLetters : '')
-        + (hasNumber ? numbers : '')
-        + (hasCyrillic ? cyrillicLetters : '');
+            + (hasUpperCase ? upperCaseLetters : '')
+            + (hasNumber ? numbers : '')
+            + (hasCyrillic ? cyrillicLetters : '');
     const charactersLength = characters.length;
     const randomLength = length - randomString.length;
 
-    for (let i = 0; i < randomLength; i++) {
+    for (let i = 0; i < randomLength; i += 1) {
       randomString += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
@@ -111,7 +108,7 @@ class Randomizer {
     let randomIndex;
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
+      currentIndex -= 1;
       temporaryValue = array[currentIndex];
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
@@ -126,6 +123,24 @@ class Randomizer {
 
   static getRandomFloat(min, max) {
     return Math.random() * (max - min) + min;
+  }
+
+  static getRandomElementByText(baseElements, exceptionsList) {
+    const baseElementsList = baseElements.slice(0, baseElements.length);
+    let element;
+    if (exceptionsList.length > 0) {
+      while (true) { // eslint-disable-line no-constant-condition
+        element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
+        if (!exceptionsList.includes(element) && (element !== '')) break;
+      }
+    } else {
+      while (true) { // eslint-disable-line no-constant-condition
+        element = baseElementsList[Math.floor(Math.random() * baseElementsList.length)];
+        if (element !== '') break;
+      }
+    }
+
+    return element;
   }
 }
 

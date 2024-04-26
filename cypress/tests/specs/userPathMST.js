@@ -61,9 +61,9 @@ exports.userPathMST = (options = { kaspiPay: true }) => {
     if (options.kaspiPay) {
       policyRequestFormMST.clickKaspiPayButton();
       policyRequestFormMST.getPaymentCode()
-      .then((code) => cy.setLocalStorage('paymentCode', code));
+        .then((code) => cy.setLocalStorage('paymentCode', code));
     } else {
       policyRequestFormMST.clickEpayButton();
     }
   });
-}
+};

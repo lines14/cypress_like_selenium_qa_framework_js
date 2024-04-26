@@ -13,4 +13,4 @@ exports.ePay = () => {
     epayPage.clickCloseButton();
     cy.url().should('be.equal', JSONLoader.testData.link);
   });
-}
+};

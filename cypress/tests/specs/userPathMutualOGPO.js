@@ -65,9 +65,9 @@ exports.userPathMutualOGPO = (options = { kaspiPay: true }) => {
     if (options.kaspiPay) {
       policyRequestFormMutualOGPO.clickKaspiPayButton();
       policyRequestFormMutualOGPO.getPaymentCode()
-      .then((code) => cy.setLocalStorage('paymentCode', code));
+        .then((code) => cy.setLocalStorage('paymentCode', code));
     } else {
       policyRequestFormMutualOGPO.clickEpayButton();
     }
   });
-}
+};

@@ -132,7 +132,8 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   inputInsuranceObjectAddressStreet() {
-    this.#insuranceObjectAddressStreetBox.inputData(JSONLoader.testData.insuranceObjectAddressStreet);
+    this.#insuranceObjectAddressStreetBox
+      .inputData(JSONLoader.testData.insuranceObjectAddressStreet);
   }
 
   randomClickPrivateHomeCheckbox() {
@@ -140,14 +141,16 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   inputInsuranceObjectAddressHouseNumber() {
-    this.#insuranceObjectAddressHouseNumberBox.inputData(JSONLoader.testData.insuranceObjectAddressHouseNumber);
+    this.#insuranceObjectAddressHouseNumberBox
+      .inputData(JSONLoader.testData.insuranceObjectAddressHouseNumber);
   }
 
   inputInsuranceObjectAddressApartmentNumber() {
     this.#privateHomeCheckboxWrapper.getAttributeValue('value').then((value) => {
       this.#insuranceObjectAddressApartmentNumberBox.elementIsDisplayed().then((isDisplayed) => {
         if (!value && isDisplayed) {
-          this.#insuranceObjectAddressApartmentNumberBox.inputData(JSONLoader.testData.insuranceObjectAddressApartmentNumber);
+          this.#insuranceObjectAddressApartmentNumberBox
+            .inputData(JSONLoader.testData.insuranceObjectAddressApartmentNumber);
         }
       });
     });
@@ -158,9 +161,14 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   inputRandomStartDate() {
-    const dates = Randomizer.getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
+    const dates = Randomizer
+      .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
     const newInstance = new PolicyRequestFormShanyrak(dates.startDate);
-    this.#calendarButton.flipCalendarMonth(this.#calendarRightArrowButton, dates.startMonthDifference);
+    this.#calendarButton.flipCalendarMonth(
+      this.#calendarRightArrowButton,
+      dates.startMonthDifference,
+    );
+
     newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#startDateButton.clickElement();
