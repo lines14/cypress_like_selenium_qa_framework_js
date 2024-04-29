@@ -12,17 +12,18 @@ class BaseElement {
     this.#elementName = elementName;
   }
 
-  getElement(elementLocator) {
+  getElement(locator) {
+    let elementLocator = locator;
     if (!elementLocator) elementLocator = this.#elementLocator;
     return elementLocator instanceof XPATH
-      ? cy.xpath(elementLocator.locator).first()
-      : cy.get(elementLocator.locator).first();
+      ? cy.xpath(elementLocator.value).first()
+      : cy.get(elementLocator.value).first();
   }
 
   getElements() {
     return this.#elementLocator instanceof XPATH
-      ? cy.xpath(this.#elementLocator.locator)
-      : cy.get(this.#elementLocator.locator);
+      ? cy.xpath(this.#elementLocator.value)
+      : cy.get(this.#elementLocator.value);
   }
 
   clickElement() {
@@ -93,7 +94,7 @@ class BaseElement {
   }
 
   elementIsExisting() {
-    return cy.isExisting(this.#elementLocator.locator);
+    return cy.isExisting(this.#elementLocator.value);
   }
 
   elementIsDisplayed() {
@@ -106,6 +107,7 @@ class BaseElement {
           return cy.wrap(isVisible);
         });
       }
+
       cy.logger(notDisplayedLog);
       return cy.wrap(isExisting);
     });
@@ -140,15 +142,18 @@ class BaseElement {
         .then(($el) => exceptionsTextList.push($el.text())));
     }
 
-    for (let counter = 0; counter < count; counter++) {
+    for (let counter = 0; counter < count; counter += 1) {
       cy.logger(`[inf] ▶ click ${dropdownElement.#elementName}`);
       this.getElement(dropdownElement.#elementLocator).click();
       cy.logger(`[inf] ▶ get random element from ${this.#elementName}`);
       this.getElementsListText('innerText').then((elementsTextList) => {
-        const randomElementText = Randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
+        const randomElementText = Randomizer.getRandomElementByText(
+          elementsTextList,
+          exceptionsTextList,
+        );
         exceptionsTextList.push(randomElementText);
         cy.logger(`[inf] ▶ click ${randomElementText}`);
-        cy.contains('span', randomElementText).click({ force: true });
+        cy.contains(randomElementText).click({ force: true });
       });
     }
   }
@@ -165,9 +170,12 @@ class BaseElement {
           .then(($el) => exceptionsTextList.push($el.text())));
       }
 
-      for (let counter = 0; counter < count; counter++) {
+      for (let counter = 0; counter < count; counter += 1) {
         cy.logger(`[inf] ▶ get random element from ${this.#elementName}`);
-        const randomElementText = Randomizer.getRandomElementByText(elementsTextList, exceptionsTextList);
+        const randomElementText = Randomizer.getRandomElementByText(
+          elementsTextList,
+          exceptionsTextList,
+        );
         exceptionsTextList.push(randomElementText);
         cy.logger(`[inf] ▶ click ${randomElementText}`);
         cy.contains('div', randomElementText).find('input[type=checkbox]').click({ force: true });
@@ -178,7 +186,7 @@ class BaseElement {
   flipCalendarMonth(rightArrowElement, monthIncrement) {
     cy.logger(`[inf] ▶ click ${this.#elementName}`);
     this.getElement().clicks(3);
-    for (let i = 0; i < monthIncrement; i++) {
+    for (let i = 0; i < monthIncrement; i += 1) {
       cy.logger(`[inf] ▶ click ${rightArrowElement.#elementName}`);
       this.getElement(rightArrowElement.#elementLocator).click();
     }
