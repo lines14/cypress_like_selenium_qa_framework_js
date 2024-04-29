@@ -125,7 +125,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   randomClickPrivateHomeCheckbox() {
-    this.#privateHomeCheckboxLabel.clickCheckboxesByText();
+    this.#privateHomeCheckboxLabel.clickCheckboxesByText('div');
   }
 
   inputInsuranceObjectAddressHouseNumber() {
@@ -156,7 +156,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );
-
     newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#startDateButton.clickElement();

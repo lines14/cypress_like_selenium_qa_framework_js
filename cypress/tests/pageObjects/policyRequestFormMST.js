@@ -138,7 +138,6 @@ class PolicyRequestFormMST extends BaseForm {
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );
-
     newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#startDateButton.clickElement();
@@ -152,7 +151,6 @@ class PolicyRequestFormMST extends BaseForm {
       this.#calendarRightArrowButton,
       dates.finishMonthDifference,
     );
-
     newInstance.#finishDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#finishDateButton.clickElement();
@@ -210,7 +208,7 @@ class PolicyRequestFormMST extends BaseForm {
   }
 
   clickRandomAdditionalCheckboxes() {
-    this.#additionalCheckboxLabel.clickCheckboxesByText();
+    this.#additionalCheckboxLabel.clickCheckboxesByText('div');
   }
 
   clickCalculateButton() {

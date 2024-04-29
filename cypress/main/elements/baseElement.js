@@ -158,8 +158,9 @@ class BaseElement {
     }
   }
 
+  // checkboxParent is an element on the upper node that contains label text,
   // args contain exceptions elements array:
-  clickCheckboxesByText(randomCount = true, ...args) {
+  clickCheckboxesByText(checkboxParent, randomCount = true, ...args) {
     const exceptionsElements = args;
     this.getElementsListText('innerText').then((elementsTextList) => {
       let count = elementsTextList.length;
@@ -178,7 +179,7 @@ class BaseElement {
         );
         exceptionsTextList.push(randomElementText);
         cy.logger(`[inf] ▶ click ${randomElementText}`);
-        cy.contains('div', randomElementText).find('input[type=checkbox]').click({ force: true });
+        cy.contains(checkboxParent, randomElementText).find('input[type=checkbox]').click({ force: true });
       }
     });
   }

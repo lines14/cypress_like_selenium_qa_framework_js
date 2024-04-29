@@ -180,7 +180,6 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );
-
     newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         newInstance.#startDateButton.clickElement();
@@ -204,7 +203,7 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
   }
 
   randomClickSMSNotifyCheckbox() {
-    this.#SMSNotifyCheckboxLabel.clickCheckboxesByText();
+    this.#SMSNotifyCheckboxLabel.clickCheckboxesByText('div');
   }
 
   clickCalculateButton() {
