@@ -14,21 +14,21 @@ class TimeUtils {
     if (reverseInterval) {
       finishDate = dateBegin
         ? moment(dateBegin, JSONLoader.testData.datesFormat).subtract(count, unitOfTime)
-        : startDate.subtract(count, unitOfTime);
+        : moment(startDate).subtract(count, unitOfTime);
       if (isIncluded) {
-        finishDate = finishDate.add(1, 'days');
+        finishDate = moment(finishDate).add(1, 'days');
       }
     } else {
       finishDate = dateBegin
         ? moment(dateBegin, JSONLoader.testData.datesFormat).add(count, unitOfTime)
-        : startDate.add(count, unitOfTime);
+        : moment(startDate).add(count, unitOfTime);
       if (isIncluded) {
-        finishDate = finishDate.subtract(1, 'days');
+        finishDate = moment(finishDate).subtract(1, 'days');
       }
     }
 
-    startDate = startDate.format(JSONLoader.testData.datesFormat);
-    finishDate = finishDate.format(JSONLoader.testData.datesFormat);
+    startDate = moment(startDate).format(JSONLoader.testData.datesFormat);
+    finishDate = moment(finishDate).format(JSONLoader.testData.datesFormat);
     return { startDate: dateBegin ?? startDate, finishDate };
   }
 }
