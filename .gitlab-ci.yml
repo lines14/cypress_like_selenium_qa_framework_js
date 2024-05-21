@@ -58,3 +58,36 @@
 #           echo "$path"
 #           exit 1
 #       fi
+
+# create-merge-request:
+#   image: alpine:latest
+#   stage: create-merge-request
+#   only:
+#     - dev
+#   tags:
+#     - k8s
+#   before_script:
+#     - apk update && apk add --no-cache curl jq
+#   script:
+#     - |
+#       source_branch_name="dev"
+#       target_branch_name="staging"
+
+#       echo "Opening merge request from $source_branch_name to $target_branch_name:"
+
+#       response=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" -d "id=$CI_PROJECT_ID&title=$source_branch_name to $target_branch_name&source_branch=$source_branch_name&target_branch=$target_branch_name" -X POST "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests" | jq)
+
+#       new_merge_request_state=$(echo "$response" | jq -r '.state')
+#       new_merge_request_path=$(echo "$response" | jq -r '.web_url')
+#       existing_merge_request_message=$(echo "$response" | jq -r '.message')
+
+#       if [ "$new_merge_request_state" = "opened" ]; then
+#           echo "Merge request from $source_branch_name to $target_branch_name opened"
+#           echo "URL of opened merge request:"
+#           echo "$new_merge_request_path"
+#       elif [ -n "$existing_merge_request_message" ]; then
+#           existing_merge_request_state=$(echo "$existing_merge_request_message" | jq -r '.[0]')
+#           echo "$existing_merge_request_state"
+#       else
+#           echo "Merge request from $source_branch_name to $target_branch_name not opened"
+#       fi
