@@ -31,6 +31,16 @@ class BaseElement {
     return this.getElement().click();
   }
 
+  focusOnElement() {
+    cy.logger(`[inf] ▶ focus on ${this.#elementName}`);
+    return this.getElement().focus();
+  }
+
+  forceClickElement() {
+    cy.logger(`[inf] ▶ force click ${this.#elementName}`);
+    return this.getElement().click({ force: true });
+  }
+
   doubleClickElement() {
     cy.logger(`[inf] ▶ double click ${this.#elementName}`);
     this.getElement().dblclick();
@@ -84,6 +94,11 @@ class BaseElement {
     this.getElement().type(data, { force: true });
   }
 
+  fillInputField(data) {
+    cy.logger(`[inf] ▶ fill input data into ${this.#elementName}`);
+    this.getElement().fill(data, { overwrite: false, prepend: true });
+  }
+
   enterData(data) {
     cy.logger(`[inf] ▶ input ${this.#elementName} and submit`);
     this.getElement().type(`${data}{enter}`);
@@ -125,7 +140,9 @@ class BaseElement {
     });
   }
 
-  // args contain required count of returning random elements and exceptions elements array:
+  // requires one mandatory argument: dropdownElement.
+  // args contain optional count of returning random elements
+  // or/and optional exceptions elements sequence:
   clickRandomElementsFromDropdownByText(dropdownElement, ...args) {
     let count = args[0];
     let exceptionsElements = args.slice(1, args.length);
@@ -153,15 +170,14 @@ class BaseElement {
         );
         exceptionsTextList.push(randomElementText);
         cy.logger(`[inf] ▶ click ${randomElementText}`);
-        cy.contains(randomElementText).click({ force: true });
+        cy.contains(new RegExp(`^ *${randomElementText} *$`, "g")).click({ force: true });
       });
     }
   }
 
-  // checkboxParent is an element on the upper node that contains label text,
-  // args contain exceptions elements array:
-  clickCheckboxesByText(checkboxParent, randomCount = true, ...args) {
-    const exceptionsElements = args;
+  // requires one mandatory argument:
+  // checkboxParent - is a tagname of an element on the upper node that nesting checkbox title text
+  clickCheckboxesByText({ checkboxParent, randomCount = true }, ...exceptionsElements) {
     this.getElementsListText('innerText').then((elementsTextList) => {
       let count = elementsTextList.length;
       if (randomCount) count = Randomizer.getRandomInteger(elementsTextList.length);
