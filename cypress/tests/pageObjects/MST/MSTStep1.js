@@ -1,13 +1,12 @@
-const BaseForm = require('../../main/baseForm');
-const JSONLoader = require('../../main/utils/data/JSONLoader');
-const Randomizer = require('../../main/utils/random/randomizer');
-const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
-const Label = require('../../main/elements/baseElementChildren/label');
-const Button = require('../../main/elements/baseElementChildren/button');
-const Textbox = require('../../main/elements/baseElementChildren/textbox');
-const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
+const BaseForm = require('../../../main/baseForm');
+const JSONLoader = require('../../../main/utils/data/JSONLoader');
+const Randomizer = require('../../../main/utils/random/randomizer');
+const XPATH = require('../../../main/locators/baseLocatorChildren/XPATH');
+const Label = require('../../../main/elements/baseElementChildren/label');
+const Button = require('../../../main/elements/baseElementChildren/button');
+const Textbox = require('../../../main/elements/baseElementChildren/textbox');
 
-class PolicyRequestFormMST extends BaseForm {
+class MSTStep1 extends BaseForm {
   #countriesDropdownButton;
 
   #countriesDropdownElements;
@@ -54,27 +53,11 @@ class PolicyRequestFormMST extends BaseForm {
 
   #purposeOfTheTripEducation;
 
-  #additionalCheckboxLabel;
+  #additionalCheckboxesLabels;
 
   #calculateButton;
 
-  #displayedPolicyCost;
-
-  #displayedPolicyDiscount;
-
   #nextButton;
-
-  #addressBox;
-
-  #emailBox;
-
-  #phoneBox;
-
-  #SMSCodeBox;
-
-  #acceptanceCheckbox;
-
-  #sumToPay;
 
   constructor(startDate, finishDate) {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'MST policy request page');
@@ -101,39 +84,33 @@ class PolicyRequestFormMST extends BaseForm {
     this.#displayedPurposeOfTheTrip = new Label(new XPATH('//span[contains(text(), "Цель путешествия:")]//following-sibling::div[@class="text-14"]//span'), 'displayed purpose of the trip');
     this.#purposeOfTheTripDropdownElements = new Button(new XPATH('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span'), 'purpose of the trip dropdown elements');
     this.#purposeOfTheTripEducation = new Button(new XPATH('//span[contains(text(), "Цель путешествия")]//parent::div[@class="form-item"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[contains(@class, "multiselect__option")]//span[contains(text(), "Обучение")]'), 'purpose of the trip "education"');
-    this.#additionalCheckboxLabel = new Label(new XPATH('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label'), 'additional checkbox');
+    this.#additionalCheckboxesLabels = new Label(new XPATH('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label'), 'additional checkbox');
     this.#calculateButton = new Button(new XPATH('//button[contains(text(), "Рассчитать")]'), 'calculate button');
-    this.#displayedPolicyCost = new Label(new XPATH('//span[contains(text(), "Стоимость полиса")]//following-sibling::span'), 'displayed policy cost');
-    this.#displayedPolicyDiscount = new Label(new XPATH('//span[contains(text(), "Ваша скидка")]//following-sibling::span'), 'displayed policy discount');
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
-    this.#addressBox = new Textbox(new XPATH('//label[contains(text(), "Адрес проживания")]//following-sibling::input[@type="text"]'), 'address');
-    this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//following-sibling::input[@type="text"]'), 'email');
-    this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//following-sibling::input[@type="tel"]'), 'phone');
-    this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//following-sibling::input[@type="text"]'), 'SMS code');
-    this.#acceptanceCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check1"]'), 'acceptance checkbox');
-    this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
   }
 
   selectThreeRandomCountries() {
-    this.#countriesDropdownElements.clickRandomElementsFromDropdownByText(
-      this.#countriesDropdownButton,
-      JSONLoader.testData.countriesCount,
-      this.#countriesDropdownElementSchengen,
+    this.#countriesDropdownButton.chooseRandomElementsFromDropdownByText(
+      this.#countriesDropdownElements,
+      {
+        count: JSONLoader.testData.countriesCount,
+        exceptionsElements: [this.#countriesDropdownElementSchengen],
+      },
     );
   }
 
   getSelectedCountries() {
-    return this.#selectedCountries.getElementsListText('innerText');
+    return this.#selectedCountries.getElementsListText({ propertyName: 'innerText' });
   }
 
   getDisplayedCountries() {
-    return this.#displayedCountries.getElementsListText('innerText');
+    return this.#displayedCountries.getElementsListText({ propertyName: 'innerText' });
   }
 
   inputRandomDates() {
     const dates = Randomizer
       .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
-    const newInstance = new PolicyRequestFormMST(dates.startDate, dates.finishDate);
+    const newInstance = new MSTStep1(dates.startDate, dates.finishDate);
     this.#calendarTowardsButton.flipCalendarMonth(
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
@@ -162,7 +139,7 @@ class PolicyRequestFormMST extends BaseForm {
   }
 
   getSelectedDates() {
-    return this.#selectedDates.getElementsListText('value');
+    return this.#selectedDates.getElementsListText({ propertyName: 'value' });
   }
 
   getDisplayedDates() {
@@ -188,14 +165,16 @@ class PolicyRequestFormMST extends BaseForm {
 
   selectRandomInsuranceLimit() {
     cy.scrollTo('center');
-    this.#insuranceLimitDropdownElements
-      .clickRandomElementsFromDropdownByText(this.#insuranceLimitDropdownButton);
+    this.#insuranceLimitDropdownButton
+      .chooseRandomElementsFromDropdownByText(this.#insuranceLimitDropdownElements);
   }
 
   selectRandomPurposeOfTheTrip() {
-    this.#purposeOfTheTripDropdownElements.clickRandomElementsFromDropdownByText(
-      this.#purposeOfTheTripDropdownButton,
-      this.#purposeOfTheTripEducation,
+    this.#purposeOfTheTripDropdownButton.chooseRandomElementsFromDropdownByText(
+      this.#purposeOfTheTripDropdownElements,
+      {
+        exceptionElementsList: [this.#purposeOfTheTripEducation],
+      },
     );
   }
 
@@ -208,55 +187,16 @@ class PolicyRequestFormMST extends BaseForm {
   }
 
   clickRandomAdditionalCheckboxes() {
-    this.#additionalCheckboxLabel.clickCheckboxesByText('div');
+    this.#additionalCheckboxesLabels.clickCheckboxesByText({ checkboxParentTag: 'div' });
   }
 
   clickCalculateButton() {
     this.#calculateButton.clickElement();
   }
 
-  getTotalCostFromDisplayedValues() {
-    return this.#displayedPolicyCost.getText()
-      .then((cost) => this.#displayedPolicyDiscount.getText()
-        .then((discount) => Number(cost.slice(0, -1).replace(/₸| /g, '')) + Number(discount.slice(0, -1).replace(/₸| /g, ''))));
-  }
-
   clickNextButton() {
     this.#nextButton.clickElement();
   }
-
-  inputAddress() {
-    this.#addressBox.elementIsDisplayed().then((isDisplayed) => {
-      if (isDisplayed) {
-        this.#addressBox.clearData();
-        this.#addressBox.inputData(JSONLoader.testData.clientAddress);
-      }
-    });
-  }
-
-  inputEmail() {
-    this.#emailBox.inputData(JSONLoader.testData.clientEmail);
-  }
-
-  inputPhone() {
-    this.#phoneBox.inputData(JSONLoader.testData.clientPhoneMST.slice(1));
-  }
-
-  getSMSCodeBoxElement() {
-    return this.#SMSCodeBox.getElement();
-  }
-
-  enterSMSCode(code) {
-    this.#SMSCodeBox.enterData(code);
-  }
-
-  clickAcceptanceCheckbox() {
-    this.#acceptanceCheckbox.clickElement();
-  }
-
-  getSumToPay() {
-    return this.#sumToPay.getText().then((text) => text.slice(0, -1).replace(/₸| /g, ''));
-  }
 }
 
-module.exports = new PolicyRequestFormMST();
+module.exports = new MSTStep1();

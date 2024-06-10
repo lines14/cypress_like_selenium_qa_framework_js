@@ -116,7 +116,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
   selectRandomCity() {
     cy.scrollTo('center');
-    this.#citiesDropdownElements.clickRandomElementsFromDropdownByText(this.#citiesDropdownButton);
+    this.#citiesDropdownButton.chooseRandomElementsFromDropdownByText(this.#citiesDropdownElements);
   }
 
   inputInsuranceObjectAddressStreet() {
@@ -125,7 +125,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   randomClickPrivateHomeCheckbox() {
-    this.#privateHomeCheckboxLabel.clickCheckboxesByText('div');
+    this.#privateHomeCheckboxLabel.clickCheckboxesByText({ checkboxParentTag: 'div' });
   }
 
   inputInsuranceObjectAddressHouseNumber() {
@@ -134,7 +134,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   inputInsuranceObjectAddressApartmentNumber() {
-    this.#privateHomeCheckboxWrapper.getAttributeValue('value').then((value) => {
+    this.#privateHomeCheckboxWrapper.getAttributeValue({ attrName: 'value' }).then((value) => {
       this.#insuranceObjectAddressApartmentNumberBox.elementIsDisplayed().then((isDisplayed) => {
         if (!value && isDisplayed) {
           this.#insuranceObjectAddressApartmentNumberBox

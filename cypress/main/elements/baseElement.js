@@ -62,21 +62,27 @@ class BaseElement {
     return this.getElement().then(($el) => $el.text());
   }
 
-  getElementsListText(attrName) {
-    return this.getElements().then(($el) => Cypress._.map($el, attrName));
+  getValue() {
+    cy.logger(`[inf] ▶ get ${this.#elementName} value:`);
+    this.getElement().then(($el) => cy.logger(`[inf]   value is: "${$el.val()}"`));
+    return this.getElement().then(($el) => $el.val());
   }
 
-  getAttributeValue(attrName) {
+  getElementsListText({ propertyName }) {
+    return this.getElements().then(($el) => Cypress._.map($el, propertyName));
+  }
+
+  getAttributeValue({ attrName }) {
     cy.logger(`[inf] ▶ get ${this.#elementName} attribute "${attrName}" value:`);
     return this.getElement().invoke('attr', attrName).then((value) => {
-      cy.logger(`[inf]   value contains: "${value}"`);
+      cy.logger(`[inf]   attribute value contains: "${value}"`);
       return cy.wrap(value);
     });
   }
 
   scrollElementToView() {
     cy.logger(`[inf] ▶ scroll to ${this.#elementName}`);
-    this.getElement().scrollIntoView();
+    this.getElement().scrollIntoView({ offset: { top: -150, left: 0 } });
   }
 
   clearData() {
@@ -84,9 +90,14 @@ class BaseElement {
     this.getElement().clear();
   }
 
-  inputData(data) {
+  inputData(data, useCypressRealEvents = false) {
     cy.logger(`[inf] ▶ input ${this.#elementName}`);
-    this.getElement().type(data);
+    if (useCypressRealEvents === true) {
+      this.getElement().click();
+      cy.realType(data);
+    } else {
+      this.getElement().type(data);
+    }
   }
 
   forceInputData(data) {
@@ -140,45 +151,56 @@ class BaseElement {
     });
   }
 
-  // requires one mandatory argument: dropdownElement.
-  // args contain optional count of returning random elements
-  // or/and optional exceptions elements sequence:
-  clickRandomElementsFromDropdownByText(dropdownElement, ...args) {
-    let count = args[0];
-    let exceptionsElements = args.slice(1, args.length);
-    if (args === undefined) {
-      count = 1;
-    } else if (typeof args[0] !== 'number') {
-      count = 1;
-      exceptionsElements = args.slice(0, args.length);
-    }
+  /**
+   * requires one mandatory argument: dropdownElement.
+   * options contain optional parameters:
+   * list of values to choose from,
+   * count of elements to choose,
+   * boolean toggler for typing and pressing Enter key
+   * and exceptions elements sequence:
+   * @param {BaseElement} dropdownElement
+   * @param {Object} options
+   * @param {Promise} options.valuesListPromise
+   * @param {int} options.count
+   * @param {boolean} options.typeAndEnter
+   * @param {BaseElement[]} options.exceptionElementsList
+   */
+  chooseRandomElementsFromDropdownByText(dropdownElement, options = {}) {
+    let valuesListPromise = options.valuesListPromise ?? null;
+    const count = options.count ?? 1;
+    const typeAndEnter = options.typeAndEnter ?? false;
+    const exceptionElementsList = options.exceptionElementsList ?? [];
+
+    this.getElement(this.#elementLocator).click();
 
     const exceptionsTextList = [];
-    if (exceptionsElements.length !== 0) {
-      exceptionsElements.forEach((element) => this.getElement(element.#elementLocator)
+    if (exceptionElementsList.length !== 0) {
+      exceptionElementsList.forEach((element) => this.getElement(element.#elementLocator)
         .then(($el) => exceptionsTextList.push($el.text())));
     }
 
-    for (let counter = 0; counter < count; counter += 1) {
-      cy.logger(`[inf] ▶ click ${dropdownElement.#elementName}`);
-      this.getElement(dropdownElement.#elementLocator).click();
-      cy.logger(`[inf] ▶ get random element from ${this.#elementName}`);
-      this.getElementsListText('innerText').then((elementsTextList) => {
+    if (!valuesListPromise) {
+      valuesListPromise = dropdownElement.getElementsListText({ propertyName: 'innerText' });
+    }
+
+    valuesListPromise.then((elementsTextList) => {
+      for (let counter = 0; counter < count; counter += 1) {
+        cy.logger(`[inf] ▶ click ${dropdownElement.#elementName}`);
+        cy.logger(`[inf] ▶ get random element from ${this.#elementName}`);
         const randomElementText = Randomizer.getRandomElementByText(
           elementsTextList,
           exceptionsTextList,
         );
         exceptionsTextList.push(randomElementText);
-        cy.logger(`[inf] ▶ click ${randomElementText}`);
-        cy.contains(new RegExp(`^ *${randomElementText} *$`, "g")).click({ force: true });
-      });
-    }
+        dropdownElement.chooseElementFromDropdown(randomElementText, typeAndEnter);
+      }
+    });
   }
 
   // requires one mandatory argument:
   // checkboxParent - is a tagname of an element on the upper node that nesting checkbox title text
-  clickCheckboxesByText({ checkboxParent, randomCount = true }, ...exceptionsElements) {
-    this.getElementsListText('innerText').then((elementsTextList) => {
+  clickCheckboxesByText({ checkboxParentTag, randomCount = true }, ...exceptionsElements) {
+    this.getElementsListText({ propertyName: 'innerText' }).then((elementsTextList) => {
       let count = elementsTextList.length;
       if (randomCount) count = Randomizer.getRandomInteger(elementsTextList.length);
       const exceptionsTextList = [];
@@ -195,7 +217,7 @@ class BaseElement {
         );
         exceptionsTextList.push(randomElementText);
         cy.logger(`[inf] ▶ click ${randomElementText}`);
-        cy.contains(checkboxParent, randomElementText).find('input[type=checkbox]').click({ force: true });
+        cy.contains(checkboxParentTag, randomElementText).find('input[type=checkbox]').click({ force: true });
       }
     });
   }
@@ -206,6 +228,57 @@ class BaseElement {
     for (let i = 0; i < monthIncrement; i += 1) {
       cy.logger(`[inf] ▶ click ${rightArrowElement.#elementName}`);
       this.getElement(rightArrowElement.#elementLocator).click();
+    }
+  }
+
+  clickArrowButtonRandomNumberOfTimes(direction, numberOfElements) {
+    this.elementIsVisible();
+    const directionLowerCase = direction.toLowerCase();
+    const numberOfClicksOnArrowButton = Randomizer.getRandomInteger(numberOfElements - 1);
+    cy.logger(`[inf] ▶ direction: ${directionLowerCase}, numberOfClicks: ${numberOfClicksOnArrowButton}`);
+    for (let i = numberOfClicksOnArrowButton; i > 0; i -= 1) {
+      cy.logger(`[inf] ▶ press ${directionLowerCase} arrow button`);
+      cy.realPress(`{${directionLowerCase}arrow}`);
+    }
+    cy.logger('[inf] ▶ press Enter button');
+    cy.realPress('Enter');
+  }
+
+  createListOfElements(dropdownElement) {
+    const elements = [];
+    this.getElement(dropdownElement.#elementLocator).click();
+
+    return this.getElement().then((element) => {
+      elements.push(element.text());
+
+      return this.iterateOverList(elements);
+    });
+  }
+
+  iterateOverList(elements) {
+    this.getElement();
+    cy.realPress('{downarrow}');
+
+    return this.getElement().then((element) => {
+      if (element.text() === elements[0]) {
+        cy.logger(`Number of countries is ${elements.length}`);
+
+        return cy.wrap(elements);
+      }
+      elements.push(element.text());
+
+      return this.iterateOverList(elements);
+    });
+  }
+
+  chooseElementFromDropdown(text, typeAndEnter) {
+    if (typeAndEnter) {
+      cy.logger(`[inf] ▶ type and enter ${text}`);
+      this.enterData(text);
+      cy.realPress('{esc}');
+    } else {
+      cy.logger(`[inf] ▶ click ${text}`);
+      this.getElements().contains(new RegExp(`${text}`, 'g')).click({ force: true });
     }
   }
 }

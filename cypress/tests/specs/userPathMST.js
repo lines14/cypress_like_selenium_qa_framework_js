@@ -1,6 +1,9 @@
 const mainPage = require('../pageObjects/mainPage');
-const MSTPage = require('../pageObjects/MSTPage');
-const policyRequestFormMST = require('../pageObjects/policyRequestFormMST');
+const MSTPage = require('../pageObjects/MST/MSTPage');
+const MSTStep1 = require('../pageObjects/MST/MSTStep1');
+const MSTStep2 = require('../pageObjects/MST/MSTStep2');
+const MSTStep3 = require('../pageObjects/MST/MSTStep3');
+const MSTStep4 = require('../pageObjects/MST/MSTStep4');
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
@@ -14,47 +17,47 @@ exports.userPathMST = () => {
     MSTPage.pageIsDisplayed().should('be.true');
     MSTPage.clickPurchaseButton();
 
-    policyRequestFormMST.pageIsDisplayed().should('be.true');
-    policyRequestFormMST.selectThreeRandomCountries();
-    policyRequestFormMST.getDisplayedCountries()
-      .then((displayedCountries) => policyRequestFormMST.getSelectedCountries()
+    MSTStep1.pageIsDisplayed().should('be.true');
+    MSTStep1.selectThreeRandomCountries();
+    MSTStep1.getDisplayedCountries()
+      .then((displayedCountries) => MSTStep1.getSelectedCountries()
         .should('be.deep.equal', displayedCountries));
-    policyRequestFormMST.inputRandomDates();
-    policyRequestFormMST.getDisplayedDates()
-      .then((displayedDates) => policyRequestFormMST.getSelectedDates()
+    MSTStep1.inputRandomDates();
+    MSTStep1.getDisplayedDates()
+      .then((displayedDates) => MSTStep1.getSelectedDates()
         .should('be.deep.equal', displayedDates));
-    policyRequestFormMST.inputIIN();
-    policyRequestFormMST.getSelectedClientNameElement()
+    MSTStep1.inputIIN();
+    MSTStep1.getSelectedClientNameElement()
       .should('contain', JSONLoader.testData.clientName);
-    policyRequestFormMST.getSlicedDisplayedClientName()
-      .then((slicedName) => policyRequestFormMST.getSelectedClientNameElement()
+    MSTStep1.getSlicedDisplayedClientName()
+      .then((slicedName) => MSTStep1.getSelectedClientNameElement()
         .should('contain', slicedName));
-    policyRequestFormMST.selectRandomInsuranceLimit();
-    policyRequestFormMST.selectRandomPurposeOfTheTrip();
-    policyRequestFormMST.getDisplayedPurposeOfTheTrip()
-      .then((displayedPurpose) => policyRequestFormMST.getSelectedPurposeOfTheTrip()
+    MSTStep1.selectRandomInsuranceLimit();
+    MSTStep1.selectRandomPurposeOfTheTrip();
+    MSTStep1.getDisplayedPurposeOfTheTrip()
+      .then((displayedPurpose) => MSTStep1.getSelectedPurposeOfTheTrip()
         .should('be.equal', displayedPurpose));
-    policyRequestFormMST.clickRandomAdditionalCheckboxes();
-    policyRequestFormMST.clickCalculateButton();
-    policyRequestFormMST.clickNextButton();
+    MSTStep1.clickRandomAdditionalCheckboxes();
+    MSTStep1.clickCalculateButton();
+    MSTStep1.clickNextButton();
 
-    policyRequestFormMST.inputAddress();
-    policyRequestFormMST.clickNextButton();
+    MSTStep2.inputAddress();
+    MSTStep2.clickNextButton();
 
-    policyRequestFormMST.inputEmail();
-    policyRequestFormMST.clickNextButton();
+    MSTStep3.inputEmail();
+    MSTStep3.clickNextButton();
 
-    policyRequestFormMST.inputPhone();
-    policyRequestFormMST.clickNextButton();
+    MSTStep4.inputPhone();
+    MSTStep4.clickNextButton();
 
-    policyRequestFormMST.getSMSCodeBoxElement().should('be.visible')
+    MSTStep4.getSMSCodeBoxElement().should('be.visible')
       .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneMST))
-      .then((code) => policyRequestFormMST.enterSMSCode(code));
+      .then((code) => MSTStep4.enterSMSCode(code));
 
-    policyRequestFormMST.clickAcceptanceCheckbox();
-    policyRequestFormMST.getSumToPay().then((sum) => {
+    MSTStep4.clickAcceptanceCheckbox();
+    MSTStep4.getSumToPay().then((sum) => {
       cy.setLocalStorage('sumToPay', sum);
-      policyRequestFormMST.getTotalCostFromDisplayedValues()
+      MSTStep4.getTotalCostFromDisplayedValues()
         .should('be.equal', Number(sum));
     });
   });

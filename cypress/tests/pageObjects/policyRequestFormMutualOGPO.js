@@ -195,7 +195,7 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
   }
 
   getSelectedDate() {
-    return this.#selectedDate.getElementsListText('value').then((list) => list.pop());
+    return this.#selectedDate.getElementsListText({ propertyName: 'value' }).then((list) => list.pop());
   }
 
   clickMoreLink() {
@@ -203,7 +203,7 @@ class PolicyRequestFormMutualOGPO extends BaseForm {
   }
 
   randomClickSMSNotifyCheckbox() {
-    this.#SMSNotifyCheckboxLabel.clickCheckboxesByText('div');
+    this.#SMSNotifyCheckboxLabel.clickCheckboxesByText({ checkboxParentTag: 'div' });
   }
 
   clickCalculateButton() {
