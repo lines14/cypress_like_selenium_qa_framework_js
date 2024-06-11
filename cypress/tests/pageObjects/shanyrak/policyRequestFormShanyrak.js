@@ -34,8 +34,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
   #calendarButton;
 
-  #startDateButton;
-
   #calendarLeftArrowButton;
 
   #calendarRightArrowButton;
@@ -50,7 +48,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
 
   #sumToPay;
 
-  constructor(startDate) {
+  constructor() {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'Shanyrak policy request page');
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
     this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'IIN');
@@ -64,7 +62,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
     this.#insuranceObjectAddressHouseNumberBox = new Textbox(new XPATH('//label[contains(text(), "Дом")]//following-sibling::input'), 'insurance object address house number');
     this.#insuranceObjectAddressApartmentNumberBox = new Textbox(new XPATH('//label[contains(text(), "Квартира")]//following-sibling::input'), 'insurance object address apartment number');
     this.#confirmationCheckbox = new Checkbox(new XPATH('//input[@type="checkbox" and @id="check2"]'), 'confirmation checkbox');
-    this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
     this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
     this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
     this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//following-sibling::div[@class="form-item__icon"]'), 'calendar button');
@@ -133,17 +130,17 @@ class PolicyRequestFormShanyrak extends BaseForm {
   inputRandomStartDate() {
     const dates = Randomizer
       .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
-    const newInstance = new PolicyRequestFormShanyrak(dates.startDate);
+    const startDateButton = new Button(new XPATH(`//td[@title="${dates.startDate}"]`), 'start date');
     this.#calendarButton.flipCalendarMonth(
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );
-    newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
+    startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
-        newInstance.#startDateButton.clickElement();
+        startDateButton.clickElement();
       } else {
-        newInstance.#calendarLeftArrowButton.clickElement();
-        newInstance.#startDateButton.clickElement();
+        this.#calendarLeftArrowButton.clickElement();
+        startDateButton.clickElement();
       }
     });
   }

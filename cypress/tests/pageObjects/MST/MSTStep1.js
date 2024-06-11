@@ -17,10 +17,6 @@ class MSTStep1 extends BaseForm {
 
   #displayedCountries;
 
-  #startDateButton;
-
-  #finishDateButton;
-
   #calendarTowardsButton;
 
   #calendarBackwardsButton;
@@ -59,15 +55,13 @@ class MSTStep1 extends BaseForm {
 
   #nextButton;
 
-  constructor(startDate, finishDate) {
+  constructor() {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'MST policy request page');
     this.#countriesDropdownButton = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]'), 'countries dropdown button');
     this.#countriesDropdownElements = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span'), 'countries dropdown element');
     this.#countriesDropdownElementSchengen = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//following-sibling::div[@class="multiselect__content-wrapper"]//descendant::li[@class="multiselect__element"]//span[@class="multiselect__option" or @class="multiselect__option multiselect__option--highlight"]//span[contains(text(), "Шенген")]'), 'countries dropdown element "Schengen"');
     this.#selectedCountries = new Label(new XPATH('//div[@class="multiselect__tags-wrap"]//span[@class="multiselect__tag"]//span'), 'selected countries');
     this.#displayedCountries = new Label(new XPATH('//span[contains(text(), "Страна:")]//following-sibling::div[@class="text-14"]//span'), 'displayed countries');
-    this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
-    this.#finishDateButton = new Button(new XPATH(`//td[@title="${finishDate}"]`), 'finish date');
     this.#calendarTowardsButton = new Button(new XPATH('//span[contains(text(), "Туда")]//following-sibling::div[@class="form-item__icon"]'), 'calendar towards button');
     this.#calendarBackwardsButton = new Button(new XPATH('//span[contains(text(), "Обратно")]//following-sibling::div[@class="form-item__icon"]'), 'calendar backwards button');
     this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
@@ -110,30 +104,31 @@ class MSTStep1 extends BaseForm {
   inputRandomDates() {
     const dates = Randomizer
       .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
-    const newInstance = new MSTStep1(dates.startDate, dates.finishDate);
+    const startDateButton = new Button(new XPATH(`//td[@title="${dates.startDate}"]`), 'start date');
     this.#calendarTowardsButton.flipCalendarMonth(
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );
-    newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
+    startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
-        newInstance.#startDateButton.clickElement();
+        startDateButton.clickElement();
       } else {
-        newInstance.#calendarLeftArrowButton.clickElement();
-        newInstance.#startDateButton.clickElement();
+        this.#calendarLeftArrowButton.clickElement();
+        startDateButton.clickElement();
       }
     });
 
+    const finishDateButton = new Button(new XPATH(`//td[@title="${dates.finishDate}"]`), 'finish date');
     this.#calendarBackwardsButton.flipCalendarMonth(
       this.#calendarRightArrowButton,
       dates.finishMonthDifference,
     );
-    newInstance.#finishDateButton.elementIsDisplayed().then((isDisplayed) => {
+    finishDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
-        newInstance.#finishDateButton.clickElement();
+        finishDateButton.clickElement();
       } else {
-        newInstance.#calendarLeftArrowButton.clickElement();
-        newInstance.#finishDateButton.clickElement();
+        this.#calendarLeftArrowButton.clickElement();
+        finishDateButton.clickElement();
       }
     });
   }
