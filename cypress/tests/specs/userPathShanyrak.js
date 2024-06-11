@@ -1,6 +1,7 @@
 const mainPage = require('../pageObjects/mainPage');
-const shanyrakPage = require('../pageObjects/shanyrakPage');
-const policyRequestFormShanyrak = require('../pageObjects/policyRequestFormShanyrak');
+const shanyrakPage = require('../pageObjects/shanyrak/shanyrakPage');
+const SMSVerificationPage = require('../pageObjects/SMSVerificationPage');
+const policyRequestFormShanyrak = require('../pageObjects/shanyrak/policyRequestFormShanyrak');
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
@@ -14,13 +15,13 @@ exports.userPathShanyrak = () => {
     shanyrakPage.pageIsDisplayed().should('be.true');
     shanyrakPage.clickPurchaseButton();
 
-    policyRequestFormShanyrak.pageIsDisplayed().should('be.true');
-    policyRequestFormShanyrak.inputPhone();
-    policyRequestFormShanyrak.clickNextButton();
+    SMSVerificationPage.pageIsDisplayed().should('be.true');
+    SMSVerificationPage.inputPhone(JSONLoader.testData.clientPhoneShanyrak.slice(1));
+    SMSVerificationPage.clickNextButton();
 
-    policyRequestFormShanyrak.getSMSCodeBoxElement().should('be.visible')
+    SMSVerificationPage.getSMSCodeBoxElement().should('be.visible')
       .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneShanyrak))
-      .then((code) => policyRequestFormShanyrak.enterSMSCode(code));
+      .then((code) => SMSVerificationPage.enterSMSCode(code));
 
     policyRequestFormShanyrak.inputIIN();
     policyRequestFormShanyrak.getSlicedSelectedClientName()

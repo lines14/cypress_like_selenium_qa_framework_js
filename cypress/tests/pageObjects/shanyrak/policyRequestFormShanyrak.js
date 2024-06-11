@@ -1,18 +1,14 @@
-const BaseForm = require('../../main/baseForm');
-const JSONLoader = require('../../main/utils/data/JSONLoader');
-const Randomizer = require('../../main/utils/random/randomizer');
-const XPATH = require('../../main/locators/baseLocatorChildren/XPATH');
-const Label = require('../../main/elements/baseElementChildren/label');
-const Button = require('../../main/elements/baseElementChildren/button');
-const Textbox = require('../../main/elements/baseElementChildren/textbox');
-const Checkbox = require('../../main/elements/baseElementChildren/checkbox');
+const BaseForm = require('../../../main/baseForm');
+const JSONLoader = require('../../../main/utils/data/JSONLoader');
+const Randomizer = require('../../../main/utils/random/randomizer');
+const XPATH = require('../../../main/locators/baseLocatorChildren/XPATH');
+const Label = require('../../../main/elements/baseElementChildren/label');
+const Button = require('../../../main/elements/baseElementChildren/button');
+const Textbox = require('../../../main/elements/baseElementChildren/textbox');
+const Checkbox = require('../../../main/elements/baseElementChildren/checkbox');
 
 class PolicyRequestFormShanyrak extends BaseForm {
   #nextButton;
-
-  #phoneBox;
-
-  #SMSCodeBox;
 
   #IINBox;
 
@@ -57,8 +53,6 @@ class PolicyRequestFormShanyrak extends BaseForm {
   constructor(startDate) {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'Shanyrak policy request page');
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
-    this.#phoneBox = new Textbox(new XPATH('//label[contains(text(), "Номер телефона")]//following-sibling::input[@type="tel"]'), 'phone');
-    this.#SMSCodeBox = new Textbox(new XPATH('//label[contains(text(), "SMS-код")]//following-sibling::input[@type="number"]'), 'SMS code');
     this.#IINBox = new Textbox(new XPATH('//input[@id="iinHome"]'), 'IIN');
     this.#selectedClientName = new Label(new XPATH('//span[@class="subtitle-16 -green"]'), 'selected client name');
     this.#emailBox = new Textbox(new XPATH('//label[contains(text(), "Email")]//following-sibling::input[@type="text"]'), 'email');
@@ -81,20 +75,8 @@ class PolicyRequestFormShanyrak extends BaseForm {
     this.#sumToPay = new Label(new XPATH('//h6[contains(text(), "Общая сумма")]//following-sibling::h6[contains(text(), "₸")]'), 'sum to pay');
   }
 
-  inputPhone() {
-    this.#phoneBox.inputData(JSONLoader.testData.clientPhoneShanyrak.slice(1));
-  }
-
   clickNextButton() {
     this.#nextButton.clickElement();
-  }
-
-  getSMSCodeBoxElement() {
-    return this.#SMSCodeBox.getElement();
-  }
-
-  enterSMSCode(code) {
-    this.#SMSCodeBox.enterData(code);
   }
 
   inputIIN() {
