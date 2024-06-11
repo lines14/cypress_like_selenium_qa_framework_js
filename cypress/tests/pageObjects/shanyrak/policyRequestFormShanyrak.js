@@ -131,7 +131,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
     const dates = Randomizer
       .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
     const startDateButton = new Button(new XPATH(`//td[@title="${dates.startDate}"]`), 'start date');
-    this.#calendarButton.flipCalendarMonth(
+    this.#calendarButton.openCalendarAndFlipMonths(
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );

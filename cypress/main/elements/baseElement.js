@@ -222,7 +222,7 @@ class BaseElement {
     });
   }
 
-  flipCalendarMonth(rightArrowElement, monthIncrement) {
+  openCalendarAndFlipMonths(rightArrowElement, monthIncrement) {
     cy.logger(`[inf] ▶ click ${this.#elementName}`);
     this.getElement().clicks(3);
     for (let i = 0; i < monthIncrement; i += 1) {
