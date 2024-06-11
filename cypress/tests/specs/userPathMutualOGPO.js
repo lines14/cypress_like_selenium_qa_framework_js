@@ -1,6 +1,11 @@
 const mainPage = require('../pageObjects/mainPage');
-const OGPOPage = require('../pageObjects/OGPOPage');
-const policyRequestFormMutualOGPO = require('../pageObjects/policyRequestFormMutualOGPO');
+const OGPOPage = require('../pageObjects/mutualOGPO/OGPOPage');
+const SMSVerificationPage = require('../pageObjects/SMSVerificationPage');
+const mutualOGPOStep1 = require('../pageObjects/mutualOGPO/mutualOGPOStep1');
+const mutualOGPOStep2 = require('../pageObjects/mutualOGPO/mutualOGPOStep2');
+const mutualOGPOStep3 = require('../pageObjects/mutualOGPO/mutualOGPOStep3');
+const mutualOGPOStep4 = require('../pageObjects/mutualOGPO/mutualOGPOStep4');
+const mutualOGPOStep5 = require('../pageObjects/mutualOGPO/mutualOGPOStep5');
 const NodeEvents = require('../../support/nodeEvents');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
@@ -15,50 +20,50 @@ exports.userPathMutualOGPO = () => {
     OGPOPage.pageIsDisplayed().should('be.true');
     OGPOPage.clickPurchaseButton();
 
-    policyRequestFormMutualOGPO.pageIsDisplayed().should('be.true');
-    policyRequestFormMutualOGPO.inputPhone();
-    policyRequestFormMutualOGPO.clickNextButton();
+    SMSVerificationPage.pageIsDisplayed().should('be.true');
+    SMSVerificationPage.inputPhone(JSONLoader.testData.clientPhoneOGPO.slice(1));
+    SMSVerificationPage.clickNextButton();
 
-    policyRequestFormMutualOGPO.getSMSCodeBoxElement().should('be.visible')
+    SMSVerificationPage.getSMSCodeBoxElement().should('be.visible')
       .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneOGPO))
-      .then((code) => policyRequestFormMutualOGPO.enterSMSCode(code));
+      .then((code) => SMSVerificationPage.enterSMSCode(code));
 
-    policyRequestFormMutualOGPO.inputIIN();
-    policyRequestFormMutualOGPO.inputEmail();
-    policyRequestFormMutualOGPO.inputAddress();
-    policyRequestFormMutualOGPO.clickNextButton();
+    mutualOGPOStep1.inputIIN();
+    mutualOGPOStep1.inputEmail();
+    mutualOGPOStep1.clickNextButton();
 
-    policyRequestFormMutualOGPO.getSelectedClientName()
-      .then((selectedName) => policyRequestFormMutualOGPO.getTrimmedDisplayedClientName()
+    mutualOGPOStep2.inputAddress();
+    mutualOGPOStep2.getSelectedClientName()
+      .then((selectedName) => mutualOGPOStep2.getTrimmedDisplayedClientName()
         .should('be.equal', selectedName));
-    policyRequestFormMutualOGPO.clickSaveButton();
-    policyRequestFormMutualOGPO.clickNextButton();
+    mutualOGPOStep2.clickSaveButton();
+    mutualOGPOStep2.clickNextButton();
 
-    policyRequestFormMutualOGPO.inputCarNumber();
-    policyRequestFormMutualOGPO.inputCarRegistration();
-    policyRequestFormMutualOGPO.clickSearchButton();
-    policyRequestFormMutualOGPO.getTrimmedDisplayedCarNumber()
+    mutualOGPOStep3.inputCarNumber();
+    mutualOGPOStep3.inputCarRegistration();
+    mutualOGPOStep3.clickSearchButton();
+    mutualOGPOStep3.getTrimmedDisplayedCarNumber()
       .should('be.equal', JSONLoader.testData.carNumber);
-    policyRequestFormMutualOGPO.getSelectedCarModel()
+    mutualOGPOStep3.getSelectedCarModel()
       .should('be.equal', JSONLoader.testData.carModel);
-    policyRequestFormMutualOGPO.getSelectedCarManufacturedYearElement()
+    mutualOGPOStep3.getSelectedCarManufacturedYearElement()
       .should('contain', JSONLoader.testData.carManufacturedYear);
-    policyRequestFormMutualOGPO.clickNextButton();
+    mutualOGPOStep3.clickNextButton();
 
-    policyRequestFormMutualOGPO.inputRandomStartDate();
-    policyRequestFormMutualOGPO.getDisplayedDate()
-      .then((displayedDate) => policyRequestFormMutualOGPO.getSelectedDate()
+    mutualOGPOStep4.inputRandomStartDate();
+    mutualOGPOStep4.getDisplayedDate()
+      .then((displayedDate) => mutualOGPOStep4.getSelectedDate()
         .should('be.equal', displayedDate));
-    policyRequestFormMutualOGPO.clickNextButton();
+    mutualOGPOStep4.clickNextButton();
 
-    policyRequestFormMutualOGPO.clickMoreLink();
-    policyRequestFormMutualOGPO.randomClickSMSNotifyCheckbox();
-    policyRequestFormMutualOGPO.clickCalculateButton();
-    policyRequestFormMutualOGPO.clickFamiliarizedCheckbox();
-    policyRequestFormMutualOGPO.clickMutualCheckboxes();
-    policyRequestFormMutualOGPO.getSumToPay().then((sum) => {
+    mutualOGPOStep5.clickMoreLink();
+    mutualOGPOStep5.randomClickSMSNotifyCheckbox();
+    mutualOGPOStep5.clickCalculateButton();
+    mutualOGPOStep5.clickFamiliarizedCheckbox();
+    mutualOGPOStep5.clickMutualCheckboxes();
+    mutualOGPOStep5.getSumToPay().then((sum) => {
       cy.setLocalStorage('sumToPay', sum);
-      policyRequestFormMutualOGPO.getTotalCostWithMutual()
+      mutualOGPOStep5.getTotalCostWithMutual()
         .should('be.equal', Number(sum));
     });
   });
