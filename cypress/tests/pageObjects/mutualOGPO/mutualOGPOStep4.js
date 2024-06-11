@@ -14,19 +14,16 @@ class MutualOGPOStep4 extends BaseForm {
 
   #calendarRightArrowButton;
 
-  #startDateButton;
-
   #selectedDate;
 
   #displayedDate;
 
-  constructor(startDate) {
+  constructor() {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'OGPO policy request page');
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
     this.#calendarButton = new Button(new XPATH('//span[contains(text(), "Дата начала договора")]//following-sibling::div[@class="mx-datepicker"]'), 'calendar button');
     this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
     this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
-    this.#startDateButton = new Button(new XPATH(`//td[@title="${startDate}"]`), 'start date');
     this.#selectedDate = new Button(new XPATH('//input[@name="date"]'), 'selected date');
     this.#displayedDate = new Label(new XPATH('//span[contains(text(), "Дата начала:")]//following-sibling::div[@class="text-14"]//span'), 'displayed date');
   }
@@ -38,17 +35,17 @@ class MutualOGPOStep4 extends BaseForm {
   inputRandomStartDate() {
     const dates = Randomizer
       .getRandomDatesIntervalFromTomorrow(...JSONLoader.testData.timeIncrement);
-    const newInstance = new MutualOGPOStep4(dates.startDate);
+    const startDateButton = new Button(new XPATH(`//td[@title="${dates.startDate}"]`), 'start date');
     this.#calendarButton.flipCalendarMonth(
       this.#calendarRightArrowButton,
       dates.startMonthDifference,
     );
-    newInstance.#startDateButton.elementIsDisplayed().then((isDisplayed) => {
+    startDateButton.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
-        newInstance.#startDateButton.clickElement();
+        startDateButton.clickElement();
       } else {
-        newInstance.#calendarLeftArrowButton.clickElement();
-        newInstance.#startDateButton.clickElement();
+        this.#calendarLeftArrowButton.clickElement();
+        startDateButton.clickElement();
       }
     });
   }
