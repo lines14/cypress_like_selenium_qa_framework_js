@@ -7,7 +7,7 @@ Cypress.Commands.add('open', (url, options) => {
     cy.logger(`${title} test log:`, title);
   }
 
-  cy.logger(`[inf] ▶ open base URL: ${Cypress.config('baseUrl')}`);
+  cy.logger(`[inf] ▶ open base URL: ${Cypress.config().baseUrl}`);
   cy.visit(url, options);
 });
 
