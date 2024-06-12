@@ -5,6 +5,7 @@ const JSONLoader = require('../../main/utils/data/JSONLoader');
 
 exports.kaspiPay = () => {
   it('Pay with Kaspi:', { scrollBehavior: false }, () => {
+    paymentChooseForm.pageIsDisplayed().should('be.true');
     paymentChooseForm.clickKaspiPayButton();
     paymentChooseForm.getPaymentCode()
       .then((paymentCode) => cy.getLocalStorage('sumToPay')
@@ -16,6 +17,7 @@ exports.kaspiPay = () => {
           .should('contain', JSONLoader.testData.responsePaid);
       });
     paymentChooseForm.clickMainPageButton();
-    cy.url().should('satisfy', (url) => url === JSONLoader.testData.mainPageLink || url === JSONLoader.testData.OGPOPageLink);
+    cy.url().should('satisfy', (url) => url === `${Cypress.config().baseUrl}/`
+    || url === `${Cypress.config().baseUrl}/ogpo`);
   });
 };
