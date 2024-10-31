@@ -6,7 +6,7 @@ class MSTPage extends BaseForm {
   #purchaseButton;
 
   constructor() {
-    super(new XPATH('//h1[contains(text(), "Медицинское страхование туристов")]'), 'MST page');
+    super(new XPATH('//h1[contains(text(), "Медицинская страховка туристов Amanat")]'), 'MST page');
     this.#purchaseButton = new Label(new XPATH('//a[contains(text(), "Купить")]'), 'purchase button');
   }
 
