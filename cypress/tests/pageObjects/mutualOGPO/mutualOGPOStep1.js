@@ -41,8 +41,10 @@ class MutualOGPOStep1 extends BaseForm {
   inputAddress() {
     this.#addressBox.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
+        cy.scrollTo('center');
         this.#addressBox.clearData();
         this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+        cy.scrollTo('top');
       }
     });
   }
