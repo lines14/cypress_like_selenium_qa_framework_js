@@ -9,7 +9,7 @@ class BaseTest {
     moment.tz.setDefault(JSONLoader.configData.timezone);
     await dictionaryAPI.setToken();
     await dictionaryAPI.toggleServer();
-    await dictionaryAPI.toggleVerification();
+    await dictionaryAPI.toggleVerification({ fromConfig: false, value: true });
   }
 
   static async afterAll(results) {

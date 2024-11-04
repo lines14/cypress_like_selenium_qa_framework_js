@@ -28,11 +28,17 @@ exports.userPathMutualOGPO = () => {
       .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneOGPO))
       .then((code) => SMSVerificationPage.enterSMSCode(code));
 
+    mutualOGPOStep1.pageIsDisplayed().should('be.true');
+    mutualOGPOStep1.IINBoxIsDisplayed().then((isDisplayed) => {
+      if (isDisplayed) {
+        NodeEvents.toggleVerification();
+      }
+    });
     mutualOGPOStep1.inputIIN();
     mutualOGPOStep1.inputEmail();
+    mutualOGPOStep1.inputAddress();
     mutualOGPOStep1.clickNextButton();
 
-    mutualOGPOStep2.inputAddress();
     mutualOGPOStep2.getSelectedClientName()
       .then((selectedName) => mutualOGPOStep2.getTrimmedDisplayedClientName()
         .should('be.equal', selectedName));

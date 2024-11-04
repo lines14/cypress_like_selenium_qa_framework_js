@@ -174,11 +174,11 @@ class MSTStep1 extends BaseForm {
   }
 
   getSelectedPurposeOfTheTrip() {
-    return this.#selectedPurposeOfTheTrip.getText();
+    return this.#selectedPurposeOfTheTrip.getText().then((text) => text.trim());
   }
 
   getDisplayedPurposeOfTheTrip() {
-    return this.#displayedPurposeOfTheTrip.getText();
+    return this.#displayedPurposeOfTheTrip.getText().then((text) => text.trim());
   }
 
   clickRandomAdditionalCheckboxes() {

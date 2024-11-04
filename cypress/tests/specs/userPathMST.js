@@ -60,5 +60,6 @@ exports.userPathMST = () => {
       MSTStep4.getTotalCostFromDisplayedValues()
         .should('be.equal', Number(sum));
     });
+    NodeEvents.toggleVerification();
   });
 };

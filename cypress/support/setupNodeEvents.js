@@ -2,6 +2,7 @@ const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 const cypressSplit = require('cypress-split');
 const localStorage = require('cypress-localstorage-commands/plugin');
 const kaspiAPI = require('../tests/API/kaspiAPI');
+const dictionaryAPI = require('../tests/API/dictionaryAPI');
 const notificationDB = require('../tests/DB/notificationDB');
 const BaseTest = require('../main/baseTest');
 const Logger = require('../main/utils/log/logger');
@@ -14,6 +15,12 @@ exports.setupNodeEvents = {
     on('task', {
       log({ step, title }) {
         return Logger.log(step, title);
+      },
+      async toggleVerification() {
+        return [
+          await dictionaryAPI.setToken(),
+          await dictionaryAPI.toggleVerification(),
+        ];
       },
       async getLastCodeFromDB(phoneNumber) {
         return [

@@ -21,6 +21,7 @@ class DictionaryAPI extends BaseAPI {
     this.#options.headers = {};
     this.#options.headers.Authorization = `Bearer ${response.data.data.access_token}`;
     this.#API = new DictionaryAPI(this.#options);
+    return response;
   }
 
   async toggleServer() {
@@ -31,9 +32,9 @@ class DictionaryAPI extends BaseAPI {
     return this.#API.post(JSONLoader.APIEndpoints.dictionary.servers, params);
   }
 
-  async toggleVerification() {
+  async toggleVerification(options = { fromConfig: true, value: true }) {
     const params = {
-      value: Number(JSONLoader.configData.verification),
+      value: Number(options.fromConfig ? JSONLoader.configData.verification : options.value),
     };
 
     return this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params);
