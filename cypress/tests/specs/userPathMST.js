@@ -18,7 +18,10 @@ exports.userPathMST = () => {
     MSTPage.clickPurchaseButton();
 
     MSTStep1.pageIsDisplayed().should('be.true');
-    MSTStep1.selectThreeRandomCountries();
+    MSTStep1.waitCountriesDropdownButtonIsDisplayed()
+      .then(() => NodeEvents.toggleVerification()
+        .then(() => NodeEvents.getVerifyBool()
+          .then(() => MSTStep1.selectThreeRandomCountries())));
     MSTStep1.getDisplayedCountries()
       .then((displayedCountries) => MSTStep1.getSelectedCountries()
         .should('be.deep.equal', displayedCountries));
@@ -60,6 +63,5 @@ exports.userPathMST = () => {
       MSTStep4.getTotalCostFromDisplayedValues()
         .should('be.equal', Number(sum));
     });
-    NodeEvents.toggleVerification();
   });
 };

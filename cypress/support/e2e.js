@@ -1,5 +1,6 @@
 require('./commands');
 require('cypress-log-filter');
+require('cypress-wait-until');
 require('cypress-plugin-multiple-click');
 require('@shelex/cypress-allure-plugin');
 require('cypress-localstorage-commands');

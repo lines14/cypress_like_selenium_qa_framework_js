@@ -13,19 +13,31 @@ class BaseForm {
 
   getUniqueElement() {
     return this.#pageLocator instanceof XPATH
-      ? cy.xpath(this.#pageLocator.locator).first()
-      : cy.get(this.#pageLocator.locator).first();
+      ? cy.xpath(this.#pageLocator.value).first()
+      : cy.get(this.#pageLocator.value).first();
+  }
+
+  pageIsVisible() {
+    return this.getUniqueElement().isVisible();
+  }
+
+  waitPageIsExisting() {
+    return cy.waitIsExisting(this.#pageLocator.value);
   }
 
   pageIsDisplayed() {
     cy.logger(`[inf] ▶ check ${this.#pageName} is displayed:`);
-    return this.getUniqueElement().isVisible().then((isVisible) => {
-      cy.logger(
-        isVisible
-          ? `[inf]   ${this.#pageName} is displayed`
-          : `[inf]   ${this.#pageName} is not displayed`,
-      );
-      return cy.wrap(isVisible);
+    return this.waitPageIsExisting().then((isExisting) => {
+      const notDisplayedLog = `[inf]   ${this.#pageName} is not displayed`;
+      if (isExisting) {
+        return this.pageIsVisible().then((isVisible) => {
+          cy.logger(isVisible ? `[inf]   ${this.#pageName} is displayed` : notDisplayedLog);
+          return cy.wrap(isVisible);
+        });
+      }
+
+      cy.logger(notDisplayedLog);
+      return cy.wrap(isExisting);
     });
   }
 

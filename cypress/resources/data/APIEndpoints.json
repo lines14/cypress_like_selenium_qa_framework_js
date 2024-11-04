@@ -4,7 +4,8 @@
     },
     "dictionary": {
         "servers": "api/dictionary/settings/5",
-        "verifyBool": "api/dictionary/settings/verify_bool"
+        "verifyBool": "api/dictionary/settings/verify_bool",
+        "keyVerifyBool": "api/dictionary/settings/key/verify_bool"
     },
     "kaspi": {
         "pay": "api/kaspi/kaspi/pay"

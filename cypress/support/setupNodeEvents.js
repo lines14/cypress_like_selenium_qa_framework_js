@@ -22,6 +22,12 @@ exports.setupNodeEvents = {
           await dictionaryAPI.toggleVerification(),
         ];
       },
+      async getVerifyBool() {
+        return [
+          await dictionaryAPI.setToken(),
+          await dictionaryAPI.getVerifyBool(),
+        ];
+      },
       async getLastCodeFromDB(phoneNumber) {
         return [
           await notificationDB.createConnection(),

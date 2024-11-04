@@ -3,7 +3,7 @@
     "getPolicyTWB": false,
     "setPolicyWaitingTWB": false,
     "hiddenLogBodies": true,
-    "verification": false,
+    "verification": true,
     "timezone": "Asia/Aqtau",
     "environment": "localhost",
     "allureCommandlineArgs": [

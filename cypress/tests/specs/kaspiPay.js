@@ -16,8 +16,8 @@ exports.kaspiPay = () => {
         cy.wrap(convertedResponse.comment.pop())
           .should('contain', JSONLoader.testData.responsePaid);
       });
-    paymentChooseForm.clickMainPageButton();
-    cy.url().should('satisfy', (url) => url === `${Cypress.config().baseUrl}/`
-    || url === `${Cypress.config().baseUrl}/ogpo`);
+
+    cy.url().should('satisfy', (url) => url === `${Cypress.config().baseUrl}/buy-mst`
+      || url === `${Cypress.config().baseUrl}/ru/buy-ogpo`);
   });
 };

@@ -39,6 +39,10 @@ class DictionaryAPI extends BaseAPI {
 
     return this.#API.patch(JSONLoader.APIEndpoints.dictionary.verifyBool, params);
   }
+
+  async getVerifyBool() {
+    return this.#API.get(JSONLoader.APIEndpoints.dictionary.keyVerifyBool);
+  }
 }
 
 module.exports = new DictionaryAPI();

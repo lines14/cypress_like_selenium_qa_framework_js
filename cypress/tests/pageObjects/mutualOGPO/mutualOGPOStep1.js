@@ -25,8 +25,8 @@ class MutualOGPOStep1 extends BaseForm {
     this.#nextButton.clickElement();
   }
 
-  IINBoxIsDisplayed() {
-    return this.#IINBox.elementIsDisplayed();
+  waitIINBoxIsDisplayed() {
+    return this.#IINBox.waitElementIsDisplayed();
   }
 
   inputIIN() {

@@ -32,6 +32,28 @@ Cypress.Commands.add('isExisting', { prevSubject: false }, (subject) => cy.docum
   });
 }));
 
+Cypress.Commands.add('waitIsExisting', { prevSubject: false }, (subject) => cy.document().then((document) => {
+  const convertLocator = (locator) => {
+    const nodeList = [];
+    const result = document.evaluate(locator, document, null, XPathResult.ANY_TYPE, null);
+    let node; // eslint-disable-next-line no-cond-assign
+    while (node = result.iterateNext()) {
+      nodeList.push(node);
+    }
+
+    return nodeList;
+  };
+
+  return cy.waitUntil(() => new Cypress.Promise((resolve) => {
+    Cypress.$(() => {
+      resolve(Cypress.$(document).find(convertLocator(subject)).length > 0);
+    });
+  }), {
+    timeout: Cypress.config('defaultCommandTimeout'),
+    interval: 500,
+  });
+}));
+
 Cypress.Commands.add('isEnabled', { prevSubject: true }, (subject) => !subject.prop('disabled'));
 
 Cypress.Commands.add('logger', (step, title) => {

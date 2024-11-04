@@ -83,6 +83,10 @@ class MSTStep1 extends BaseForm {
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
   }
 
+  waitCountriesDropdownButtonIsDisplayed() {
+    return this.#countriesDropdownButton.waitElementIsDisplayed();
+  }
+
   selectThreeRandomCountries() {
     this.#countriesDropdownButton.chooseRandomElementsFromDropdownByText(
       this.#countriesDropdownElements,

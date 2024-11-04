@@ -6,6 +6,14 @@ class NodeEvents {
     });
   }
 
+  static getVerifyBool() {
+    return cy.task('getVerifyBool').then((responses) => {
+      responses.forEach((response) => response.logs.forEach((log) => cy.logger(log)));
+      const setting = JSON.parse(responses.pop().data.setting);
+      return cy.wrap(setting.value);
+    });
+  }
+
   static payWithKaspi(paymentInfo) {
     return cy.task('payWithKaspi', paymentInfo).then((responses) => {
       responses.forEach((response) => response.logs.forEach((log) => cy.logger(log)));

@@ -123,9 +123,29 @@ class BaseElement {
     return cy.isExisting(this.#elementLocator.value);
   }
 
+  waitElementIsExisting() {
+    return cy.waitIsExisting(this.#elementLocator.value);
+  }
+
   elementIsDisplayed() {
     cy.logger(`[inf] ▶ check ${this.#elementName} is displayed:`);
     return this.elementIsExisting().then((isExisting) => {
+      const notDisplayedLog = `[inf]   ${this.#elementName} is not displayed`;
+      if (isExisting) {
+        return this.elementIsVisible().then((isVisible) => {
+          cy.logger(isVisible ? `[inf]   ${this.#elementName} is displayed` : notDisplayedLog);
+          return cy.wrap(isVisible);
+        });
+      }
+
+      cy.logger(notDisplayedLog);
+      return cy.wrap(isExisting);
+    });
+  }
+
+  waitElementIsDisplayed() {
+    cy.logger(`[inf] ▶ check ${this.#elementName} is displayed:`);
+    return this.waitElementIsExisting().then((isExisting) => {
       const notDisplayedLog = `[inf]   ${this.#elementName} is not displayed`;
       if (isExisting) {
         return this.elementIsVisible().then((isVisible) => {

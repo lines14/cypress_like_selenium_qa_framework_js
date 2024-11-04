@@ -29,12 +29,10 @@ exports.userPathMutualOGPO = () => {
       .then((code) => SMSVerificationPage.enterSMSCode(code));
 
     mutualOGPOStep1.pageIsDisplayed().should('be.true');
-    mutualOGPOStep1.IINBoxIsDisplayed().then((isDisplayed) => {
-      if (isDisplayed) {
-        NodeEvents.toggleVerification();
-      }
-    });
-    mutualOGPOStep1.inputIIN();
+    mutualOGPOStep1.waitIINBoxIsDisplayed()
+      .then(() => NodeEvents.toggleVerification()
+        .then(() => NodeEvents.getVerifyBool()
+          .then(() => mutualOGPOStep1.inputIIN())));
     mutualOGPOStep1.inputEmail();
     mutualOGPOStep1.inputAddress();
     mutualOGPOStep1.clickNextButton();
