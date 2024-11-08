@@ -83,10 +83,6 @@ class MSTStep1 extends BaseForm {
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
   }
 
-  waitCountriesDropdownButtonIsDisplayed() {
-    return this.#countriesDropdownButton.waitElementIsDisplayed();
-  }
-
   selectThreeRandomCountries() {
     this.#countriesDropdownButton.chooseRandomElementsFromDropdownByText(
       this.#countriesDropdownElements,
@@ -147,7 +143,7 @@ class MSTStep1 extends BaseForm {
 
   inputIIN() {
     this.#IINBox.multipleClickElement(3);
-    this.#IINBox.inputData(JSONLoader.testData.clientIIN);
+    this.#IINBox.inputData(JSONLoader.testData.clientIIN, { useCypressRealEvents: true });
   }
 
   getSelectedClientNameElement() {

@@ -90,9 +90,9 @@ class BaseElement {
     this.getElement().clear();
   }
 
-  inputData(data, useCypressRealEvents = false) {
+  inputData(data, options = { useCypressRealEvents: false }) {
     cy.logger(`[inf] ▶ input ${this.#elementName}`);
-    if (useCypressRealEvents === true) {
+    if (options.useCypressRealEvents) {
       this.getElement().click();
       cy.realType(data);
     } else {

@@ -29,10 +29,11 @@ exports.userPathMutualOGPO = () => {
       .then((code) => SMSVerificationPage.enterSMSCode(code));
 
     mutualOGPOStep1.pageIsDisplayed().should('be.true');
-    mutualOGPOStep1.waitIINBoxIsDisplayed()
-      .then(() => NodeEvents.toggleVerification()
-        .then(() => NodeEvents.getVerifyBool()
-          .then(() => mutualOGPOStep1.inputIIN())));
+    // mutualOGPOStep1.waitIINBoxIsDisplayed()
+    //   .then(() => NodeEvents.toggleVerification()
+    //     .then(() => NodeEvents.getVerifyBool()))
+          // .then(() => mutualOGPOStep1.inputIIN())));
+    mutualOGPOStep1.inputIIN()
     mutualOGPOStep1.inputEmail();
     mutualOGPOStep1.inputAddress();
     mutualOGPOStep1.clickNextButton();
@@ -43,7 +44,10 @@ exports.userPathMutualOGPO = () => {
     mutualOGPOStep2.clickSaveButton();
     mutualOGPOStep2.clickNextButton();
 
-    mutualOGPOStep3.inputCarNumber();
+    // NodeEvents.toggleVerification({ fromConfig: false, value: true })
+    //   .then(() => NodeEvents.getVerifyBool()
+    //     .then(() => mutualOGPOStep3.inputCarNumber()));
+    mutualOGPOStep3.inputCarNumber()
     mutualOGPOStep3.inputCarRegistration();
     mutualOGPOStep3.clickSearchButton();
     mutualOGPOStep3.getTrimmedDisplayedCarNumber()
@@ -60,7 +64,10 @@ exports.userPathMutualOGPO = () => {
         .should('be.equal', displayedDate));
     mutualOGPOStep4.clickNextButton();
 
-    mutualOGPOStep5.clickMoreLink();
+    // NodeEvents.toggleVerification()
+    //   .then(() => NodeEvents.getVerifyBool()
+    //     .then(() => mutualOGPOStep5.clickMoreLink()));
+    mutualOGPOStep5.clickMoreLink()
     mutualOGPOStep5.randomClickSMSNotifyCheckbox();
     mutualOGPOStep5.clickCalculateButton();
     mutualOGPOStep5.clickFamiliarizedCheckbox();
