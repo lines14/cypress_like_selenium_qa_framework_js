@@ -1,8 +1,13 @@
+const path = require('path');
 const moment = require('moment-timezone');
+const { createWriteStream } = require('fs');
 const allureCommandline = require('allure-commandline');
 const Logger = require('./utils/log/logger');
 const JSONLoader = require('./utils/data/JSONLoader');
 const dictionaryAPI = require('../tests/API/dictionaryAPI');
+
+const testCarsFileLocation = path.join(__dirname, '../resources/data/testCars.json');
+const testClientsFileLocation = path.join(__dirname, '../resources/data/testClients.json');
 
 class BaseTest {
   static async beforeAll() {
@@ -10,6 +15,12 @@ class BaseTest {
     await dictionaryAPI.setToken();
     await dictionaryAPI.toggleServer();
     await dictionaryAPI.toggleVerification({ fromConfig: true, value: true });
+    const cars = await dictionaryAPI.fetchAllTestCars();
+    const clients = await dictionaryAPI.fetchAllTestClients();
+    let stream = createWriteStream(testCarsFileLocation);
+    stream.write(JSON.stringify(cars.data, null, 2));
+    stream = createWriteStream(testClientsFileLocation);
+    stream.write(JSON.stringify(clients.data, null, 2));
   }
 
   static async afterAll(results) {

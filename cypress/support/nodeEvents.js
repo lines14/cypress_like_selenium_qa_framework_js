@@ -1,4 +1,11 @@
 class NodeEvents {
+  static resetClient(client) {
+    return cy.task('resetClient', client).then((response) => {
+      response.logs.forEach((log) => cy.logger(log));
+      return cy.wrap(response);
+    });
+  }
+
   static toggleVerification() {
     return cy.task('toggleVerification').then((responses) => {
       responses.forEach((response) => response.logs.forEach((log) => cy.logger(log)));

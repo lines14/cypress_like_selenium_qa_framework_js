@@ -15,19 +15,19 @@ class Randomizer {
 
     const startDateObject = moment.unix(startDateUnix).startOf('day');
     const finishDateObject = moment.unix(finishDateUnix).startOf('day');
-    const startDate = startDateObject.format(JSONLoader.testData.datesFormat);
-    const finishDate = finishDateObject.format(JSONLoader.testData.datesFormat);
+    const startDate = startDateObject.format(JSONLoader.testData.datesFormatDMY);
+    const finishDate = finishDateObject.format(JSONLoader.testData.datesFormatDMY);
 
     const daysDifferenceIncluded = finishDateObject.diff(startDateObject, 'days') + 1;
 
     const getAbsoluteMonth = (date) => {
-      const months = Number(moment(date, JSONLoader.testData.datesFormat).format('MM'));
-      const years = Number(moment(date, JSONLoader.testData.datesFormat).format('YYYY'));
+      const months = Number(moment(date, JSONLoader.testData.datesFormatDMY).format('MM'));
+      const years = Number(moment(date, JSONLoader.testData.datesFormatDMY).format('YYYY'));
       return months + (years * 12);
     };
 
     const currentMonth = getAbsoluteMonth(moment.unix(unixOne)
-      .format(JSONLoader.testData.datesFormat));
+      .format(JSONLoader.testData.datesFormatDMY));
     const startMonth = getAbsoluteMonth(startDate);
     const finishMonth = getAbsoluteMonth(finishDate);
     let startMonthDifference = startMonth - currentMonth;
@@ -67,30 +67,30 @@ class Randomizer {
     let requiredCharacters = '';
     if (hasLowerCase) {
       requiredCharacters
-                += lowerCaseLetters.charAt(Math.floor(Math.random() * lowerCaseLetters.length));
+      += lowerCaseLetters.charAt(Math.floor(Math.random() * lowerCaseLetters.length));
     }
 
     if (hasUpperCase) {
       requiredCharacters
-                += upperCaseLetters.charAt(Math.floor(Math.random() * upperCaseLetters.length));
+      += upperCaseLetters.charAt(Math.floor(Math.random() * upperCaseLetters.length));
     }
 
     if (hasNumber) {
       requiredCharacters
-                += numbers.charAt(Math.floor(Math.random() * numbers.length));
+      += numbers.charAt(Math.floor(Math.random() * numbers.length));
     }
 
     if (hasCyrillic) {
       requiredCharacters
-                += cyrillicLetters.charAt(Math.floor(Math.random() * cyrillicLetters.length));
+      += cyrillicLetters.charAt(Math.floor(Math.random() * cyrillicLetters.length));
     }
 
     randomString += requiredCharacters;
 
     const characters = (hasLowerCase ? lowerCaseLetters : '')
-            + (hasUpperCase ? upperCaseLetters : '')
-            + (hasNumber ? numbers : '')
-            + (hasCyrillic ? cyrillicLetters : '');
+    + (hasUpperCase ? upperCaseLetters : '')
+    + (hasNumber ? numbers : '')
+    + (hasCyrillic ? cyrillicLetters : '');
     const charactersLength = characters.length;
     const randomLength = length - randomString.length;
 

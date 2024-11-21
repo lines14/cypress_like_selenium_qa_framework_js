@@ -18,25 +18,35 @@ class TimeUtils {
     let finishDate;
     if (reverseInterval) {
       finishDate = dateBegin
-        ? moment(dateBegin, JSONLoader.testData.datesFormat).subtract(count, unitOfTime)
+        ? moment(dateBegin, JSONLoader.testData.datesFormatDMY).subtract(count, unitOfTime)
         : moment(startDate).subtract(count, unitOfTime);
       if (isNotIncluded) {
         finishDate = moment(finishDate).add(1, 'days');
       }
     } else {
       finishDate = dateBegin
-        ? moment(dateBegin, JSONLoader.testData.datesFormat).add(count, unitOfTime)
+        ? moment(dateBegin, JSONLoader.testData.datesFormatDMY).add(count, unitOfTime)
         : moment(startDate).add(count, unitOfTime);
       if (isNotIncluded) {
         finishDate = moment(finishDate).subtract(1, 'days');
       }
     }
 
-    startDate = moment(startDate).format(JSONLoader.testData.datesFormat);
-    finishDate = moment(finishDate).format(JSONLoader.testData.datesFormat);
+    startDate = moment(startDate).format(JSONLoader.testData.datesFormatDMY);
+    finishDate = moment(finishDate).format(JSONLoader.testData.datesFormatDMY);
     return reverseInterval
       ? { startDate: finishDate, finishDate: dateBegin ?? startDate }
       : { startDate: dateBegin ?? startDate, finishDate };
+  }
+
+  static reformatDateFromYMDToDMY(date) {
+    return moment(date, JSONLoader.testData.datesFormatYMD)
+      .format(JSONLoader.testData.datesFormatDMY);
+  }
+
+  static reformatDateFromDMYToYMD(date) {
+    return moment(date, JSONLoader.testData.datesFormatDMY)
+      .format(JSONLoader.testData.datesFormatYMD);
   }
 }
 

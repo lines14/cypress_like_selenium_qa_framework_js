@@ -76,8 +76,8 @@ class PolicyRequestFormShanyrak extends BaseForm {
     this.#nextButton.clickElement();
   }
 
-  inputIIN() {
-    this.#IINBox.inputData(JSONLoader.testData.clientIIN);
+  inputIIN(IIN) {
+    this.#IINBox.inputData(IIN);
   }
 
   getSlicedSelectedClientName() {
@@ -88,9 +88,9 @@ class PolicyRequestFormShanyrak extends BaseForm {
     });
   }
 
-  inputEmail() {
+  inputEmail(email) {
     this.#emailBox.clearData();
-    this.#emailBox.inputData(JSONLoader.testData.clientEmail);
+    this.#emailBox.inputData(email);
   }
 
   selectRandomCity() {
@@ -98,26 +98,26 @@ class PolicyRequestFormShanyrak extends BaseForm {
     this.#citiesDropdownButton.chooseRandomElementsFromDropdownByText(this.#citiesDropdownElements);
   }
 
-  inputInsuranceObjectAddressStreet() {
+  inputInsuranceObjectAddressStreet(street) {
     this.#insuranceObjectAddressStreetBox
-      .inputData(JSONLoader.testData.insuranceObjectAddressStreet);
+      .inputData(street);
   }
 
   randomClickPrivateHomeCheckbox() {
     this.#privateHomeCheckboxLabel.clickCheckboxesByText({ checkboxParentTag: 'div' });
   }
 
-  inputInsuranceObjectAddressHouseNumber() {
+  inputInsuranceObjectAddressHouseNumber(houseNumber) {
     this.#insuranceObjectAddressHouseNumberBox
-      .inputData(JSONLoader.testData.insuranceObjectAddressHouseNumber);
+      .inputData(houseNumber);
   }
 
-  inputInsuranceObjectAddressApartmentNumber() {
+  inputInsuranceObjectAddressApartmentNumber(apartmentNumber) {
     this.#privateHomeCheckboxWrapper.getAttributeValue({ attrName: 'value' }).then((value) => {
       this.#insuranceObjectAddressApartmentNumberBox.elementIsDisplayed().then((isDisplayed) => {
         if (!value && isDisplayed) {
           this.#insuranceObjectAddressApartmentNumberBox
-            .inputData(JSONLoader.testData.insuranceObjectAddressApartmentNumber);
+            .inputData(apartmentNumber);
         }
       });
     });

@@ -44,13 +44,13 @@ class EpayPage extends BaseForm {
     return this.#amount.getText();
   }
 
-  inputPaymentInfo() {
-    this.#cardNumberBox.inputData(JSONLoader.testData.firstClientCardNumber);
+  inputPaymentInfo(holder) {
+    this.#cardNumberBox.inputData(JSONLoader.testData.clientCardNumber);
     this.#expireMonthBox.forceInputData(JSONLoader.testData.clientCardExpMonth);
     this.#expireYearBox.forceInputData(JSONLoader.testData.clientCardExpYear);
-    this.#CVCBox.inputData(JSONLoader.testData.firstClientCardCVC);
-    this.#cardNameBox.inputData(`${JSONLoader.testData.clientFirstNameLatin} ${JSONLoader.testData.clientSecondNameLatin}`);
-    this.#emailBox.inputData(JSONLoader.testData.clientEmail);
+    this.#CVCBox.inputData(JSONLoader.testData.clientCardCVC);
+    this.#cardNameBox.inputData(`${holder.first_name_eng} ${holder.last_name_eng}`);
+    this.#emailBox.inputData(holder.email);
   }
 
   clickPayButton() {

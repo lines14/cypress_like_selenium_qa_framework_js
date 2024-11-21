@@ -1,5 +1,4 @@
 const BaseForm = require('../../../main/baseForm');
-const JSONLoader = require('../../../main/utils/data/JSONLoader');
 const XPATH = require('../../../main/locators/baseLocatorChildren/XPATH');
 const Label = require('../../../main/elements/baseElementChildren/label');
 const Button = require('../../../main/elements/baseElementChildren/button');
@@ -35,12 +34,12 @@ class MutualOGPOStep3 extends BaseForm {
     this.#nextButton.clickElement();
   }
 
-  inputCarNumber() {
-    this.#carNumberBox.inputData(JSONLoader.testData.carNumber);
+  inputCarNumber(carNumber) {
+    this.#carNumberBox.inputData(carNumber);
   }
 
-  inputCarRegistration() {
-    this.#carRegistrationBox.inputData(JSONLoader.testData.carRegistration);
+  inputCarRegNumber(carRegNumber) {
+    this.#carRegistrationBox.inputData(carRegNumber);
   }
 
   clickSearchButton() {

@@ -1,5 +1,4 @@
 const BaseForm = require('../../../main/baseForm');
-const JSONLoader = require('../../../main/utils/data/JSONLoader');
 const XPATH = require('../../../main/locators/baseLocatorChildren/XPATH');
 const Button = require('../../../main/elements/baseElementChildren/button');
 const Textbox = require('../../../main/elements/baseElementChildren/textbox');
@@ -29,21 +28,21 @@ class MutualOGPOStep1 extends BaseForm {
     return this.#IINBox.waitElementIsDisplayed();
   }
 
-  inputIIN() {
-    this.#IINBox.inputData(JSONLoader.testData.clientIIN);
+  inputIIN(IIN) {
+    this.#IINBox.inputData(IIN);
   }
 
-  inputEmail() {
+  inputEmail(email) {
     this.#emailBox.clearData();
-    this.#emailBox.inputData(JSONLoader.testData.clientEmail);
+    this.#emailBox.inputData(email);
   }
 
-  inputAddress() {
+  inputAddress(address) {
     this.#addressBox.elementIsDisplayed().then((isDisplayed) => {
       if (isDisplayed) {
         cy.scrollTo('center');
         this.#addressBox.clearData();
-        this.#addressBox.inputData(JSONLoader.testData.clientAddress);
+        this.#addressBox.inputData(address);
         cy.scrollTo('top');
       }
     });

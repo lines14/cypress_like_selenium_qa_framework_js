@@ -7,10 +7,12 @@ const mutualOGPOStep3 = require('../pageObjects/mutualOGPO/mutualOGPOStep3');
 const mutualOGPOStep4 = require('../pageObjects/mutualOGPO/mutualOGPOStep4');
 const mutualOGPOStep5 = require('../pageObjects/mutualOGPO/mutualOGPOStep5');
 const NodeEvents = require('../../support/nodeEvents');
-const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-exports.userPathMutualOGPO = () => {
+exports.userPathMutualOGPO = (holder, car) => {
   it('OGPO & Mutual user path:', { scrollBehavior: false }, () => {
+    NodeEvents.resetClient(holder)
+      .then(async (response) => cy.wrap(response.status).should('be.equal', 200));
+
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
     mainPage.clickGetInsuredButton();
@@ -21,21 +23,21 @@ exports.userPathMutualOGPO = () => {
     OGPOPage.clickPurchaseButton();
 
     SMSVerificationPage.pageIsDisplayed().should('be.true');
-    SMSVerificationPage.inputPhone(JSONLoader.testData.clientPhoneOGPO.slice(1));
+    SMSVerificationPage.inputPhone(holder.phoneTrimmed.OGPO);
     SMSVerificationPage.clickNextButton();
 
     SMSVerificationPage.getSMSCodeBoxElement().should('be.visible')
-      .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneOGPO))
+      .then(() => NodeEvents.getLastCodeFromDB(holder.phone.OGPO))
       .then((code) => SMSVerificationPage.enterSMSCode(code));
 
     mutualOGPOStep1.pageIsDisplayed().should('be.true');
     // mutualOGPOStep1.waitIINBoxIsDisplayed()
     //   .then(() => NodeEvents.toggleVerification()
     //     .then(() => NodeEvents.getVerifyBool()))
-          // .then(() => mutualOGPOStep1.inputIIN())));
-    mutualOGPOStep1.inputIIN()
-    mutualOGPOStep1.inputEmail();
-    mutualOGPOStep1.inputAddress();
+    // .then(() => mutualOGPOStep1.inputIIN())));
+    mutualOGPOStep1.inputIIN(holder.iin);
+    mutualOGPOStep1.inputEmail(holder.email);
+    mutualOGPOStep1.inputAddress(holder.address);
     mutualOGPOStep1.clickNextButton();
 
     mutualOGPOStep2.getSelectedClientName()
@@ -47,15 +49,15 @@ exports.userPathMutualOGPO = () => {
     // NodeEvents.toggleVerification({ fromConfig: false, value: true })
     //   .then(() => NodeEvents.getVerifyBool()
     //     .then(() => mutualOGPOStep3.inputCarNumber()));
-    mutualOGPOStep3.inputCarNumber()
-    mutualOGPOStep3.inputCarRegistration();
+    mutualOGPOStep3.inputCarNumber(car.reg_num);
+    mutualOGPOStep3.inputCarRegNumber(car.reg_cert_num);
     mutualOGPOStep3.clickSearchButton();
     mutualOGPOStep3.getTrimmedDisplayedCarNumber()
-      .should('be.equal', JSONLoader.testData.carNumber);
+      .should('be.equal', car.reg_num);
     mutualOGPOStep3.getSelectedCarModel()
-      .should('be.equal', JSONLoader.testData.carModel);
+      .should('be.equal', car.model);
     mutualOGPOStep3.getSelectedCarManufacturedYearElement()
-      .should('contain', JSONLoader.testData.carManufacturedYear);
+      .should('contain', car.year);
     mutualOGPOStep3.clickNextButton();
 
     mutualOGPOStep4.inputRandomStartDate();
@@ -67,7 +69,7 @@ exports.userPathMutualOGPO = () => {
     // NodeEvents.toggleVerification()
     //   .then(() => NodeEvents.getVerifyBool()
     //     .then(() => mutualOGPOStep5.clickMoreLink()));
-    mutualOGPOStep5.clickMoreLink()
+    mutualOGPOStep5.clickMoreLink();
     mutualOGPOStep5.randomClickSMSNotifyCheckbox();
     mutualOGPOStep5.clickCalculateButton();
     mutualOGPOStep5.clickFamiliarizedCheckbox();

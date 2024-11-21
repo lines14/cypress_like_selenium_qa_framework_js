@@ -3,10 +3,12 @@ const shanyrakPage = require('../pageObjects/shanyrak/shanyrakPage');
 const SMSVerificationPage = require('../pageObjects/SMSVerificationPage');
 const policyRequestFormShanyrak = require('../pageObjects/shanyrak/policyRequestFormShanyrak');
 const NodeEvents = require('../../support/nodeEvents');
-const JSONLoader = require('../../main/utils/data/JSONLoader');
 
-exports.userPathShanyrak = () => {
+exports.userPathShanyrak = (holder) => {
   it('Shanyrak user path:', { scrollBehavior: false }, () => {
+    NodeEvents.resetClient(holder)
+      .then(async (response) => cy.wrap(response.status).should('be.equal', 200));
+
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
     mainPage.clickGetInsuredButton();
@@ -16,22 +18,23 @@ exports.userPathShanyrak = () => {
     shanyrakPage.clickPurchaseButton();
 
     SMSVerificationPage.pageIsDisplayed().should('be.true');
-    SMSVerificationPage.inputPhone(JSONLoader.testData.clientPhoneShanyrak.slice(1));
+    SMSVerificationPage.inputPhone(holder.phoneTrimmed.shanyrak);
     SMSVerificationPage.clickNextButton();
 
     SMSVerificationPage.getSMSCodeBoxElement().should('be.visible')
-      .then(() => NodeEvents.getLastCodeFromDB(JSONLoader.testData.clientPhoneShanyrak))
+      .then(() => NodeEvents.getLastCodeFromDB(holder.phone.shanyrak))
       .then((code) => SMSVerificationPage.enterSMSCode(code));
 
-    policyRequestFormShanyrak.inputIIN();
+    policyRequestFormShanyrak.inputIIN(holder.iin);
     policyRequestFormShanyrak.getSlicedSelectedClientName()
-      .should('be.equal', JSONLoader.testData.clientName);
-    policyRequestFormShanyrak.inputEmail();
+      .should('be.equal', `${holder.first_name} ${holder.last_name.split('').shift()}`);
+    policyRequestFormShanyrak.inputEmail(holder.email);
     policyRequestFormShanyrak.selectRandomCity();
-    policyRequestFormShanyrak.inputInsuranceObjectAddressStreet();
+    policyRequestFormShanyrak.inputInsuranceObjectAddressStreet(holder.addressStreet);
     policyRequestFormShanyrak.randomClickPrivateHomeCheckbox();
-    policyRequestFormShanyrak.inputInsuranceObjectAddressHouseNumber();
-    policyRequestFormShanyrak.inputInsuranceObjectAddressApartmentNumber();
+    policyRequestFormShanyrak.inputInsuranceObjectAddressHouseNumber(holder.addressHouseNumber);
+    policyRequestFormShanyrak
+      .inputInsuranceObjectAddressApartmentNumber(holder.addressApartmentNumber);
     policyRequestFormShanyrak.clickConfirmationCheckbox();
     policyRequestFormShanyrak.inputRandomStartDate();
     policyRequestFormShanyrak.clickSaveButton();

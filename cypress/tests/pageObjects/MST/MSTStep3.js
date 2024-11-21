@@ -1,5 +1,4 @@
 const BaseForm = require('../../../main/baseForm');
-const JSONLoader = require('../../../main/utils/data/JSONLoader');
 const XPATH = require('../../../main/locators/baseLocatorChildren/XPATH');
 const Button = require('../../../main/elements/baseElementChildren/button');
 const Textbox = require('../../../main/elements/baseElementChildren/textbox');
@@ -19,8 +18,8 @@ class MSTStep3 extends BaseForm {
     this.#nextButton.clickElement();
   }
 
-  inputEmail() {
-    this.#emailBox.inputData(JSONLoader.testData.clientEmail);
+  inputEmail(email) {
+    this.#emailBox.inputData(email);
   }
 }
 

@@ -141,9 +141,9 @@ class MSTStep1 extends BaseForm {
     return this.#displayedDates.getText().then((text) => text.match(new RegExp(JSONLoader.testData.datesRegexPattern, 'g')));
   }
 
-  inputIIN() {
+  inputIIN(IIN) {
     this.#IINBox.multipleClickElement(3);
-    this.#IINBox.inputData(JSONLoader.testData.clientIIN);
+    this.#IINBox.inputData(IIN);
   }
 
   getSelectedClientNameElement() {
