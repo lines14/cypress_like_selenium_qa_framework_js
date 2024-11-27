@@ -43,6 +43,14 @@ class DictionaryAPI extends BaseAPI {
   async getVerifyBool() {
     return this.#API.get(JSONLoader.APIEndpoints.dictionary.keyVerifyBool);
   }
+
+  async fetchAllTestClients() {
+    return this.#API.get(JSONLoader.APIEndpoints.dictionary.testClients);
+  }
+
+  async fetchAllTestCars() {
+    return this.#API.get(JSONLoader.APIEndpoints.dictionary.testCars);
+  }
 }
 
 module.exports = new DictionaryAPI();

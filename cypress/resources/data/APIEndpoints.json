@@ -5,9 +5,15 @@
     "dictionary": {
         "servers": "api/dictionary/settings/5",
         "verifyBool": "api/dictionary/settings/verify_bool",
-        "keyVerifyBool": "api/dictionary/settings/key/verify_bool"
+        "keyVerifyBool": "api/dictionary/settings/key/verify_bool",
+        "testCars": "api/dictionary/test-cars",
+        "testClients": "api/dictionary/test-clients"
     },
     "kaspi": {
         "pay": "api/kaspi/kaspi/pay"
+    },
+    "client": {
+        "getClient": "api/client/get-client",
+        "setClient": "api/client/set-client"
     }
 }
