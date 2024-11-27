@@ -115,6 +115,11 @@ class BaseElement {
     this.getElement().type(`${data}{enter}`);
   }
 
+  uploadFile(path) {
+    cy.logger(`[inf] ▶ upload file with ${this.#elementName}`);
+    this.getElement().selectFile(path, { force: true });
+  }
+
   elementIsVisible() {
     return this.getElement().isVisible();
   }
