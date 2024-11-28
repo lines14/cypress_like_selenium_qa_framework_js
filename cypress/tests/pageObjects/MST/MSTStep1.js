@@ -186,6 +186,7 @@ class MSTStep1 extends BaseForm {
   }
 
   clickCalculateButton() {
+    this.#calculateButton.scrollElementToView();
     this.#calculateButton.clickElement();
   }
 

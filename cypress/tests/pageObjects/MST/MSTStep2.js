@@ -31,15 +31,12 @@ class MSTStep2 extends BaseForm {
   }
 
   getOrSetDocumentNumber(documentNumber) {
-    return this.#documentNumberBox.getText().then((value) => {
-      if (value === documentNumber) {
-        return cy.wrap(value);
-      }
-
+    if (this.#documentNumberBox.getText !== documentNumber) {
       this.#documentNumberBox.clearData();
       this.#documentNumberBox.inputData(documentNumber);
-      return this.getOrSetDocumentIssuedByElement(documentNumber);
-    });
+    }
+
+    return this.#documentNumberBox.getElement();
   }
 }
 

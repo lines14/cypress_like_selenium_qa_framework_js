@@ -54,8 +54,8 @@ exports.userPathMutualOGPO = (holder, car) => {
     mutualOGPOStep3.clickSearchButton();
     mutualOGPOStep3.getTrimmedDisplayedCarNumber()
       .should('be.equal', car.reg_num);
-    mutualOGPOStep3.getSelectedCarModel()
-      .should('be.equal', car.model);
+    mutualOGPOStep3.getSelectedCarMarkAndModel()
+      .should('be.equal', `${car.mark} ${car.model}`);
     mutualOGPOStep3.getSelectedCarManufacturedYearElement()
       .should('contain', car.year);
     mutualOGPOStep3.clickNextButton();

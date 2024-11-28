@@ -50,7 +50,7 @@ class MutualOGPOStep3 extends BaseForm {
     return this.#displayedCarNumber.getText().then((text) => text.trim());
   }
 
-  getSelectedCarModel() {
+  getSelectedCarMarkAndModel() {
     return this.#selectedCarModel.getText();
   }
 
