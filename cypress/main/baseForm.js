@@ -43,7 +43,7 @@ class BaseForm {
 
   pageIsEnabled() {
     cy.logger(`[inf] ▶ check ${this.#pageName} is enabled:`);
-    return this.getUniqueElement().isEnabled().then((isEnabled) => {
+    return this.getUniqueElement().waitIsEnabled().then((isEnabled) => {
       cy.logger(
         isEnabled
           ? `[inf]   ${this.#pageName} is enabled`

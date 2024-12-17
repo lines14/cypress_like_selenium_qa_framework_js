@@ -149,7 +149,7 @@ class BaseElement {
   }
 
   waitElementIsDisplayed() {
-    cy.logger(`[inf] ▶ check ${this.#elementName} is displayed:`);
+    cy.logger(`[inf] ▶ wait ${this.#elementName} is displayed:`);
     return this.waitElementIsExisting().then((isExisting) => {
       const notDisplayedLog = `[inf]   ${this.#elementName} is not displayed`;
       if (isExisting) {
@@ -167,6 +167,18 @@ class BaseElement {
   elementIsEnabled() {
     cy.logger(`[inf] ▶ check ${this.#elementName} is enabled:`);
     return this.getElement().isEnabled().then((isEnabled) => {
+      cy.logger(
+        isEnabled
+          ? `[inf]   ${this.#elementName} is enabled`
+          : `[inf]   ${this.#elementName} is not enabled`,
+      );
+      return cy.wrap(isEnabled);
+    });
+  }
+
+  waitElementIsEnabled() {
+    cy.logger(`[inf] ▶ wait ${this.#elementName} is enabled:`);
+    return this.getElement().waitIsEnabled().then((isEnabled) => {
       cy.logger(
         isEnabled
           ? `[inf]   ${this.#elementName} is enabled`

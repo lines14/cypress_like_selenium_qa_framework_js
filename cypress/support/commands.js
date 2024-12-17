@@ -56,6 +56,17 @@ Cypress.Commands.add('waitIsExisting', { prevSubject: false }, (subject) => cy.d
 
 Cypress.Commands.add('isEnabled', { prevSubject: true }, (subject) => !subject.prop('disabled'));
 
+Cypress.Commands.add('waitIsEnabled', { prevSubject: true }, (subject) => {
+  return cy.waitUntil(() => new Cypress.Promise((resolve) => {
+    Cypress.$(() => {
+      resolve(Cypress.$(subject).prop('disabled') === false);
+    });
+  }), {
+    timeout: Cypress.config('defaultCommandTimeout'),
+    interval: 500,
+  });
+});
+
 Cypress.Commands.add('logger', (step, title) => {
   cy.task('log', { step, title }).then((timeStamp) => {
     if (!title) cy.log(`${timeStamp} ${step}`);
