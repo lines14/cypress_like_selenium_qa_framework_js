@@ -55,6 +55,8 @@ class MSTStep1 extends BaseForm {
 
   #nextButton;
 
+  #holderLabel;
+
   constructor() {
     super(new XPATH('//h3[contains(text(), "Оформление полиса")]'), 'MST policy request page');
     this.#countriesDropdownButton = new Button(new XPATH('//input[@placeholder="Выберите страну"]//parent::div[@class="multiselect__tags"]//preceding-sibling::div[@class="multiselect__select"]'), 'countries dropdown button');
@@ -81,6 +83,7 @@ class MSTStep1 extends BaseForm {
     this.#additionalCheckboxesLabels = new Label(new XPATH('//div[contains(@class, "checkbox-parent")]//descendant::div[contains(@class, "item")]//label'), 'additional checkbox');
     this.#calculateButton = new Button(new XPATH('//button[contains(text(), "Рассчитать")]'), 'calculate button');
     this.#nextButton = new Button(new XPATH('//button[contains(text(), "Далее")]'), 'next button');
+    this.#holderLabel = new Button(new XPATH('//span[contains(text(), "Страхователь")]'), 'holder label');
   }
 
   selectThreeRandomCountries() {
@@ -182,7 +185,7 @@ class MSTStep1 extends BaseForm {
   }
 
   clickRandomAdditionalCheckboxes() {
-    this.#additionalCheckboxesLabels.clickCheckboxesByText({ checkboxParentTag: 'div' });
+    this.#additionalCheckboxesLabels.clickRandomRadiobuttonsOrCheckboxesByText({ inputElementType: 'checkbox', checkboxParentTag: 'div' });
   }
 
   clickCalculateButton() {
@@ -192,6 +195,10 @@ class MSTStep1 extends BaseForm {
 
   clickNextButton() {
     this.#nextButton.clickElement();
+  }
+
+  waitHolderLabelIsDisplayed() {
+    return this.#holderLabel.waitElementIsDisplayed();
   }
 }
 

@@ -132,6 +132,10 @@ class BaseElement {
     return cy.waitIsExisting(this.#elementLocator.value);
   }
 
+  waitElementIsNotExisting() {
+    return cy.waitIsNotExisting(this.#elementLocator.value);
+  }
+
   elementIsDisplayed() {
     cy.logger(`[inf] ▶ check ${this.#elementName} is displayed:`);
     return this.elementIsExisting().then((isExisting) => {
@@ -164,6 +168,22 @@ class BaseElement {
     });
   }
 
+  waitElementIsNotDisplayed() {
+    cy.logger(`[inf] ▶ wait ${this.#elementName} is not displayed:`);
+    return this.waitElementIsNotExisting().then((isExisting) => {
+      const displayedLog = `[inf]   ${this.#elementName} is displayed`;
+      if (!isExisting) {
+        return this.elementIsVisible().then((isVisible) => {
+          cy.logger(!isVisible ? `[inf]   ${this.#elementName} is not displayed` : displayedLog);
+          return cy.wrap(isVisible);
+        });
+      }
+
+      cy.logger(displayedLog);
+      return cy.wrap(isExisting);
+    });
+  }
+
   elementIsEnabled() {
     cy.logger(`[inf] ▶ check ${this.#elementName} is enabled:`);
     return this.getElement().isEnabled().then((isEnabled) => {
@@ -183,6 +203,18 @@ class BaseElement {
         isEnabled
           ? `[inf]   ${this.#elementName} is enabled`
           : `[inf]   ${this.#elementName} is not enabled`,
+      );
+      return cy.wrap(isEnabled);
+    });
+  }
+
+  waitElementIsNotEnabled() {
+    cy.logger(`[inf] ▶ wait ${this.#elementName} is not enabled:`);
+    return this.getElement().waitIsNotEnabled().then((isEnabled) => {
+      cy.logger(
+        !isEnabled
+          ? `[inf]   ${this.#elementName} is not enabled`
+          : `[inf]   ${this.#elementName} is enabled`,
       );
       return cy.wrap(isEnabled);
     });
@@ -234,12 +266,16 @@ class BaseElement {
     });
   }
 
-  // requires one mandatory argument:
-  // checkboxParent - is a tagname of an element on the upper node that nesting checkbox title text
-  clickCheckboxesByText({ checkboxParentTag, randomCount = true }, ...exceptionsElements) {
+  // requires two mandatory arguments:
+  // inputElementType - is type of clickable element (checkbox/radio),
+  // parentOfLabelTag - is a tagname of an element on the upper node that nesting input`s label text
+  clickRandomRadiobuttonsOrCheckboxesByText(
+    { inputElementType, parentOfLabelTag, randomCount = true },
+    ...exceptionsElements
+  ) {
     this.getElementsListText({ propertyName: 'innerText' }).then((elementsTextList) => {
       let count = elementsTextList.length;
-      if (randomCount) count = Randomizer.getRandomInteger(elementsTextList.length);
+      if (randomCount) count = Randomizer.getRandomInteger(elementsTextList.length, 1);
       const exceptionsTextList = [];
       if (exceptionsElements.length !== 0) {
         exceptionsElements.forEach((element) => this.getElement(element.#elementLocator)
@@ -254,7 +290,9 @@ class BaseElement {
         );
         exceptionsTextList.push(randomElementText);
         cy.logger(`[inf] ▶ click ${randomElementText}`);
-        cy.contains(checkboxParentTag, randomElementText).find('input[type=checkbox]').click({ force: true });
+        cy.contains(parentOfLabelTag, randomElementText)
+          .find(`input[type=${inputElementType}]`)
+          .click({ force: true });
       }
     });
   }

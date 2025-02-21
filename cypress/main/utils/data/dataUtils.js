@@ -9,6 +9,17 @@ class DataUtils {
     return (await parseStringPromise(xml)).response;
   }
 
+  static getFromRequests(url1, alias1, url2, alias2) {
+    cy.intercept(url1).as(alias1);
+    cy.intercept(url2).as(alias2);
+    return cy.wait([`@${alias1}`, `@${alias2}`]).then(([interception1, interception2]) => [interception1.response.body, interception2.response.body]);
+  }
+
+  static getFromRequest(url, alias) {
+    cy.intercept(url).as(alias);
+    return cy.wait(`@${alias}`).then((interception) => interception.response.body);
+  }
+
   /**
    * requires one mandatory argument: clients.
    * options contain optional parameters:
@@ -28,6 +39,7 @@ class DataUtils {
     const { hasPassport } = options;
     const { hasDriverLicence } = options;
     const { isUnderSixtyYearsOld } = options;
+    const { isJuridical } = options;
     let filteredClients = [...clients];
 
     filteredClients = filteredClients.filter((client) => {
@@ -48,7 +60,10 @@ class DataUtils {
 
     filteredClients = filteredClients.filter((client) => {
       if (hasPassport !== undefined) {
-        return hasPassport ? client.document_type_id === 2 : client.document_type_id !== 2;
+        const hasLetter = /[a-zA-Z]/.test(client.document_number);
+        return hasPassport
+          ? client.document_type_id === 11 && hasLetter
+          : client.document_type_id !== 11;
       }
 
       return true;
@@ -59,6 +74,14 @@ class DataUtils {
         return isUnderSixtyYearsOld
           ? moment(client.born) > moment().subtract(60, 'years')
           : moment(client.born) <= moment().subtract(60, 'years');
+      }
+
+      return true;
+    });
+
+    filteredClients = filteredClients.filter((client) => {
+      if (isJuridical !== undefined) {
+        return isJuridical ? !client.natural_person_bool : client.natural_person_bool;
       }
 
       return true;
@@ -87,9 +110,14 @@ class DataUtils {
   static createRandomClientsStructures(clientsArr) {
     const randomHolderIndex = Randomizer.getRandomInteger(clientsArr.length - 1);
     let randomInsuredIndex;
-    do {
-      randomInsuredIndex = Randomizer.getRandomInteger(clientsArr.length - 1);
-    } while (randomInsuredIndex === randomHolderIndex);
+    if (clientsArr.length >= 2) {
+      do {
+        randomInsuredIndex = Randomizer.getRandomInteger(clientsArr.length - 1);
+      } while (randomInsuredIndex === randomHolderIndex);
+    } else {
+      randomInsuredIndex = randomHolderIndex;
+    }
+
     const tempHolder = clientsArr[randomHolderIndex];
     const tempInsured = clientsArr[randomInsuredIndex];
     const resultHolder = { ...tempHolder };

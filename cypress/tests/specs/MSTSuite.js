@@ -6,7 +6,7 @@ const Randomizer = require('../../main/utils/random/randomizer');
 
 const clients = DataUtils.filterClients(
   JSONLoader.testClients,
-  { isUnderSixtyYearsOld: true, hasPassport: true },
+  { isJuridical: false, isUnderSixtyYearsOld: true, hasPassport: true },
 );
 const { holder } = DataUtils.createRandomClientsStructures(clients);
 

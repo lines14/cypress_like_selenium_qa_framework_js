@@ -104,7 +104,7 @@ class PolicyRequestFormShanyrak extends BaseForm {
   }
 
   randomClickPrivateHomeCheckbox() {
-    this.#privateHomeCheckboxLabel.clickCheckboxesByText({ checkboxParentTag: 'div' });
+    this.#privateHomeCheckboxLabel.clickRandomRadiobuttonsOrCheckboxesByText({ inputElementType: 'checkbox', checkboxParentTag: 'div' });
   }
 
   inputInsuranceObjectAddressHouseNumber(houseNumber) {

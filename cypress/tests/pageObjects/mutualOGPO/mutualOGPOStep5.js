@@ -41,7 +41,7 @@ class MutualOGPOStep5 extends BaseForm {
   }
 
   randomClickSMSNotifyCheckbox() {
-    this.#SMSNotifyCheckboxLabel.clickCheckboxesByText({ checkboxParentTag: 'div' });
+    this.#SMSNotifyCheckboxLabel.clickRandomRadiobuttonsOrCheckboxesByText({ inputElementType: 'checkbox', checkboxParentTag: 'div' });
   }
 
   clickCalculateButton() {
