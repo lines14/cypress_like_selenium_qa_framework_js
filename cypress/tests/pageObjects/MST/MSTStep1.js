@@ -185,7 +185,7 @@ class MSTStep1 extends BaseForm {
   }
 
   clickRandomAdditionalCheckboxes() {
-    this.#additionalCheckboxesLabels.clickRandomRadiobuttonsOrCheckboxesByText({ inputElementType: 'checkbox', checkboxParentTag: 'div' });
+    this.#additionalCheckboxesLabels.clickRandomRadiobuttonsOrCheckboxesByText({ inputElementType: 'checkbox', parentOfLabelTag: 'div' });
   }
 
   clickCalculateButton() {
