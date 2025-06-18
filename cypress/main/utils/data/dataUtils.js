@@ -185,13 +185,20 @@ class DataUtils {
     requestBody.last_name_eng = client.last_name_eng;
     requestBody.natural_person_bool = client.natural_person_bool;
     requestBody.sex_id = client.sex_id;
-    requestBody.born = client.born.DMY;
+    requestBody.born = requestBody.natural_person_bool ? client.born.DMY : null;
     requestBody.resident_bool = client.resident_bool;
     requestBody.document_number = client.document_number;
     requestBody.document_gived_date = client.document_gived_date.DMY;
     requestBody.document_type_id = client.document_type_id;
-    requestBody.verify_bool = Number(JSONLoader.configData.verification);
+    requestBody.verify_bool = requestBody.natural_person_bool
+      ? Number(JSONLoader.configData.verification) : 0;
     requestBody.verify_type_id = requestBody.verify_bool ? 1 : 3;
+    requestBody.activity_kind_id = requestBody.natural_person_bool
+      ? 250 : client.activity_kind_id;
+    requestBody.economics_sector_id = requestBody.natural_person_bool
+      ? 10 : client.economics_sector_id;
+    requestBody.juridical_person_name = requestBody.natural_person_bool
+      ? '' : client.juridical_person_name;
 
     return requestBody;
   }
