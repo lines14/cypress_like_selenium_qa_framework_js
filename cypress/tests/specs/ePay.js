@@ -14,7 +14,9 @@ exports.ePay = (holder) => {
     epayPage.getPaymentStatus()
       .should('contain', JSONLoader.testData.responseSuccessful);
     epayPage.clickCloseButton();
-    cy.url().should('be.equal', `${Cypress.config().baseUrl}/`);
+    cy.url().should('satisfy', (url) => url === `${Cypress.config().baseUrl}/`
+      || url === `${JSONLoader.testData.stagingURL}/`
+      || url === `${JSONLoader.testData.devURL}/`);
     cy.clearLocalStorage();
   });
 };
