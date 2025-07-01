@@ -8,8 +8,9 @@ const NodeEvents = require('../../support/nodeEvents');
 
 exports.userPathMST = (holder) => {
   it('MST user path:', { scrollBehavior: false }, () => {
-    NodeEvents.resetClient(holder)
-      .then(async (response) => cy.wrap(response.status).should('be.equal', 200));
+    NodeEvents.resetClient(holder).then((responses) => {
+      responses.forEach((response) => cy.wrap(response.status).should('be.equal', 200));
+    });
 
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
@@ -29,6 +30,14 @@ exports.userPathMST = (holder) => {
       .then((displayedDates) => MSTStep1.getSelectedDates()
         .should('be.deep.equal', displayedDates));
     MSTStep1.inputIIN(holder.iin);
+    MSTStep1.waitHolderLabelIsDisplayed();
+    NodeEvents.getESBDValue().then((withESBD) => {
+      if (!withESBD) {
+        MSTStep1.setLastNameEngElement(holder.last_name_eng);
+        MSTStep1.setFirstNameEngElement(holder.first_name_eng);
+      }
+    });
+
     MSTStep1.getSelectedClientNameElement()
       .should('contain', `${holder.first_name} ${holder.last_name.split('').shift()}`);
     MSTStep1.getSlicedDisplayedClientName()
@@ -56,10 +65,6 @@ exports.userPathMST = (holder) => {
     MSTStep4.getSMSCodeBoxElement().should('be.visible')
       .then(() => NodeEvents.getLastCodeFromDB(holder.phone.MST))
       .then((code) => MSTStep4.enterSMSCode(code));
-
-    // NodeEvents.toggleVerification()
-    // .then(() => NodeEvents.getVerifyBool()
-    //   .then(() => MSTStep4.clickAcceptanceCheckbox()));
     MSTStep4.clickAcceptanceCheckbox();
     MSTStep4.getSumToPay().then((sum) => {
       cy.setLocalStorage('sumToPay', sum);

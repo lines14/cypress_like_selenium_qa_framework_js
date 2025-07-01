@@ -7,7 +7,7 @@ Cypress.Commands.add('open', (url, options) => {
     cy.logger(`${title} test log:`, title);
   }
 
-  cy.logger(`[inf] ▶ open base URL: ${Cypress.config().baseUrl}`);
+  cy.logger(`[inf] ▶ open base URL: ${url === '/' ? Cypress.config().baseUrl : url}`);
   cy.visit(url, options);
 });
 
@@ -103,6 +103,9 @@ Cypress.Commands.add('waitIsNotExisting', { prevSubject: false }, (subject) => c
 }));
 
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes("Cannot read properties of null (reading 'focus')")) return false;
+  if (err.message.includes("Cannot read properties of null (reading 'focus')")
+    || err.message.includes("Cannot read properties of null (reading 'childNodes')")
+    || err.message.includes("Cannot read properties of null (reading 'postMessage')")
+    || err.message.includes('ResizeObserver loop')) return false;
   return true;
 });

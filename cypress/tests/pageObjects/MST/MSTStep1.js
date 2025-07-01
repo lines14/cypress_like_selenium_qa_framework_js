@@ -31,6 +31,10 @@ class MSTStep1 extends BaseForm {
 
   #IINBox;
 
+  #lastNameEngTextbox;
+
+  #firstNameEngTextbox;
+
   #selectedClientName;
 
   #displayedClientName;
@@ -66,11 +70,13 @@ class MSTStep1 extends BaseForm {
     this.#displayedCountries = new Label(new XPATH('//span[contains(text(), "Страна:")]//following-sibling::div[@class="text-14"]//span'), 'displayed countries');
     this.#calendarTowardsButton = new Button(new XPATH('//span[contains(text(), "Туда")]//following-sibling::div[@class="form-item__icon"]'), 'calendar towards button');
     this.#calendarBackwardsButton = new Button(new XPATH('//span[contains(text(), "Обратно")]//following-sibling::div[@class="form-item__icon"]'), 'calendar backwards button');
-    this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]//i'), 'left calendar arrow button');
-    this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]//i'), 'right calendar arrow button');
+    this.#calendarLeftArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-left")]'), 'left calendar arrow button');
+    this.#calendarRightArrowButton = new Button(new XPATH('//button[contains(@class, "mx-btn-icon-right")]'), 'right calendar arrow button');
     this.#selectedDates = new Button(new XPATH('//input[@name="date"]'), 'selected dates');
     this.#displayedDates = new Label(new XPATH('//span[contains(text(), "Срок действия:")]//following-sibling::div[@class="text-14"]//span'), 'displayed dates');
     this.#IINBox = new Textbox(new XPATH('//input[@id="iinInput"]'), 'IIN');
+    this.#lastNameEngTextbox = new Textbox(new XPATH('//label[contains(text(), "Фамилия на латинице")]//following-sibling::input[@type="text"]'), 'last name eng textbox');
+    this.#firstNameEngTextbox = new Textbox(new XPATH('//label[contains(text(), "Имя на латинице")]//following-sibling::input[@type="text"]'), 'first name eng textbox');
     this.#selectedClientName = new Label(new XPATH('//span[@class="subtitle-16"]'), 'selected client name');
     this.#displayedClientName = new Label(new XPATH('//span[contains(text(), "Туристы:")]//following-sibling::div[@class="text-14"]//span'), 'displayed client name');
     this.#insuranceLimitDropdownButton = new Button(new XPATH('//span[contains(text(), "Лимит страхования")]//following-sibling::div[contains(@class, "multiselect")]//div[@class="multiselect__select"]'), 'insurance limit dropdown');
@@ -147,6 +153,16 @@ class MSTStep1 extends BaseForm {
   inputIIN(IIN) {
     this.#IINBox.multipleClickElement(3);
     this.#IINBox.inputData(IIN);
+  }
+
+  setLastNameEngElement(lastNameEng) {
+    this.#lastNameEngTextbox.clearData();
+    this.#lastNameEngTextbox.inputData(lastNameEng);
+  }
+
+  setFirstNameEngElement(firstNameEng) {
+    this.#firstNameEngTextbox.clearData();
+    this.#firstNameEngTextbox.inputData(firstNameEng);
   }
 
   getSelectedClientNameElement() {

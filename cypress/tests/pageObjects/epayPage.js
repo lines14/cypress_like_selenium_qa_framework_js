@@ -8,6 +8,8 @@ const Textbox = require('../../main/elements/baseElementChildren/textbox');
 class EpayPage extends BaseForm {
   #amount;
 
+  #cardButton;
+
   #cardNumberBox;
 
   #expireMonthBox;
@@ -29,6 +31,7 @@ class EpayPage extends BaseForm {
   constructor() {
     super(new XPATH('//td[contains(text(), "На проведение платежа выделяется")]'), 'Epay page');
     this.#amount = new Label(new XPATH('//div[@class="amount"]//span'), 'amount to pay');
+    this.#cardButton = new Button(new XPATH('//span[contains(text(), "Карта")]'), 'card button');
     this.#cardNumberBox = new Textbox(new XPATH('//input[@name="cardnumber"]'), 'card number');
     this.#expireMonthBox = new Textbox(new XPATH('//input[@name="ccmonth"]'), 'expire month');
     this.#expireYearBox = new Textbox(new XPATH('//input[@name="ccyear"]'), 'expire year');
@@ -42,6 +45,10 @@ class EpayPage extends BaseForm {
 
   getAmountToPay() {
     return this.#amount.getText();
+  }
+
+  clickCardButton() {
+    this.#cardButton.clickElement();
   }
 
   inputPaymentInfo(holder) {
