@@ -114,9 +114,11 @@ exports.userPathClaimCreate = (
       claimsCreateStep3.clickVictimVehicleOwnerSearchButton();
       claimsCreateStep3.waitLoaderDisappearing().should('be.true');
       if (victimVehicleOwner.natural_person_bool) {
-        claimsCreateStep3.getVictimVehicleOwnerFullNameLabelText().should('include', `${victimVehicleOwner.last_name} ${victimVehicleOwner.first_name}`);
+        claimsCreateStep3.getVictimVehicleOwnerFullNameLabelText()
+          .should('include', `${victimVehicleOwner.last_name} ${victimVehicleOwner.first_name}`);
       } else {
-        claimsCreateStep3.getVictimVehicleOwnerFullNameLabelText().should('include', `${victimVehicleOwner.juridical_person_name}`);
+        claimsCreateStep3.getVictimVehicleOwnerFullNameLabelText()
+          .should('include', `${victimVehicleOwner.juridical_person_name}`);
       }
     }
 
@@ -124,7 +126,8 @@ exports.userPathClaimCreate = (
       claimsCreateStep3.inputVictimVehicleDriverIIN(victimVehicleDriver.iin);
       claimsCreateStep3.clickVictimVehicleDriverSearchButton();
       claimsCreateStep3.waitLoaderDisappearing().should('be.true');
-      claimsCreateStep3.getVictimVehicleDriverFullNameLabelText().should('include', `${victimVehicleDriver.last_name} ${victimVehicleDriver.first_name}`);
+      claimsCreateStep3.getVictimVehicleDriverFullNameLabelText()
+        .should('include', `${victimVehicleDriver.last_name} ${victimVehicleDriver.first_name}`);
     }
 
     claimsCreateStep3.randomlyChooseLastVictimObjectsRisk();
@@ -165,9 +168,11 @@ exports.userPathClaimCreate = (
       claimsCreateStep3.clickVictimOtherOwnerSearchButton();
       claimsCreateStep3.waitLoaderDisappearing().should('be.true');
       if (victimOtherOwner.natural_person_bool) {
-        claimsCreateStep3.getVictimOtherOwnerFullNameLabelText().should('include', `${victimOtherOwner.last_name} ${victimOtherOwner.first_name}`);
+        claimsCreateStep3.getVictimOtherOwnerFullNameLabelText()
+          .should('include', `${victimOtherOwner.last_name} ${victimOtherOwner.first_name}`);
       } else {
-        claimsCreateStep3.getVictimOtherOwnerFullNameLabelText().should('include', `${victimOtherOwner.juridical_person_name}`);
+        claimsCreateStep3.getVictimOtherOwnerFullNameLabelText()
+          .should('include', `${victimOtherOwner.juridical_person_name}`);
       }
     }
 
