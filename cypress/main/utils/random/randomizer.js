@@ -1,17 +1,27 @@
+/* eslint-disable no-unused-expressions */
 const moment = require('moment');
 const JSONLoader = require('../data/JSONLoader');
 
 class Randomizer {
-  static getRandomDatesIntervalFromTomorrow(count, unitOfTime) {
-    const nextDayObject = moment().add(1, 'days').startOf('day');
+  static getRandomDatesIntervalFromTomorrow(count, unitOfTime, reverseInterval) {
+    const reverse = reverseInterval ?? false;
+    const nextDayObject = reverse
+      ? moment().subtract(1, 'days').startOf('day')
+      : moment().add(1, 'days').startOf('day');
     const unixOne = nextDayObject.unix();
-    const unixTwo = moment(moment().add(1, 'days').startOf('day')).add(count, unitOfTime).unix();
+    const unixTwo = reverse
+      ? moment(moment().subtract(1, 'days').startOf('day')).subtract(count, unitOfTime).unix()
+      : moment(moment().add(1, 'days').startOf('day')).add(count, unitOfTime).unix();
 
     const startDateUnix = moment.unix(this.getRandomFloat(unixOne, unixTwo)).unix();
     let finishDateUnix;
-    do {
+    if (reverse) {
       finishDateUnix = moment.unix(this.getRandomFloat(startDateUnix, unixTwo)).unix();
-    } while ((finishDateUnix - startDateUnix) < 86400 * 2);
+    } else {
+      do {
+        finishDateUnix = moment.unix(this.getRandomFloat(startDateUnix, unixTwo)).unix();
+      } while ((finishDateUnix - startDateUnix) < 86400 * 2);
+    }
 
     const startDateObject = moment.unix(startDateUnix).startOf('day');
     const finishDateObject = moment.unix(finishDateUnix).startOf('day');
@@ -32,11 +42,13 @@ class Randomizer {
       .format(JSONLoader.testData.datesFormatDMY));
     const startMonth = getAbsoluteMonth(startDateDMY);
     const finishMonth = getAbsoluteMonth(finishDateDMY);
-    let startMonthDifference = startMonth - currentMonth;
-    let finishMonthDifference = finishMonth - currentMonth;
+    let startMonthDifference = reverse ? currentMonth - startMonth : startMonth - currentMonth;
+    let finishMonthDifference = reverse ? currentMonth - finishMonth : finishMonth - currentMonth;
 
-    if (nextDayObject.date() === 1) startMonthDifference += 1;
-    if (nextDayObject.date() === 1) finishMonthDifference += 1;
+    if (nextDayObject.date() === 1) {
+      reverse ? startMonthDifference -= 1 : startMonthDifference += 1;
+      reverse ? finishMonthDifference -= 1 : finishMonthDifference += 1;
+    }
 
     return {
       startDate,
@@ -143,6 +155,18 @@ class Randomizer {
     }
 
     return element;
+  }
+
+  static getRandomDateBetweenTwoDates(dateFrom, dateTo) {
+    const daysDifference = moment(dateTo, JSONLoader.testData.datesFormatDMY)
+      .diff(moment(dateFrom, JSONLoader.testData.datesFormatDMY), 'days');
+
+    return moment(dateFrom, JSONLoader.testData.datesFormatDMY)
+      .add(Randomizer.getRandomInteger(daysDifference), 'days');
+  }
+
+  static getRandomArrayElement(array) {
+    return array[Randomizer.getRandomInteger(array.length - 1)];
   }
 }
 

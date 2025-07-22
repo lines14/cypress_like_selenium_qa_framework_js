@@ -21,13 +21,6 @@ exports.userPathClaimCreate = (
   fakeData,
 ) => {
   it('claim create user path:', { scrollBehavior: false }, () => {
-    const currentDate = moment().format(JSONLoader.testData.datesFormatDMY);
-    const victimObjectsRisks = {};
-    const { OGPOVictimObjectsCount } = JSONLoader.testData;
-    const averageRBNS = JSONLoader.averageRBNS
-      .filter(
-        (elem) => elem.insurance_type_id_esbd === JSONLoader.testData.insTypesIDESBD.OGPO,
-      ).pop().amount;
     let OGPOInsuranceEventType;
     let victimOtherType;
     let authorizedUserName;
@@ -36,6 +29,13 @@ exports.userPathClaimCreate = (
     let victimObjectType;
     let policyData;
     let IEDate;
+    const victimObjectsRisks = {};
+
+    const currentDate = moment().format(JSONLoader.testData.datesFormatDMY);
+    const { OGPOVictimObjectsCount } = JSONLoader.testData;
+    const averageRBNS = JSONLoader.averageRBNS
+      .filter((elem) => elem.insurance_type_id_esbd === JSONLoader.testData.insTypesIDESBD.OGPO)
+      .pop().amount;
 
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');
@@ -84,6 +84,7 @@ exports.userPathClaimCreate = (
       claimsCreateStep2.uploadPDLDocumentFront();
       claimsCreateStep2.uploadPDLDocumentBack();
     }
+
     cy.clearLocalStorage('accumulatedTerritory');
     claimsCreateStep2.recursivelyChooseTerritories();
     claimsCreateStep2.randomlyClickDirectClaimCheckbox();
@@ -108,6 +109,7 @@ exports.userPathClaimCreate = (
       if (!victimVehicleOwner.natural_person_bool) {
         claimsCreateStep3.clickVictimVehicleOwnerJuridicalPersonBoolCheckbox();
       }
+
       claimsCreateStep3.inputVictimVehicleOwnerIIN(victimVehicleOwner.iin);
       claimsCreateStep3.clickVictimVehicleOwnerSearchButton();
       claimsCreateStep3.waitLoaderDisappearing().should('be.true');
@@ -117,12 +119,14 @@ exports.userPathClaimCreate = (
         claimsCreateStep3.getVictimVehicleOwnerFullNameLabelText().should('include', `${victimVehicleOwner.juridical_person_name}`);
       }
     }
+
     if (Randomizer.getRandomInteger(1)) {
       claimsCreateStep3.inputVictimVehicleDriverIIN(victimVehicleDriver.iin);
       claimsCreateStep3.clickVictimVehicleDriverSearchButton();
       claimsCreateStep3.waitLoaderDisappearing().should('be.true');
       claimsCreateStep3.getVictimVehicleDriverFullNameLabelText().should('include', `${victimVehicleDriver.last_name} ${victimVehicleDriver.first_name}`);
     }
+
     claimsCreateStep3.randomlyChooseLastVictimObjectsRisk();
     claimsCreateStep3.getLastVictimObjectsChosenRisk()
       .then((risk) => { victimObjectsRisks.vehicle = risk; });
@@ -156,6 +160,7 @@ exports.userPathClaimCreate = (
       if (!victimOtherOwner.natural_person_bool) {
         claimsCreateStep3.clickVictimOtherOwnerJuridicalPersonBoolCheckbox();
       }
+
       claimsCreateStep3.inputVictimOtherOwnerIIN(victimOtherOwner.iin);
       claimsCreateStep3.clickVictimOtherOwnerSearchButton();
       claimsCreateStep3.waitLoaderDisappearing().should('be.true');
@@ -165,6 +170,7 @@ exports.userPathClaimCreate = (
         claimsCreateStep3.getVictimOtherOwnerFullNameLabelText().should('include', `${victimOtherOwner.juridical_person_name}`);
       }
     }
+
     claimsCreateStep3.randomlyChooseLastVictimObjectsRisk();
     claimsCreateStep3.getLastVictimObjectsChosenRisk()
       .then((risk) => { victimObjectsRisks.other = risk; });
@@ -173,6 +179,7 @@ exports.userPathClaimCreate = (
       claimsCreateStep3
         .inputVictimOtherDescription(fakeData.victimOtherDescription);
     }
+
     claimsCreateStep3
       .inputLastVictimObjectDamageDescription(fakeData.victimOtherDamageDescription);
     claimsCreateStep3.clickCreateClaimButton();
@@ -254,6 +261,7 @@ exports.userPathClaimCreate = (
           } else {
             claimPage.getVictimObjectText().should('be.equal', victimOtherType);
           }
+
           claimPage.getRiskText().should('be.equal', victimObjectsRisks.other);
           claimPage.getDamageDescriptionText().should('be.equal', fakeData.victimOtherDamageDescription);
         } else {
