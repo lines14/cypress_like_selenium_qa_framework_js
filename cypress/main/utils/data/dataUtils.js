@@ -210,10 +210,12 @@ class DataUtils {
     } catch (e) {
       throw new Error('[err]   no policy for claim found after filter!');
     }
+
     const policyDateBegin = OGPOContractForClaim.date_begin;
     const policyDateEnd = OGPOContractForClaim.date_end;
     const insurancePeriod = `${policyDateBegin} - ${policyDateEnd}`;
     const policyNumber = OGPOContractForClaim.num_policy;
+
     return {
       OGPOContractForClaim, policyDateBegin, policyDateEnd, insurancePeriod, policyNumber,
     };

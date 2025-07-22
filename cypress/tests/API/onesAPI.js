@@ -1,3 +1,4 @@
+/* eslint camelcase: ["error", {allow: ["valid_policy", "date_begin", "date_end"]}] */
 const path = require('path');
 const moment = require('moment/moment');
 const authAPI = require('./authAPI');
@@ -25,24 +26,26 @@ class OnesAPI extends BaseAPI {
     this.#options.headers = {};
     this.#options.headers.Authorization = `Bearer ${response.data.data.access_token}`;
     this.#API = new OnesAPI(this.#options);
+    return response;
   }
 
-  /* eslint camelcase:
-  ["error", {allow: ["num_policy", "valid_policy", "date_begin", "date_end"]}] */
-  async getActivePoliciesWithSpecifiedInsProducts(
-    {
-      attemptCountArg, IIN, date_begin, date: date_end,
-    } = {},
-  ) {
+  async getActivePoliciesWithSpecifiedInsProducts({
+    attemptCountArg,
+    IIN,
+    date_begin,
+    date: date_end,
+  } = {}) {
     if (attemptCountArg >= JSONLoader.testData.activePoliciesRequestAttemptsNumber) {
       throw new Error(`[err]   active policies retrieval request didn't succeed after ${JSONLoader.testData.activePoliciesRequestAttemptsNumber} attempts!`);
     }
+
     const attemptCount = attemptCountArg ? attemptCountArg + 1 : 1;
-    console.log('[INFO] Active policies retrieval initiated!');
+
+    console.log('[inf]   active policies retrieval initiated!');
+
     const { firstDay, lastDay } = TimeUtils.getFirstAndLastDateOfPrevMonth();
-    const randomIIN = Randomizer.getRandomArrayElement(
-      DataUtils.filterClients(JSONLoader.testClients, { isJuridical: false }),
-    ).iin;
+    const randomIIN = Randomizer.getRandomArrayElement(DataUtils
+      .filterClients(JSONLoader.testClients, { isJuridical: false })).iin;
     const params = {
       methodName: 'GetPolicy_2025_Test',
       params: {
@@ -52,13 +55,16 @@ class OnesAPI extends BaseAPI {
         date: date_end || lastDay.format(JSONLoader.testData.datesFormatYMD),
       },
     };
-    console.log(`[INFO] params: ${JSON.stringify(params)}`);
-    const response = await this.#API.post(JSONLoader.APIEndpoints.ones.callMethod, params);
+
+    console.log(`[inf]   params: ${JSON.stringify(params)}`);
+
     // If request didn't succeed, retry.
+    const response = await this.#API.post(JSONLoader.APIEndpoints.ones.callMethod, params);
     if (response.status !== 200) {
-      console.log('[INFO] Active policies request didn\'t succeed! Attempting again!');
+      console.log('[inf]   active policies request didn\'t succeed! Attempting again!');
       return this.getActivePoliciesWithSpecifiedInsProducts({ attemptCountArg: attemptCount });
     }
+
     // Filtering policies by ins product and date begin and date end to ensure
     // correct policies are present. If no policies left after filtering, retry.
     const currentDate = moment().format(JSONLoader.testData.datesFormatDMY);
@@ -69,11 +75,12 @@ class OnesAPI extends BaseAPI {
       && moment(policy.date_end, JSONLoader.testData.datesFormatDMY)
         .isSameOrAfter(moment(currentDate, JSONLoader.testData.datesFormatDMY)));
     if (!filteredPolicies.length) {
-      console.log('[INFO] No policies left after filtering! Attempting request again!');
+      console.log('[inf]   no policies left after filtering! Attempting request again!');
       return this.getActivePoliciesWithSpecifiedInsProducts({ attemptCountArg: attemptCount });
     }
 
-    console.log('[INFO] Active policies retrieval successfully finished!');
+    console.log('[inf]   active policies retrieval successfully finished!');
+
     return filteredPolicies;
   }
 }
