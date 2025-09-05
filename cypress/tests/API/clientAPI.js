@@ -10,7 +10,7 @@ class ClientAPI extends BaseAPI {
   #options;
 
   constructor(options = {
-    baseURL: '' || process.env.GATEWAY_URL,
+    baseURL: process.env.GATEWAY_URL,
   }) {
     super(options);
     this.#options = options;
@@ -21,6 +21,7 @@ class ClientAPI extends BaseAPI {
     this.#options.headers = {};
     this.#options.headers.Authorization = `Bearer ${response.data.data.access_token}`;
     this.#API = new ClientAPI(this.#options);
+    return response;
   }
 
   async getClient(client) {

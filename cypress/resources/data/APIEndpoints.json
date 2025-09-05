@@ -7,7 +7,9 @@
         "verifyBool": "api/dictionary/settings/verify_bool",
         "keyVerifyBool": "api/dictionary/settings/key/verify_bool",
         "testCars": "api/dictionary/test-cars",
-        "testClients": "api/dictionary/test-clients"
+        "testClients": "api/dictionary/test-clients",
+        "averageRBNS": "api/dictionary/average-rbns",
+        "ESBD": "api/dictionary/settings/key/esbd"
     },
     "kaspi": {
         "pay": "api/kaspi/kaspi/pay"
@@ -15,5 +17,8 @@
     "client": {
         "getClient": "api/client/get-client",
         "setClient": "api/client/set-client"
+    },
+    "ones": {
+        "callMethod": "api/ones/v2/ones/call-method"
     }
 }

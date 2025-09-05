@@ -1,0 +1,61 @@
+{
+  "countriesCount" : 3,
+  "timeIncrement": [2, "months"],
+  "datesFormatYMD": "YYYY-MM-DD",
+  "datesFormatDMY": "DD.MM.YYYY",
+  "datesRegexPattern": "\\d{2}\\.\\d{2}\\.\\d{4}",
+
+  "holderAddress": "{first_address}",
+  "holderEmail": "{some_email}",
+  "holderPhoneShanyrak": "{first_phone}",
+  "holderPhoneOGPO": "{second_phone}",
+  "holderPhoneMST": "{third_phone}",
+
+  "insuredAddress": "{second_address}",
+
+  "clientCardExpMonth": "{bank_card_exp_month_MM}",
+  "clientCardExpYear": "{bank_card_exp_year_YY}",
+  "clientCardNumber": "{first_bank_card_number}",
+  "reserveClientCardNumber": "{second_bank_card_number}",
+  "clientCardCVC": "{first_bank_card_CVC}",
+  "reserveClientCardCVC": "{second_bank_card_CVC}",
+  "responseSuccessful": "успешно",
+  "responsePaid": "оплачен",
+  "insuranceObjectAddressStreet": "{street_name}",
+  "insuranceObjectAddressHouseNumber": "{house_number}",
+  "insuranceObjectAddressApartmentNumber": "{apartment_number}",
+  "carRegion": "{city_name}",
+
+  "devURL": "{first_URL}",
+  "stagingURL": "{second_URL}",
+
+  "PDLDocumentFrontFilePath": "./resources/PDLFront.jpg",
+  "PDLDocumentBackFilePath": "./resources/PDLBack.jpg",
+  "getArTerritoriesRequest": "**/get-ar-territories",
+  "OGPOVictimObjectsCount": 3,
+  "insProductsForClaimTests": {
+    "OGPO": 110
+  },
+  "insTypesIDESBD": {
+    "OGPO": 999
+  },
+  "insProductTitles": {
+    "OGPO": "ОГПО* владельцев транспортных средств"
+  },
+  "OGPOInsuranceEventHealthAndPropertyDamagedType": "ДТП с причинением вреда имуществу и жизни/здоровью",
+  "OGPOVictimObjectTypes": {
+    "vehicle": "Пострадавшее транспортное средство",
+    "client": "Пострадавший человек",
+    "other": "Пострадавшее иное"
+  },
+  "claimStatuses": {
+    "new": "Новая",
+    "inProgress": "На рассмотрении",
+    "closed": "Заявление закрыто"
+  },
+  "defaultVictimOtherDescription": "Прочее имущество",
+  "maxMonthsDeltaForGetPolicy": 3,
+  "minMonthsDeltaForGetPolicy": 1,
+  "activePoliciesRequestAttemptsNumber": 3,
+  "quantityOfPoliciesToGetFromDB": 30
+}

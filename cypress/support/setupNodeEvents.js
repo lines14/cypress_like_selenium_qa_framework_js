@@ -1,5 +1,5 @@
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
-const cypressSplit = require('cypress-split');
+const cypressFailFast = require('cypress-fail-fast/plugin');
 const localStorage = require('cypress-localstorage-commands/plugin');
 const kaspiAPI = require('../tests/API/kaspiAPI');
 const clientAPI = require('../tests/API/clientAPI');
@@ -11,7 +11,7 @@ const dataUtils = require('../main/utils/data/dataUtils');
 
 exports.setupNodeEvents = {
   setupNodeEvents(on, config) {
-    cypressSplit(on, config);
+    cypressFailFast(on, config);
     on('before:run', BaseTest.beforeAll);
     on('after:run', BaseTest.afterAll);
     on('task', {
@@ -31,10 +31,15 @@ exports.setupNodeEvents = {
         ];
       },
       async resetClient(client) {
-        await clientAPI.setToken();
-        const response = await clientAPI.getClient(client);
-        const setClientRequestBody = dataUtils.prepareSetClientRequestBody(response, client);
-        return clientAPI.setClient(setClientRequestBody);
+        const setTokenResponse = await clientAPI.setToken();
+        const getClientResponse = await clientAPI.getClient(client);
+        const setClientRequestBody = dataUtils
+          .prepareSetClientRequestBody(getClientResponse, client);
+        return [
+          setTokenResponse,
+          getClientResponse,
+          await clientAPI.setClient(setClientRequestBody),
+        ];
       },
       async getLastCodeFromDB(phoneNumber) {
         return [
@@ -47,6 +52,12 @@ exports.setupNodeEvents = {
         return [
           await kaspiAPI.setToken(),
           await kaspiAPI.pay(paymentInfo),
+        ];
+      },
+      async getESBDValue() {
+        return [
+          await dictionaryAPI.setToken(),
+          await dictionaryAPI.getESBDValue(),
         ];
       },
     });

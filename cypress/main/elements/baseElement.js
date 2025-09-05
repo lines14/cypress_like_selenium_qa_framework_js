@@ -299,10 +299,10 @@ class BaseElement {
 
   openCalendarAndFlipMonths(rightArrowElement, monthIncrement) {
     cy.logger(`[inf] ▶ click ${this.#elementName}`);
-    this.getElement().clicks(3);
+    this.getElement().clicks(4);
     for (let i = 0; i < monthIncrement; i += 1) {
       cy.logger(`[inf] ▶ click ${rightArrowElement.#elementName}`);
-      this.getElement(rightArrowElement.#elementLocator).click();
+      this.getElement(rightArrowElement.#elementLocator).click({ force: true });
     }
   }
 
@@ -353,7 +353,7 @@ class BaseElement {
       cy.realPress('{esc}');
     } else {
       cy.logger(`[inf] ▶ click ${text}`);
-      this.getElements().contains(new RegExp(`${text}`, 'g')).click({ force: true });
+      this.getElements().contains(new RegExp(`${text}`)).click({ force: true });
     }
   }
 }

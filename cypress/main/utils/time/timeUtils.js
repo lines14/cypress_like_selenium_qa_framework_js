@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const JSONLoader = require('../data/JSONLoader');
 
 class TimeUtils {
@@ -47,6 +47,18 @@ class TimeUtils {
   static reformatDateFromDMYToYMD(date) {
     return moment(date, JSONLoader.testData.datesFormatDMY)
       .format(JSONLoader.testData.datesFormatYMD);
+  }
+
+  static getFirstAndLastDateOfPrevMonth({ monthsDelta } = {}) {
+    const numberOfMonthsToSubtract = monthsDelta || 1;
+    return {
+      firstDay: moment().subtract(numberOfMonthsToSubtract, 'months').startOf('month'),
+      lastDay: moment().subtract(numberOfMonthsToSubtract, 'months').endOf('month'),
+    };
+  }
+
+  static toLocalTMZ(dateUTC) {
+    return moment(dateUTC).tz('Asia/Almaty');
   }
 }
 

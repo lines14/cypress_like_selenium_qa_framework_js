@@ -4,7 +4,7 @@ const DataUtils = require('../../main/utils/data/dataUtils');
 const JSONLoader = require('../../main/utils/data/JSONLoader');
 
 exports.kaspiPay = () => {
-  it('Pay with Kaspi:', { scrollBehavior: false }, () => {
+  it('Pay with Kaspi:', { scrollBehavior: false, retries: 0 }, () => {
     paymentChooseForm.pageIsDisplayed().should('be.true');
     paymentChooseForm.clickKaspiPayButton();
     paymentChooseForm.getPaymentCode()
@@ -19,5 +19,6 @@ exports.kaspiPay = () => {
 
     cy.url().should('satisfy', (url) => url === `${Cypress.config().baseUrl}/buy-mst`
       || url === `${Cypress.config().baseUrl}/ru/buy-ogpo`);
+    cy.clearLocalStorage();
   });
 };

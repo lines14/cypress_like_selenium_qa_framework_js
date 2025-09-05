@@ -5,6 +5,10 @@ const { setupNodeEvents } = require('./support/setupNodeEvents');
 require('dotenv').config({ path: path.join(__dirname, '.env.test'), override: true });
 
 module.exports = defineConfig({
+  retries: {
+    runMode: 2,
+    openMode: 0,
+  },
   chromeWebSecurity: false,
   morgan: false,
   screenshotOnRunFailure: true,
@@ -13,6 +17,8 @@ module.exports = defineConfig({
   screenshotsFolder: './screenshots',
   videosFolder: './videos',
   env: {
+    FAIL_FAST_ENABLED: true,
+    FAIL_FAST_STRATEGY: 'run',
     allure: true,
     allureResultsPath: './artifacts/allure-results',
     allureLogCypress: true,
@@ -23,7 +29,7 @@ module.exports = defineConfig({
   },
   e2e: {
     baseUrl: '' || process.env.BASE_URL,
-    specPattern: './tests/specs/*Suite.js',
+    specPattern: './tests/suites/*Suite.js',
     supportFile: './support/e2e.js',
     testIsolation: false,
     viewportHeight: 1080,

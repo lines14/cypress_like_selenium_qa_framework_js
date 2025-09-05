@@ -1,0 +1,15 @@
+[
+  {
+    "type": "vehicle",
+    "objects": ["another car", "a taxi", "a bus", "a truck", "a motorcycle", "a delivery van"]
+  },
+  {
+    "type": "person",
+    "objects": ["a pedestrian", "a cyclist", "a person crossing the road", "a road worker"]
+  },
+  {
+    "type": "property",
+    "objects": ["a light pole", "a road sign", "a guardrail", "a building wall", "a fence",
+      "a parked car", "a shop window", "a bus stop shelter", "a traffic light"]
+  }
+]

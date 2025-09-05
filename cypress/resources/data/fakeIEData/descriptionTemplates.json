@@ -1,0 +1,16 @@
+{
+  "locations": [
+    "At the intersection of ${streetName} ${streetType} and ${secondStreetName} ${streetType} in ${city}, Kazakhstan",
+    "On ${streetName} ${streetType} ${vehicleLocation} ${landmark} in ${city}, Kazakhstan",
+    "In the parking lot of ${landmark} in ${city}, Kazakhstan",
+    "On the highway between ${city} and ${secondCity}, Kazakhstan",
+    "While exiting from ${landmark} onto ${streetName} ${streetType} in ${city}, Kazakhstan"
+  ],
+  "damage": {
+    "vehicle": "The other vehicle sustained ${severity} damage to the ${damageLocation} which was ${damageType}, along with ${additionalDamage}, ${repairability}.",
+    "person": "The victim sustained ${severity} ${injuryType} to the ${bodyPart}, ${treatment}, and is ${prognosis}.",
+    "property": "The ${propertyDescription} was ${damageType} in the accident, ${damageExtent}. ${consequences} The estimated repair cost is approximately ${estimatedCost} tenge."
+  },
+  "propertyDescription": "${propertyObject} (${propertyCategory})",
+  "carAccidentDescription": "Perpetrators vehicle collided with ${collisionObject} during ${timeOfDay} in ${weatherConditions} due to ${cause}. Our clients vehicle ${car.mark} ${car.model} ${car.reg_num} (${car.vin}) sustained ${claimantDamageSeverity} damage to the ${claimantDamageLocation}. ${victimDamageDescription}"
+}

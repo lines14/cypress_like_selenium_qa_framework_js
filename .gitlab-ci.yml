@@ -1,93 +1,93 @@
-# e2e-tests:
-#   image: lines14/cypress-java-dind:latest
-#   stage: e2e-tests
-#   only:
-#     - dev
-#   services:
-#   - docker:dind
-#   variables:
-#     DOCKER_HOST: tcp://docker:2375
-#     DOCKER_TLS_CERTDIR: ""
-#     DOCKER_DRIVER: overlay2
-#   before_script:
-#     - echo "${AMANAT24_TEST}" | tr -d '\r' > ./.env.test
-#     - docker login --username $USER --password $PASS registry.gitlab.com
-#     - service docker start
-#     - npm ci --prefix ./cypress
-#     - npm run start:ci --prefix ./cypress
-#   tags:
-#     - k8s
-#   script:
-#     - npm run test:split --prefix ./cypress
-#   parallel: 2
-#   artifacts:
-#     when: always
-#     paths:
-#       - cypress/artifacts
-#       - cypress/screenshots
-#       - cypress/videos
-#       - cypress/resources/data/configData.json
-#     expire_in: 1 month
+check:
+  image: alpine:latest
+  stage: check
+  tags:
+    - k8s
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "staging" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "prod")'
+  before_script:
+    - apk update && apk add --no-cache curl jq
+  script:
+    - |
+      info=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/pipelines?ref=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" \
+      | jq '[.[] | select(.source != "merge_request_event")][0]')
 
-# check:
-#   image: alpine:latest
-#   stage: check
-#   tags:
-#     - k8s
-#   rules:
-#     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "staging" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "prod")'
-#   before_script:
-#     - apk update && apk add --no-cache curl jq
-#   script:
-#     - |
-#       info=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/pipelines?ref=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" | jq '.[0]')
-      
-#       if [ "$info" = "null" ]; then
-#           echo "Previous pipeline not found"
-#           exit 0
-#       fi
+      if [ "$info" = "null" ]; then
+          echo "Previous pipeline not found"
+          exit 0
+      fi
 
-#       pipeline_status=$(echo "$info" | jq -r '.status')
+      pipeline_status=$(echo "$info" | jq -r '.status')
 
-#       if [ "$pipeline_status" = "success" ]; then
-#           echo "Pipeline in the source branch passed. Merge to target branch allowed"
-#       else
-#           echo "Pipeline in the source branch not passed. Merge to target branch blocked"
-#           path=$(echo "$info" | jq -r '.web_url')
-#           echo 'URL of not passed pipeline:'
-#           echo "$path"
-#           exit 1
-#       fi
+      if [[ "$pipeline_status" == "success" || "$pipeline_status" == "skipped" ]]; then
+          echo "Pipeline in the source branch passed or skipped. Merge to target branch allowed"
+      else
+          echo "Pipeline in the source branch not passed. Merge to target branch blocked"
+          path=$(echo "$info" | jq -r '.web_url')
+          echo 'URL of not passed pipeline:'
+          echo "$path"
+          exit 1
+      fi
 
-# create-merge-request:
-#   image: alpine:latest
-#   stage: create-merge-request
-#   only:
-#     - dev
-#   tags:
-#     - k8s
-#   before_script:
-#     - apk update && apk add --no-cache curl jq
-#   script:
-#     - |
-#       source_branch_name="dev"
-#       target_branch_name="staging"
+generate-config:
+  image: node:20.13.1
+  stage: generate-config
+  only:
+    - dev
+  tags:
+    - k8s
+  before_script:
+    - npm install
+  script:
+    - touch ./.env.test
+    - npm run ci:generate --prefix ./cypress
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - .split-config.yml
 
-#       echo "Opening merge request from $source_branch_name to $target_branch_name:"
+e2e-tests:
+  stage: e2e-tests
+  only:
+    - dev
+  needs:
+    - generate-config
+  trigger:
+    include:
+      - artifact: .split-config.yml
+        job: generate-config
+    strategy: depend
 
-#       response=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" -d "id=$CI_PROJECT_ID&title=$source_branch_name to $target_branch_name&source_branch=$source_branch_name&target_branch=$target_branch_name" -X POST "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests" | jq)
 
-#       new_merge_request_state=$(echo "$response" | jq -r '.state')
-#       new_merge_request_path=$(echo "$response" | jq -r '.web_url')
-#       existing_merge_request_message=$(echo "$response" | jq -r '.message')
+create-merge-request:
+  image: alpine:latest
+  stage: create-merge-request
+  only:
+    - dev
+  tags:
+    - k8s
+  before_script:
+    - apk update && apk add --no-cache curl jq
+  script:
+    - |
+      source_branch_name="dev"
+      target_branch_name="staging"
 
-#       if [ "$new_merge_request_state" = "opened" ]; then
-#           echo "Merge request from $source_branch_name to $target_branch_name opened"
-#           echo "URL of opened merge request:"
-#           echo "$new_merge_request_path"
-#       elif [ -n "$existing_merge_request_message" ]; then
-#           existing_merge_request_state=$(echo "$existing_merge_request_message" | jq -r '.[0]')
-#           echo "$existing_merge_request_state"
-#       else
-#           echo "Merge request from $source_branch_name to $target_branch_name not opened"
-#       fi
+      echo "Opening merge request from $source_branch_name to $target_branch_name:"
+
+      response=$(curl --silent --header "PRIVATE-TOKEN: $TOKEN" -d "id=$CI_PROJECT_ID&title=$source_branch_name to $target_branch_name&source_branch=$source_branch_name&target_branch=$target_branch_name" -X POST "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/merge_requests" | jq)
+
+      new_merge_request_state=$(echo "$response" | jq -r '.state')
+      new_merge_request_path=$(echo "$response" | jq -r '.web_url')
+      existing_merge_request_message=$(echo "$response" | jq -r '.message')
+
+      if [ "$new_merge_request_state" = "opened" ]; then
+          echo "Merge request from $source_branch_name to $target_branch_name opened"
+          echo "URL of opened merge request:"
+          echo "$new_merge_request_path"
+      elif [ -n "$existing_merge_request_message" ]; then
+          existing_merge_request_state=$(echo "$existing_merge_request_message" | jq -r '.[0]')
+          echo "$existing_merge_request_state"
+      else
+          echo "Merge request from $source_branch_name to $target_branch_name not opened"
+      fi

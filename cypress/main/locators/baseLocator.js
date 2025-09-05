@@ -1,12 +1,12 @@
 class BaseLocator {
-  #locator;
+  #value;
 
-  constructor(locator) {
-    this.#locator = locator;
+  constructor(value) {
+    this.#value = value;
   }
 
-  get locator() {
-    return this.#locator;
+  get value() {
+    return this.#value;
   }
 }
 

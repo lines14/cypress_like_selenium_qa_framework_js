@@ -12,7 +12,7 @@ class KaspiAPI extends BaseAPI {
   #options;
 
   constructor(options = {
-    baseURL: '' || process.env.GATEWAY_URL,
+    baseURL: process.env.GATEWAY_URL,
   }) {
     super(options);
     this.#options = options;

@@ -6,7 +6,13 @@ const envDirectory = path.join(__dirname, '../../../../');
 const loaderFileLocation = path.join(__dirname, 'JSONLoader.js');
 const testClientsFileLocation = path.join(__dirname, '../../../resources/data/testClients.json');
 const testCarsFileLocation = path.join(__dirname, '../../../resources/data/testCars.json');
+const averageRBNSFileLocation = path.join(__dirname, '../../../resources/data/averageRBNS.json');
+const activePoliciesFileLocation = path.join(__dirname, '../../../resources/data/activePolicies.json');
 const JSONDirectory = path.join(__dirname, '../../../resources');
+const suitesDirectory = path.join(__dirname, '../../../tests/suites');
+const jsonExtension = '.json';
+const testExtension = '.test';
+const testSuitePattern = 'Suite.js';
 
 const getFiles = (directory, extension) => {
   const allFiles = fs.readdirSync(directory);
@@ -27,11 +33,21 @@ const generateClassInit = (selectedFiles, directory) => `class JSONLoader {\n${s
   return `\tstatic get ${variableName}() {\n\t\tconst ${variableName} = require('${path.join(directory, file)}');\n\t\treturn JSON.parse(JSON.stringify(${variableName}));\n\t}\n\n`;
 }).join('')}`;
 
-const generateJSONLoader = (filePath, directory, extension) => {
-  const files = getFiles(directory, extension);
-  const classInit = generateClassInit(files, directory);
+const generateTestSuitesNames = (selectedFiles) => {
+  const suiteNames = selectedFiles
+    .map((file) => file.replace(testSuitePattern, ''))
+    .map((name) => `'${name}'`)
+    .join(', ');
+  return `\tstatic get testSuitesNames() {\n\t\treturn [${suiteNames}];\n\t}\n\n`;
+};
+
+const generateJSONLoader = (filePath, directory) => {
+  const jsonFiles = getFiles(directory, jsonExtension);
+  const testSuites = getFiles(suitesDirectory, testSuitePattern);
+  const classInit = generateClassInit(jsonFiles, directory);
+  const suitesNames = generateTestSuitesNames(testSuites);
   const classExport = '}\n\nmodule.exports = JSONLoader;';
-  fs.writeFileSync(filePath, classInit + classExport);
+  fs.writeFileSync(filePath, classInit + suitesNames + classExport);
 };
 
 const setConfigData = (directory, extension) => {
@@ -72,6 +88,15 @@ const setConfigData = (directory, extension) => {
       console.log('  [err]   "GATEWAY_URL" .env variable not exists!');
     }
 
+    try {
+      data.getPoliciesForClaimFromDB = Boolean(JSON.parse(
+        process.env.GET_POLICIES_FOR_CLAIM_FROM_DB
+        ?? data.getPoliciesForClaimFromDB,
+      ));
+    } catch (error) { // eslint-disable-next-line no-console
+      console.log('  [err]   incorrect value of "GET_POLICIES_FOR_CLAIM_FROM_DB" .env variable!');
+    }
+
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
   }
 };
@@ -86,8 +111,10 @@ const generateTestDataFile = (filePath) => {
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, JSON.stringify(emptyObj, null, 2), 'utf8');
 };
 
-checkEnvExists(envDirectory, '.test');
-setConfigData(JSONDirectory, '.json');
+checkEnvExists(envDirectory, testExtension);
+setConfigData(JSONDirectory, jsonExtension);
 generateTestDataFile(testCarsFileLocation);
 generateTestDataFile(testClientsFileLocation);
-generateJSONLoader(loaderFileLocation, JSONDirectory, '.json');
+generateTestDataFile(averageRBNSFileLocation);
+generateTestDataFile(activePoliciesFileLocation);
+generateJSONLoader(loaderFileLocation, JSONDirectory);

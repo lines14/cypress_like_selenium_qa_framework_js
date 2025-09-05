@@ -8,3 +8,6 @@ cypress/fixtures/
 cypress/runner-results/
 cypress/resources/data/testClients.json
 cypress/resources/data/testCars.json
+cypress/resources/data/averageRBNS.json
+cypress/resources/data/activePolicies.json
+.env.test

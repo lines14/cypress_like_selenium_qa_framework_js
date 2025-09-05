@@ -6,8 +6,9 @@ const NodeEvents = require('../../support/nodeEvents');
 
 exports.userPathShanyrak = (holder) => {
   it('Shanyrak user path:', { scrollBehavior: false }, () => {
-    NodeEvents.resetClient(holder)
-      .then(async (response) => cy.wrap(response.status).should('be.equal', 200));
+    NodeEvents.resetClient(holder).then((responses) => {
+      responses.forEach((response) => cy.wrap(response.status).should('be.equal', 200));
+    });
 
     cy.open('/');
     mainPage.pageIsDisplayed().should('be.true');

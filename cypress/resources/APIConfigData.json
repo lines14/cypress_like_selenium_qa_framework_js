@@ -1,5 +1,0 @@
-{
-    "APIBaseURL": "http://localhost:8000",
-    "APITimeout": 1500,
-    "APIRequestsLimit": 5
-}

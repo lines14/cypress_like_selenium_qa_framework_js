@@ -6,6 +6,7 @@ require('@shelex/cypress-allure-plugin');
 require('cypress-localstorage-commands');
 require('cypress-fill-command');
 require('cypress-real-events');
+require('cypress-fail-fast');
 
 // Hide fetch/XHR requests
 const app = window.top;

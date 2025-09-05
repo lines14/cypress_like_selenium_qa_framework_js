@@ -1,9 +1,10 @@
 {
   "parallel": false,
+  "withESBD": true,
   "getPolicyTWB": false,
   "setPolicyWaitingTWB": false,
   "hiddenLogBodies": true,
-  "verification": true,
+  "verification": false,
   "timezone": "Asia/Aqtau",
   "environment": "dev",
   "allureCommandlineArgs": [
@@ -47,5 +48,7 @@
   ],
   "servers": "[{\"url\":\"https://testesbd.mkb.kz:8077/IICwebservice.asmx\",\"active\":1},{\"url\":\"https://testesbd-beta.mkb.kz:8078/IICWebservice.asmx\",\"active\":0}]",
   "passed": "------------------------PASSED------------------------",
-  "failed": "------------------------FAILED------------------------"
+  "failed": "------------------------FAILED------------------------",
+  "getPoliciesForClaimFromDB": true,
+  "skipClaim": true
 }

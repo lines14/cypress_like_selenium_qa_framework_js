@@ -10,7 +10,7 @@ class DictionaryAPI extends BaseAPI {
   #options;
 
   constructor(options = {
-    baseURL: '' || process.env.GATEWAY_URL,
+    baseURL: process.env.GATEWAY_URL,
   }) {
     super(options);
     this.#options = options;
@@ -50,6 +50,14 @@ class DictionaryAPI extends BaseAPI {
 
   async fetchAllTestCars() {
     return this.#API.get(JSONLoader.APIEndpoints.dictionary.testCars);
+  }
+
+  async fetchAllAverageRBNS() {
+    return this.#API.get(JSONLoader.APIEndpoints.dictionary.averageRBNS);
+  }
+
+  async getESBDValue() {
+    return this.#API.get(JSONLoader.APIEndpoints.dictionary.ESBD);
   }
 }
 

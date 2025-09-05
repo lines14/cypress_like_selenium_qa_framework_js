@@ -1,0 +1,22 @@
+[
+  {
+    "type": "road infrastructure",
+    "objects": ["traffic light", "street lamp post", "road sign", "guardrail", "traffic barrier", "road divider", "bus stop shelter"]
+  },
+  {
+    "type": "building structure",
+    "objects": ["building wall", "storefront", "entrance gate", "security barrier", "parking garage pillar", "fence", "gate"]
+  },
+  {
+    "type": "public property",
+    "objects": ["public bench", "trash bin", "bicycle rack", "statue", "fountain", "information kiosk", "public telephone booth"]
+  },
+  {
+    "type": "utility infrastructure",
+    "objects": ["electrical box", "utility pole", "fire hydrant", "drainage grate", "manhole cover", "transformer box"]
+  },
+  {
+    "type": "commercial property",
+    "objects": ["store display", "outdoor seating area", "advertising billboard", "outdoor vending machine", "shopping cart corral"]
+  }
+]

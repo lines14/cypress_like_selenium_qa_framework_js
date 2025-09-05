@@ -1,14 +1,18 @@
 require('cypress-xpath');
 const XPATH = require('./locators/baseLocatorChildren/XPATH');
+const Label = require('./elements/baseElementChildren/label');
 
 class BaseForm {
   #pageName;
 
   #pageLocator;
 
+  #loader;
+
   constructor(pageLocator, pageName) {
     this.#pageLocator = pageLocator;
     this.#pageName = pageName;
+    this.#loader = new Label(new XPATH('//div[@class = "loader"]'), 'loader');
   }
 
   getUniqueElement() {
@@ -51,6 +55,11 @@ class BaseForm {
       );
       return cy.wrap(isEnabled);
     });
+  }
+
+  waitLoaderDisappearing() {
+    if (this.#loader.elementIsVisible()) return this.#loader.waitElementIsNotDisplayed();
+    return false;
   }
 }
 
