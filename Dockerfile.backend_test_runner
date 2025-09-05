@@ -1,0 +1,29 @@
+FROM php:8.2-fpm-alpine
+
+USER root
+
+RUN apt-get update -y && apt-get install -y gnupg default-jre
+
+RUN wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure_2.27.0-1_all.deb && dpkg -i allure_2.27.0-1_all.deb
+RUN apk update && \
+    apk add --no-cache \
+        curl \
+        tar \
+        gzip \
+        docker
+
+# RUN curl -fsSL https://get.docker.com -o get-docker.sh && \
+#     sh get-docker.sh
+
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian ${DEBIAN_CODENAME} stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update -y && apt-get install -y docker-ce docker-ce-cli containerd.io
+
+RUN echo "ulimits: $(ulimit -Sn):$(ulimit -Hn)"; sed -i 's/ulimit -Hn/# ulimit -Hn/g' /etc/init.d/docker;
+# RUN rm get-docker.sh
+
+VOLUME /var/run/docker.sock
+
+WORKDIR /var/www/html
+
+CMD ["php-fpm"]
