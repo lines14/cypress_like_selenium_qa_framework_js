@@ -212,14 +212,10 @@ class DataUtils {
     }
 
     const policyDateBegin = JSONLoader.configData.getPoliciesForClaimFromDB
-      ? TimeUtils.reformatDateFromYMDToDMY(
-        TimeUtils.toLocalTMZ(OGPOContractForClaim.date_beg),
-      )
+      ? TimeUtils.reformatDateFromYMDToDMY(OGPOContractForClaim.date_beg)
       : OGPOContractForClaim.date_begin;
     const policyDateEnd = JSONLoader.configData.getPoliciesForClaimFromDB
-      ? TimeUtils.reformatDateFromYMDToDMY(
-        TimeUtils.toLocalTMZ(OGPOContractForClaim.date_end),
-      )
+      ? TimeUtils.reformatDateFromYMDToDMY(OGPOContractForClaim.date_end)
       : OGPOContractForClaim.date_end;
     const insurancePeriod = `${policyDateBegin} - ${policyDateEnd}`;
     const policyNumber = JSONLoader.configData.getPoliciesForClaimFromDB
